@@ -4,6 +4,7 @@ RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 WORKDIR /app
 ADD src /app/src
 COPY .env package.json schema.prisma /app
+COPY apibara_install.sh /app
 
 # install deps
 RUN apt-get -y update; apt-get -y install curl
