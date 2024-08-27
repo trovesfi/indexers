@@ -2,6 +2,10 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator typegraphql {
+  provider = "typegraphql-prisma"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("POSTGRES_CONNECTION_STRING")
@@ -45,16 +49,72 @@ model rebalances {
   @@unique([block_number, txIndex, eventIndex], name: "event_id")
 }
 
-
 model zklend_liquidations {
   block_number Int
-  txIndex      Int @default(0)
-  eventIndex   Int @default(0)
-  txHash       String @default("hash)
+  txIndex      Int    @default(0)
+  eventIndex   Int    @default(0)
+  txHash       String
 
-  user                 String
-  debt_token           String
-  debt_face_amount     BigInt
-  cursor               BigInt? @map("_cursor")
+  user             String
+  debt_token       String
+  debt_face_amount BigInt
+  cursor           BigInt? @map("_cursor")
 
+  @@unique([block_number, txIndex, eventIndex], name: "event_id")
+}
+
+model dnmm_user_actions {
+  block_number Int
+  txIndex      Int    @default(0)
+  eventIndex   Int    @default(0)
+  txHash       String
+
+  sender                      String
+  receiver                    String
+  owner                       String
+  type                        String // deposit | withdraw
+  assets                      String
+  position_acc1_supply_shares String
+  position_acc1_borrow_shares String
+  position_acc2_supply_shares String
+  position_acc2_borrow_shares String
+  contract                    String
+  timestamp                   Int
+  cursor                      BigInt? @map("_cursor")
+
+  @@unique([block_number, txIndex, eventIndex], name: "event_id")
+}
+
+model investment_flows {
+  block_number Int
+  txIndex      Int    @default(0)
+  eventIndex   Int    @default(0)
+  txHash       String
+
+  sender    String // caller of tx
+  receiver  String // owner on deposit, could be anyone on withdraw
+  owner     String // the one who received or sent the asset
+  amount    String
+  asset     String
+  contract  String
+  type      String // deposit | withdraw
+  timestamp Int
+  cursor    BigInt? @map("_cursor")
+
+  @@unique([block_number, txIndex, eventIndex], name: "event_id")
+}
+
+model harvests {
+  block_number Int
+  txIndex      Int    @default(0)
+  eventIndex   Int    @default(0)
+  txHash       String
+
+  user     String
+  contract    String
+  amount   String
+  timestamp Int
+  cursor   BigInt? @map("_cursor")
+
+  @@unique([block_number, txIndex, eventIndex], name: "event_id")
 }

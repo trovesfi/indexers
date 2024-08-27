@@ -23,7 +23,9 @@
     "resolveJsonModule": true,                                /* Enable all strict type-checking options. */
     "skipLibCheck": true,                               /* Skip type checking all .d.ts files. */
     "allowImportingTsExtensions": true,
-    "noEmit": true
+    "noEmit": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
   },
   "include": [
     "src/**/*"

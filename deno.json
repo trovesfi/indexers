@@ -1,0 +1,11 @@
+{
+    "files": {
+        "include": ["src/strkfarm", "src/zklend"]
+    },
+    "lint": {
+      "include": ["src/strkfarm", "src/zklend"]
+    },
+    "fmt": {
+        "include": ["src/strkfarm", "src/zklend"]
+    }
+  }
