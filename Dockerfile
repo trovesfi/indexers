@@ -17,6 +17,8 @@ RUN apt-get install gzip -y
 RUN echo "installing nvm"
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
 RUN echo "installed nvm"
+RUN ls -lrtha ~/
+RUN source ~/.bashrc
 RUN nvm install 18.20.1
 RUN node -v
 
