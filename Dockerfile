@@ -14,13 +14,23 @@ RUN apt-get install wget -y
 RUN apt-get install gzip -y
 
 # install nodejs
-RUN echo "installing nvm"
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
-RUN echo "installed nvm"
-RUN ls -lrtha ~/
-RUN source ~/.bashrc
-RUN nvm install 18.20.1
-RUN node -v
+#RUN echo "installing nvm"
+#RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+#RUN echo "installed nvm"
+#RUN ls -lrtha ~/
+#RUN source ~/.bashrc
+#RUN nvm install 18.20.1
+#RUN node -v
+
+# Add NodeSource repository for the desired Node.js version (e.g., 18.x)
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+
+# Install Node.js
+RUN apt-get install -y nodejs
+
+# Verify Node.js installation
+RUN node -v && npm -v
+
 
 #home/teja9999/.nvm/versions/node/v18.20.1/bin/node
 
