@@ -32,4 +32,6 @@ RUN echo "nohup /root/.local/share/apibara/bin/apibara run --allow-env=.env src/
 RUN echo "nohup /root/.local/share/apibara/bin/apibara run --allow-env=.env src/strkfarm/harvests.ts --sink-id=140 --status-server-address=0.0.0.0:4140 > harvests.log &" >> run.sh
 RUN chmod +x run.sh
 
-ENTRYPOINT ["run.sh"]
+RUN cat ./run.sh
+
+ENTRYPOINT ["./run.sh"]
