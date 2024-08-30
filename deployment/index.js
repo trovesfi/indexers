@@ -51,7 +51,9 @@ function logFileContents(filePath) {
       return;
     }
 
-    console.log(data);
+    const lines = data.split('\n'); // Split file contents into lines
+    const last20Lines = lines.slice(-20); // Get the last 20 lines
+    console.log(last20Lines.join('\n')); // Join them back into a string and log
   });
 }
 
@@ -65,6 +67,8 @@ app.get('/status', async (req, res) => {
   
   try {
     logFileContents('./harvests.log');
+    console.log('=====================');
+    logFileContents('./dep-withdraw.log ');
 
     // Call the getGrpcStatus function with the provided port
     const status = await getGrpcStatus(grpcPort);
