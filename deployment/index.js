@@ -1,6 +1,7 @@
 const express = require('express');
 const { spawn } = require('child_process');
-
+const fs = require('fs');
+const path = require('path');
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -41,6 +42,19 @@ function getGrpcStatus(grpcPort) {
   });
 }
 
+function logFileContents(filePath) {
+  const absolutePath = path.resolve(filePath);
+
+  fs.readFile(absolutePath, 'utf8', (err, data) => {
+    if (err) {
+      console.error(`Error reading file: ${err.message}`);
+      return;
+    }
+
+    console.log(data);
+  });
+}
+
 // Express GET endpoint `/status`
 app.get('/status', async (req, res) => {
   const grpcPort = req.query.port;
@@ -48,8 +62,10 @@ app.get('/status', async (req, res) => {
   if (!grpcPort) {
     return res.status(400).json({ error: 'port parameter is required' });
   }
-
+  
   try {
+    logFileContents('./harvests.log');
+
     // Call the getGrpcStatus function with the provided port
     const status = await getGrpcStatus(grpcPort);
     console.log(`status: ${grpcPort}`, status)
