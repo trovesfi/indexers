@@ -23,7 +23,7 @@ RUN apt-get install gzip -y
 #RUN node -v
 
 # Add NodeSource repository for the desired Node.js version (e.g., 18.x)
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
 
 # Install Node.js
 RUN apt-get install -y nodejs
