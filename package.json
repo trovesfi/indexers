@@ -23,6 +23,7 @@
     "@apollo/server": "^4.11.0",
     "@prisma/client": "5.12.1",
     "dotenv": "16.4.5",
+    "express": "^4.19.2",
     "graphql": "16.9.0",
     "graphql-fields": "^2.0.3",
     "graphql-scalars": "^1.23.0",

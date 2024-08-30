@@ -31,6 +31,9 @@ RUN apt-get install -y nodejs
 # Verify Node.js installation
 RUN node -v && npm -v
 
+# yarn install
+RUN npm install -g yarn
+RUN yarn install
 
 #home/teja9999/.nvm/versions/node/v18.20.1/bin/node
 
