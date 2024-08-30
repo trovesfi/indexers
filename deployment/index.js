@@ -10,7 +10,7 @@ function getGrpcStatus(grpcPort) {
   return new Promise((resolve, reject) => {
     const grpcurl = spawn('grpcurl', [
       '-plaintext', 
-      `localhost:${grpcPort}`, 
+      `0.0.0.0:${grpcPort}`, 
       'apibara.sink.v1.Status.GetStatus'
     ]);
 
