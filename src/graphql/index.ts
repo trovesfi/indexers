@@ -10,6 +10,7 @@ import {
 } from "@generated/type-graphql";
 import { buildSchema, Resolver, Query, Arg } from 'type-graphql';
 import { startStandaloneServer } from "@apollo/server/standalone";
+import { CustomHarvestsResolver } from "./customResolvers/harvestResolvers.ts";
 
 const prisma = new PrismaClient();
 
@@ -29,45 +30,6 @@ export class CountInvestment_flowsResolver {
     return uniqueOwners.length;
   }
 
-}
-
-// Custom resolver to get harvest stats
-@Resolver(Harvests)
-export class CustomHarvestsResolver {
-  // Custom resolver to get total harvests for a given contract
-  @Query((returns: any) => Number)
-  async totalHarvests(
-    @Arg("contract") contract: string,
-  ): Promise<Number> {
-    const total = await prisma.harvests.aggregate({
-      where: {
-        contract
-      },
-      _count: true,
-    });
-    console.log("Total harvests: ", total._count);
-    return total._count;
-  }
-
-  // Total STRK Harvested
-  /** @returns amount in WEI string */
-  @Query((returns: any) => String)
-  async totalStrkHarvested(
-    @Arg("contract") contract: string,
-  ): Promise<String> {
-    const harvests = await prisma.harvests.findMany({
-      where: {
-        contract
-      }
-    });
-
-    const total = harvests.reduce((acc, curr) => {
-      return acc + BigInt(curr.amount);
-    }, BigInt(0));
-
-    console.log("Total STRK Harvested: ", total);
-    return total.toString();
-  }
 }
 
 async function main() {

@@ -110,11 +110,12 @@ model harvests {
   eventIndex   Int    @default(0)
   txHash       String
 
-  user     String
-  contract    String
-  amount   String
+  user      String
+  contract  String
+  amount    String
+  price     Float   @default(0) // the indexer will set this 0, but when reading, it will be set to the price at the time of the harvest
   timestamp Int
-  cursor   BigInt? @map("_cursor")
+  cursor    BigInt? @map("_cursor")
 
   @@unique([block_number, txIndex, eventIndex], name: "event_id")
 }
