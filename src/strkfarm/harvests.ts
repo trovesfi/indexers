@@ -158,6 +158,7 @@ export default function transform({ header, events }: any) {
             contract: claimInfo.claimee,
             amount: claimInfo.amount,
             user: caller,
+            price: 0,
             timestamp: Math.round((new Date(timestamp)).getTime() / 1000),
         };
         console.log(action)
