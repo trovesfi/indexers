@@ -50,5 +50,5 @@ RUN /root/.local/share/apibara/bin/apibara plugins install --file sink-postgres-
 RUN chmod +x run.sh
 RUN cat ./run.sh
 
-# ENTRYPOINT ["./run.sh"]
-CMD ["/usr/bin/supervisord", "-c", "/app/supervisord.conf"]
+ENTRYPOINT ["./run.sh"]
+# CMD ["/usr/bin/supervisord", "-c", "/app/supervisord.conf"]
