@@ -14,4 +14,4 @@ echo "==================================================="
 cat harvests.log
 
 echo "Starting server"
-node index.js
+# node index.js
