@@ -9,7 +9,7 @@ nohup  /root/.local/share/apibara/bin/apibara run --allow-env=.env src/strkfarm/
 nohup  /root/.local/share/apibara/bin/apibara run --allow-env=.env src/strkfarm/deposits-withdraws.ts --sink-id=130 --status-server-address=0.0.0.0:4130 > dep-withdraw.log &
 
 echo "Sleeping 10s"
-sleep 60
+sleep 10
 cat dep-withdraw.log
 echo "==================================================="
 cat harvests.log

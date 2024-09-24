@@ -20,11 +20,15 @@ async function main() {
     console.log(`Max block number: ${maxBlock._max.block_number}`);
 
     const txs = await prisma.investment_flows.findMany({
+        orderBy: {
+            timestamp: 'desc'
+        },
         where: {
             contract: '0x9d23d9b1fa0db8c9d75a1df924c3820e594fc4ab1475695889286f3f6df250'
         }
     })
     console.log(txs.length);
+    console.log(txs[0]);
 
     const allTxs = await prisma.investment_flows.findMany({
     })
@@ -37,6 +41,7 @@ async function main() {
     })
     console.log(txs1.length);
 
+    return;
     const allTxs1 = await prisma.harvests.findMany({
     })
     console.log(allTxs1.length);
