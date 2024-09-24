@@ -5,8 +5,7 @@ if ! command -v grpcurl >/dev/null 2>&1; then
 fi
 
 echo "Running indexers"
-nohup  /root/.local/share/apibara/bin/apibara run --allow-env=.env src/strkfarm/harvests.ts --sink-id=140 --status-server-address=0.0.0.0:4140 > harvests.log &
-nohup  /root/.local/share/apibara/bin/apibara run --allow-env=.env src/strkfarm/deposits-withdraws.ts --sink-id=130 --status-server-address=0.0.0.0:4130 > dep-withdraw.log &
+/usr/bin/supervisord -c /app/supervisord.conf
 
 echo "Sleeping 10s"
 sleep 10
