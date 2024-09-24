@@ -66,9 +66,11 @@ app.get('/status', async (req, res) => {
   }
   
   try {
-    logFileContents('./harvests.log');
+    logFileContents('/var/log/supervisor/harvests.log');
+    logFileContents('/var/log/supervisor/harvests_err.log');
     console.log('=====================');
-    logFileContents('./dep-withdraw.log');
+    logFileContents('/var/log/supervisor/dep-withdraw.log');
+    logFileContents('/var/log/supervisor/dep-withdraw_err.log');
 
     // Call the getGrpcStatus function with the provided port
     const status = await getGrpcStatus(grpcPort);
