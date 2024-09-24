@@ -1,5 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { writeFileSync } from 'fs';
+import yahooFinance from 'yahoo-finance2';
+import { getClosePriceAtTimestamp } from "./graphql/utils";
 
 async function run() {
     const prisma = new PrismaClient();
@@ -149,6 +151,129 @@ async function depositsAndWithdraws() {
         console.log("\n=====================================");
     };
 }
+
+type Transaction = {
+    rawAmount: number; // Amount in token with sign
+    amount: number;   // Positive for deposit, negative for withdraw
+    timestamp: number; // Time in seconds
+    date: Date
+};
+  
+function hasThousandDollarsFor30Days(transactions: Transaction[]): boolean {
+    // Sort transactions by timestamp
+    transactions.sort((a, b) => a.timestamp - b.timestamp);
+  
+    let balance = 0;
+    let windowStartIndex = 0;
+  
+    for (let i = 0; i < transactions.length; i++) {
+      const { amount, timestamp } = transactions[i];
+      
+      // Add the transaction to the balance
+      balance += amount;
+  
+      // Remove the effect of transactions outside the 30-day window
+      while (timestamp - transactions[windowStartIndex].timestamp >= 2592000) { // 30 days in seconds
+        balance -= transactions[windowStartIndex].amount;
+        windowStartIndex++;
+      }
+  
+      // Check if the balance has been above $1000 for the last 30 days
+      if (balance >= 950 && (i == transactions.length - 1 || transactions[i + 1].timestamp - transactions[windowStartIndex].timestamp >= 2592000)) {
+        return true;
+      }
+    }
+  
+    return false;
+}
+
+const tokenKeyMap: any = {
+    "0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d": {
+        yFinanceKey: 'STRK22691-USD',
+        decimals: 18
+    },
+    "0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8": {
+        yFinanceKey: null,
+        decimals: 6
+    }
+}
+
+const priceHistory: any = {};
+async function getPrice(tokenAddress: string, timestamp: number) {
+    const key = tokenKeyMap[tokenAddress].yFinanceKey;
+    if (!key) {
+        return 1;
+    }
+
+    const prices = priceHistory[tokenAddress];
+    if (!prices) {
+        const results = await yahooFinance.chart('STRK22691-USD', {
+            period1: '2024-02-01'
+        });
+        priceHistory[tokenAddress] = results.quotes;
+        const priceInfo = getClosePriceAtTimestamp(results.quotes, timestamp);
+        return priceInfo;
+    } else {
+        const priceInfo = getClosePriceAtTimestamp(prices, timestamp);
+        return priceInfo;
+    }
+}
+
+async function getInvestmentFlowsGroupedByUser() {
+    const prisma = new PrismaClient();
+
+    const investmentFlows = await prisma.investment_flows.findMany({
+        orderBy: {
+            timestamp: 'asc'
+        }
+    });
+
+    const groupedByUser: any = {};
+    for (let i = 0; i < investmentFlows.length; i++) {
+        const flow = investmentFlows[i];
+        const existing = groupedByUser[flow.owner];
+        const decimals = tokenKeyMap[flow.asset].decimals;
+        const rawAmount = Number(((BigInt(flow.amount) * BigInt(1000))/ BigInt(10 ** decimals)).toString()) / 1000;
+        const price: number | null = await getPrice(flow.asset, flow.timestamp);
+        if (!price) {
+            console.error("Price not found for flow: ", flow);
+            return;
+        }
+        const amountAbs = rawAmount * price;
+        const txInfo: Transaction = {
+            rawAmount: flow.type == 'deposit' ? rawAmount : -rawAmount,
+            amount: flow.type === 'deposit' ? amountAbs : -amountAbs,
+            timestamp: flow.timestamp,
+            date: new Date(flow.timestamp * 1000)
+        }
+        if (existing) {
+            existing.push(txInfo);
+            groupedByUser[flow.owner] = existing;
+        } else {
+            groupedByUser[flow.owner] = [txInfo];
+        }
+    };
+
+    console.log("total groups", Object.keys(groupedByUser).length);
+    console.log("group1", groupedByUser[Object.keys(groupedByUser)[0]]);
+    return groupedByUser;
+}
+
+async function OGFarmerNFTEligibleUsers() {
+    const userGroups = await getInvestmentFlowsGroupedByUser();
+    const eligibleUsers: any[] = [];
+    Object.keys(userGroups).forEach((key) => {
+        const userTxs = userGroups[key];
+        if (hasThousandDollarsFor30Days(userTxs)) {
+            eligibleUsers.push(key);
+        }
+    });
+    console.log("Eligible users: ", eligibleUsers.length);
+    console.log(eligibleUsers);
+}
+  
 // run();
 // dnmm()
-depositsAndWithdraws();
+// getInvestmentFlowsGroupedByUser();
+// depositsAndWithdraws();
+OGFarmerNFTEligibleUsers();

@@ -28,6 +28,9 @@ const CONTRACTS: any = {
             }, {
                 address: standariseAddress("0x020d5fc4c9df4f943ebb36078e703369c04176ed00accf290e8295b659d2cea6"),
                 asset: TOKENS.STRK
+            }, {
+                address: standariseAddress("0x9d23d9b1fa0db8c9d75a1df924c3820e594fc4ab1475695889286f3f6df250"),
+                asset: TOKENS.ETH
             }
         ],
     },
@@ -78,6 +81,12 @@ export default function transform({ header, events }: any) {
     if (!header || !events) return [];
 
     const { blockNumber, timestamp } = header;
+
+    // if (blockNumber > 745800) {
+    //     console.log('Skipping block', blockNumber);
+    //     return [];
+    // }
+    
     return events.map(({ event, transaction, receipt }: any) => {
         if (!transaction || !transaction.meta) return null;
         if (!event || !event.data || !event.keys) return null;
