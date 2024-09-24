@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import fs from 'fs';
 
 async function main() {
     const prisma = new PrismaClient();
@@ -35,11 +36,51 @@ async function main() {
         }
     })
     console.log(txs1.length);
-    console.log(txs1);
 
     const allTxs1 = await prisma.harvests.findMany({
     })
     console.log(allTxs1.length);
+
+    let first50 = await prisma.investment_flows.findMany({
+        take: 500,
+        where: {
+            type: 'deposit'
+        }
+    })
+    const uniqueUsers: string[] = [];
+    first50.forEach((tx) => {
+        if (!uniqueUsers.includes(tx.owner) && uniqueUsers.length < 125) {
+            uniqueUsers.push(tx.owner);
+        }
+    });
+    console.log(`Unique users: ${uniqueUsers.length}`);
+    // console.log(uniqueUsers);
+    fs.writeFileSync('./data/ventory/early_125.json', JSON.stringify(uniqueUsers, null, 2));
+
+    const allUsers = await prisma.investment_flows.findMany({
+        distinct: ['owner'],
+        where: {
+            type: 'deposit'
+        },
+        select: {
+            owner: true
+        }
+    })
+    console.log(`All users: ${allUsers.length}`);
+
+    const luckyWinners: string[] = [];
+    while (luckyWinners.length < 125) {
+        // generate random index between 0 to allUsers.length
+        const randomIndex = Math.floor(Math.random() * allUsers.length);
+        const randomUser = allUsers[randomIndex].owner;
+        if (!luckyWinners.includes(randomUser) && !uniqueUsers.includes(randomUser)) {
+            luckyWinners.push(randomUser);
+        }
+    }
+    console.log(`Lucky winners: ${luckyWinners.length}`);
+    // console.log(luckyWinners);
+    fs.writeFileSync('./data/ventory/lucky_125.json', JSON.stringify(luckyWinners, null, 2));
+
 }
 
 main()
