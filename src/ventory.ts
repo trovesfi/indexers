@@ -41,7 +41,6 @@ async function main() {
     })
     console.log(txs1.length);
 
-    return;
     const allTxs1 = await prisma.harvests.findMany({
     })
     console.log(allTxs1.length);
@@ -60,7 +59,7 @@ async function main() {
     });
     console.log(`Unique users: ${uniqueUsers.length}`);
     // console.log(uniqueUsers);
-    fs.writeFileSync('./data/ventory/early_125.json', JSON.stringify(uniqueUsers, null, 2));
+    // fs.writeFileSync('./data/ventory/early_125.json', JSON.stringify(uniqueUsers, null, 2));
 
     const allUsers = await prisma.investment_flows.findMany({
         distinct: ['owner'],
@@ -84,7 +83,10 @@ async function main() {
     }
     console.log(`Lucky winners: ${luckyWinners.length}`);
     // console.log(luckyWinners);
-    fs.writeFileSync('./data/ventory/lucky_125.json', JSON.stringify(luckyWinners, null, 2));
+    // fs.writeFileSync('./data/ventory/lucky_125.json', JSON.stringify(luckyWinners, null, 2));
+
+    const allUsersAddresses = allUsers.map((user) => user.owner);
+    fs.writeFileSync('./data/ventory/all_users.json', JSON.stringify(allUsersAddresses, null, 2));
 
 }
 
