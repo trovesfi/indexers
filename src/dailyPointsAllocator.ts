@@ -25,10 +25,10 @@ interface UserStats {
 
 const API_BASE_URL = "https://app.strkfarm.xyz/api/stats";
 
-async function fetchTVL(retries = 3, delay = 1000): Promise<TVL | undefined> {
+async function fetchTVL(url: string, retries = 3, delay = 1000): Promise<TVL | undefined> {
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
-      const response = await fetch(API_BASE_URL);
+      const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -105,7 +105,7 @@ async function updateUserPoints(user: { owner: string }, baseMultiplier: number)
 }
 
 async function main() {
-  const tvl = await fetchTVL();
+  const tvl = await fetchTVL(API_BASE_URL);
   let baseMultiplier = 1;
 
   if (!tvl) {
@@ -139,4 +139,6 @@ async function main() {
   console.log("Daily points allocation completed.");
 }
 
-cron.schedule("0 1 * * *", main);
+main();
+
+// cron.schedule("0 1 * * *", main);

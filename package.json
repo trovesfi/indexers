@@ -13,6 +13,8 @@
     "start-dnmm-actions": "apibara run --allow-env=.env src/strkfarm/dnmm/user_actions.ts --sink-id=120",
     "start-dep-withdraw": "apibara run --allow-env=.env src/strkfarm/deposits-withdraws.ts --sink-id=130 --status-server-address=0.0.0.0:4130",
     "start-harvests": "apibara run --allow-env=.env src/strkfarm/harvests.ts --sink-id=140 --status-server-address=0.0.0.0:4140",
+    "start-daily-points-allocator": "ts-node src/dailyPointsAllocator.ts",
+    "calculate-accumulated-points": "ts-node src/calculateAccumulatedPoints",
     "postinstall": "npx prisma generate"
   },
   "author": "akiraonstarknet",
