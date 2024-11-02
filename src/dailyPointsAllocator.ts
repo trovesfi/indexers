@@ -139,6 +139,4 @@ async function main() {
   console.log("Daily points allocation completed.");
 }
 
-main();
-
-// cron.schedule("0 1 * * *", main);
+cron.schedule("0 1 * * *", main);
