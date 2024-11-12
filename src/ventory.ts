@@ -32,7 +32,7 @@ async function main() {
 
     const allTxs = await prisma.investment_flows.findMany({
     })
-    console.log(allTxs.length);
+    console.log('txsLen', allTxs.length);
 
     const txs1 = await prisma.harvests.findMany({
         where: {
@@ -43,7 +43,7 @@ async function main() {
 
     const allTxs1 = await prisma.harvests.findMany({
     })
-    console.log(allTxs1.length);
+    console.log('txsLen', allTxs1.length);
 
     let first50 = await prisma.investment_flows.findMany({
         take: 500,
@@ -86,7 +86,7 @@ async function main() {
     // fs.writeFileSync('./data/ventory/lucky_125.json', JSON.stringify(luckyWinners, null, 2));
 
     const allUsersAddresses = allUsers.map((user) => user.owner);
-    fs.writeFileSync('./data/ventory/all_users.json', JSON.stringify(allUsersAddresses, null, 2));
+    // fs.writeFileSync('./data/ventory/all_users.json', JSON.stringify(allUsersAddresses, null, 2));
 
 }
 

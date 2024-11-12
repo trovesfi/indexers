@@ -31,6 +31,9 @@ const CONTRACTS: any = {
             }, {
                 address: standariseAddress("0x9d23d9b1fa0db8c9d75a1df924c3820e594fc4ab1475695889286f3f6df250"),
                 asset: TOKENS.ETH
+            }, {
+                address: standariseAddress('0x9140757f8fb5748379be582be39d6daf704cc3a0408882c0d57981a885eed9'),
+                asset: TOKENS.ETH
             }
         ],
     },
@@ -47,7 +50,7 @@ const CONTRACTS: any = {
     }
 }
 // Initiate a filter builder
-const claimedKey = "0x35cc0235f835cc84da50813dc84eb10a75e24a21d74d6d86278c0f037cb7429" // "Deposit"
+const claimedKey = "0x35cc0235f835cc84da50813dc84eb10a75e24a21d74d6d86278c0f037cb7429"
 const KEYS = [claimedKey]
 
 const filter: any = {

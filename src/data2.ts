@@ -1,4 +1,6 @@
+import { PrismaClient } from '@prisma/client';
 import { ParquetSchema, ParquetWriter, ParquetReader } from 'parquets';
+const prisma = new PrismaClient();
 
 // let schema = new ParquetSchema({
 //     name: { type: 'UTF8' },
@@ -33,4 +35,15 @@ async function run() {
 
 }
 
-run()
+async function getFrameWithPeterStats() {
+  const items = await prisma.framethispeter.groupBy({
+    by: ['token_id'],
+    _count: {
+      tweet_id: true,
+    },
+  });
+  console.log(items.filter((a) => a._count.tweet_id > 1).sort((a, b) => b._count.tweet_id - a._count.tweet_id));
+}
+
+// run()
+// getFrameWithPeterStats()

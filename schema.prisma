@@ -119,3 +119,19 @@ model harvests {
 
   @@unique([block_number, txIndex, eventIndex], name: "event_id")
 }
+
+model framethispeter {
+  block_number Int
+  txIndex      Int    @default(0)
+  eventIndex   Int    @default(0)
+  txHash       String
+
+  token_id String
+  receiver String
+  tweet_id String
+
+  timestamp Int
+  cursor    BigInt? @map("_cursor")
+  
+  @@unique([block_number, txIndex, eventIndex], name: "event_id")
+}
