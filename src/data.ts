@@ -29,7 +29,7 @@ async function dnmm() {
             eventIndex: 'asc',
         }],
         where: {
-            contract: '0x20d5fc4c9df4f943ebb36078e703369c04176ed00accf290e8295b659d2cea6',
+            contract: '0x7023a5cadc8a5db80e4f0fde6b330cbd3c17bbbf9cb145cbabd7bd5e6fb7b0b',
             block_number: {
                 gt: 661768
             }
@@ -38,50 +38,104 @@ async function dnmm() {
     // console.log(result);
     console.log(result.length);
 
+    const xSTRK_DNMM = '0x7023a5cadc8a5db80e4f0fde6b330cbd3c17bbbf9cb145cbabd7bd5e6fb7b0b';
+    const provider = new RpcProvider({
+        nodeUrl: process.env.RPC_URL
+    })
+    let cls = await provider.getClassAt(xSTRK_DNMM);
+    const contract = new Contract(cls.abi, xSTRK_DNMM, provider);
+    let sum_shares = BigInt(0);
     const roundSharesMap: any = {};
-    result.forEach((action: any) => {
+    for (let i = 0; i < result.length; i++) {
+        const action = result[i];
         const existing = roundSharesMap[action.owner];
+        // ! bug fix, there was bad withdraw events, so 
+        // ! we are fetching on-chain as on that block
+        if (action.type == 'withdraw') {
+            const result: any = await contract.call('describe_position', [
+                num.getDecimalString(action.owner)
+            ], {
+                blockIdentifier: action.block_number
+            });
+            action.position_acc1_supply_shares = result['0'].acc1_supply_shares.toString()
+            action.position_acc2_supply_shares = result['0'].acc2_supply_shares.toString()
+            action.position_acc1_borrow_shares = result['0'].acc1_borrow_shares.toString()
+            action.position_acc2_borrow_shares = result['0'].acc2_borrow_shares.toString()
+        }
+
+        const deposit_amount = Number(BigInt(action.assets) / BigInt(10 ** 16)) / 100;
+        const shares_amount = (BigInt(action.position_acc2_supply_shares) / BigInt(10 ** 18)).toString();
+        const prev_shares = existing ? existing.actions[existing.actions.length - 1].amount : BigInt(0);
+        const ratio = (Number(shares_amount) - Number(prev_shares)) / deposit_amount;
+        
         if (existing) {
+            console.log('existing totalPoints', (existing.lpShares * BigInt(action.block_number - existing.block_number)).toString(), action.owner, existing.lpShares, action.block_number - existing.block_number, action.block_number, existing.block_number)
             existing.points += existing.lpShares * BigInt(action.block_number - existing.block_number);
-            existing.lpShares = BigInt(action.position_acc1_supply_shares);
+            existing.lpShares = BigInt(action.position_acc2_supply_shares);
+            const newPoints = existing.lpShares * BigInt(action.block_number - existing.block_number);
+            console.log('newPoints', newPoints);
+            existing.totalPoints = (BigInt(existing.totalPoints) + newPoints).toString();
             existing.block_number = action.block_number
             existing.actions.push({
+                deposit_amount: deposit_amount,
+                ratio,
                 block: action.block_number,
-                amount: (BigInt(action.position_acc1_supply_shares) / BigInt(10 ** 18)).toString(),
-                fullAmount: action.position_acc1_supply_shares,
+                amount: shares_amount,
+                fullAmount: action.position_acc2_supply_shares,
                 type: action.type,
-                diff: action.block_number - existing.actions[existing.actions.length - 1].block
+                diff: action.block_number - existing.actions[existing.actions.length - 1].block,
+                txHash: action.txHash
             })
             roundSharesMap[action.owner] = existing;
         } else {
             roundSharesMap[action.owner] = {
-                lpShares: BigInt(action.position_acc1_supply_shares),
+                lpShares: BigInt(action.position_acc2_supply_shares),
                 block_number: action.block_number,
                 points: BigInt(0),
                 firstBlock: action.block_number,
+                totalPoints: "0",
                 actions: [{
+                    deposit_amount: deposit_amount,
+                    ratio,
                     block: action.block_number,
-                    amount: (BigInt(action.position_acc1_supply_shares) / BigInt(10 ** 18)).toString(),
-                    fullAmount: action.position_acc1_supply_shares,
+                    amount: shares_amount,
+                    fullAmount: action.position_acc2_supply_shares,
                     type: action.type,
-                    diff: 0
+                    diff: 0,
+                    txHash: action.txHash
                 }]
             }
         }
+    }
+
+    Object.keys(roundSharesMap).forEach((key) => {
+        sum_shares += BigInt(roundSharesMap[key].lpShares)
+        console.log(
+            "key", key, 
+            (BigInt(roundSharesMap[key].lpShares.toString()) / BigInt(10 ** 18)).toString(),
+            (sum_shares / BigInt(10 ** 18)).toString()
+        );
     })
 
-    // ! Update this
-    const CURRENT_BLOCK = 661793;
+    console.log("sum_shares", sum_shares.toString());
+    let totalPoints = BigInt(0);
+    // const CURRENT_BLOCK = 1078316; // 599523096360711574491812221
+    const CURRENT_BLOCK = 1082221 // 2080676663758588100100255407 
     Object.keys(roundSharesMap).forEach((key) => {
         const existing = roundSharesMap[key];
         existing.points += existing.lpShares * BigInt(CURRENT_BLOCK - existing.block_number);
         existing.points = existing.points.toString()
+        const newPoints = existing.lpShares * BigInt(CURRENT_BLOCK - existing.block_number);
+        console.log('totalPoints', key, newPoints, existing.lpShares, existing.block_number)
+        existing.totalPoints = (BigInt(existing.totalPoints) + newPoints).toString();
+        console.log('totalPoints2', key, existing.totalPoints)
         existing.block_number = CURRENT_BLOCK;
         existing.lpShares = existing.lpShares.toString()
         existing.diff = existing.block_number - existing.firstBlock;
         roundSharesMap[key] = existing;
+        totalPoints += BigInt(existing.points);
     })
-    console.log(roundSharesMap);
+    console.log("totalPoints", totalPoints.toString());
     writeFileSync('dnmm.json', JSON.stringify(roundSharesMap))
 }
 
@@ -594,9 +648,9 @@ function updateWithdrawalAmountsUsingFIFO(transactions: Transaction[]): Transact
 }
 
 // run();
-// dnmm()
+dnmm()
 // getInvestmentFlowsGroupedByUser();
 // depositsAndWithdraws();
 // OGFarmerNFTEligibleUsers();
 // impact();
-impact2();
+// impact2();
