@@ -1,0 +1,1885 @@
+[
+  {
+    "owner": "0x1b2f8be5af42429e1d10e0ccb910a5471e7937e6479fe61df58a9fda57787bc",
+    "sum": 3906.531284339678,
+    "size": 59.31478891823597,
+    "diff": -3847.2164954214422,
+    "percent": -6486.099951775499,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 500
+      },
+      {
+        "type": "deposit",
+        "amount": 1000
+      },
+      {
+        "type": "deposit",
+        "amount": 1000
+      },
+      {
+        "type": "deposit",
+        "amount": 2000
+      },
+      {
+        "type": "deposit",
+        "amount": 5000
+      },
+      {
+        "type": "deposit",
+        "amount": 20000
+      },
+      {
+        "type": "deposit",
+        "amount": 20000
+      },
+      {
+        "type": "deposit",
+        "amount": 15000
+      },
+      {
+        "type": "deposit",
+        "amount": 2000
+      },
+      {
+        "type": "withdraw",
+        "amount": 9516.813975022593
+      },
+      {
+        "type": "withdraw",
+        "amount": 9491.424810349119
+      },
+      {
+        "type": "withdraw",
+        "amount": 9494.623760865641
+      },
+      {
+        "type": "withdraw",
+        "amount": 9487.93079709929
+      },
+      {
+        "type": "withdraw",
+        "amount": 24602.675372323676
+      }
+    ]
+  },
+  {
+    "owner": "0x2ba76c537f6cfd944bad5e6dda9b112578f5803050e693e2ad8d6bd6e6e7ac9",
+    "sum": 812.5808762953321,
+    "size": 15.729769280782799,
+    "diff": -796.8511070145494,
+    "percent": -5065.87917972878,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 24999.999999999996
+      },
+      {
+        "type": "withdraw",
+        "amount": 24187.41912370467
+      }
+    ]
+  },
+  {
+    "owner": "0x4b68570b4a7f72df4843853c5dc77131c885222a584d4e2df9fb3b12229902d",
+    "sum": 1663.0629885794378,
+    "size": 41.77875144157339,
+    "diff": -1621.2842371378645,
+    "percent": -3880.6431049170833,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 49999.99999999999
+      },
+      {
+        "type": "withdraw",
+        "amount": 48336.93701142057
+      }
+    ]
+  },
+  {
+    "owner": "0x223715c943925b7e4d338c5c014770ccf6b710d987072b67b3d6fccafad894",
+    "sum": 179.31877945780394,
+    "size": 13.666063327227734,
+    "diff": -165.6527161305762,
+    "percent": -1212.1465572352222,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 350.4456352578992
+      },
+      {
+        "type": "deposit",
+        "amount": 4704.659292427
+      },
+      {
+        "type": "withdraw",
+        "amount": 4875.7861482270955
+      }
+    ]
+  },
+  {
+    "owner": "0x1dabf726b0df1a2280113038126fed174bf3e74844b97eee932020b49c35abe",
+    "sum": 350,
+    "size": 243.9306102368958,
+    "diff": -106.0693897631042,
+    "percent": -43.48342738129248,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 350
+      }
+    ]
+  },
+  {
+    "owner": "0x578cd02604f7eabe732c4c77cd31dbd90834b20e58bf791eab295b5e596f4cf",
+    "sum": 166428.41301967786,
+    "size": 165864.81376699192,
+    "diff": -563.5992526859336,
+    "percent": -0.33979434208251175,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 2495.0000000000005
+      },
+      {
+        "type": "deposit",
+        "amount": 17400
+      },
+      {
+        "type": "deposit",
+        "amount": 16519.349520444975
+      },
+      {
+        "type": "deposit",
+        "amount": 99999.99999999999
+      },
+      {
+        "type": "deposit",
+        "amount": 49999.99999999999
+      },
+      {
+        "type": "withdraw",
+        "amount": 19985.93650076713
+      }
+    ]
+  },
+  {
+    "owner": "0x4ca38390360cd6d4f99c6428f9da176074a6fdb0e8cd6a1db8e355c548c1cda",
+    "sum": 200,
+    "size": 199.60711290671836,
+    "diff": -0.39288709328164373,
+    "percent": -0.19683020688007755,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 200
+      }
+    ]
+  },
+  {
+    "owner": "0x612ef5b8649adf82e746d5e19930945ccc04ace0eb34587c5418016ea56fd37",
+    "sum": 1000,
+    "size": 998.2782708715322,
+    "diff": -1.721729128467814,
+    "percent": -0.1724698592271956,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 1000
+      }
+    ]
+  },
+  {
+    "owner": "0xb10b74c5cf03034b84b712aaf6dfee5d231c0fa293615d902b41e7ab5c3a88",
+    "sum": 60.797414456956766,
+    "size": 60.69502522743735,
+    "diff": -0.10238922951941731,
+    "percent": -0.16869459916318147,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 60.797414456956766
+      }
+    ]
+  },
+  {
+    "owner": "0x113686f6c9ed00bb4d93ef4cf26ed3c64d3358bde2162a7af250d5567a4a04d",
+    "sum": 2520,
+    "size": 2516.4761554215193,
+    "diff": -3.523844578480748,
+    "percent": -0.14003091469350684,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 2520
+      }
+    ]
+  },
+  {
+    "owner": "0x4481f7b6f4510a66a8fb0fb86bae460bcbe11e0e6ff8ca3b800afb349e17abd",
+    "sum": 19003.965451255695,
+    "size": 18978.155273734043,
+    "diff": -25.810177521652804,
+    "percent": -0.13599940115030226,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 442.3101856951823
+      },
+      {
+        "type": "deposit",
+        "amount": 18561.655265560516
+      }
+    ]
+  },
+  {
+    "owner": "0x6e29d45bd9a3efaf0dc85d7fa08153aa6b827877acd3b47fec65e466d697529",
+    "sum": 500,
+    "size": 499.34219888792035,
+    "diff": -0.6578011120796532,
+    "percent": -0.13173353134276153,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 500
+      }
+    ]
+  },
+  {
+    "owner": "0x5e1fbc78ed8cf70f2beb53b4eed1ecb40de3838cf6e741a1c52cb57ad0c433a",
+    "sum": 7931.082746398618,
+    "size": 7922.938952120581,
+    "diff": -8.143794278036694,
+    "percent": -0.10278754294650977,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 2411.2831982966445
+      },
+      {
+        "type": "deposit",
+        "amount": 1786.0089968868836
+      },
+      {
+        "type": "deposit",
+        "amount": 869.7084199999999
+      },
+      {
+        "type": "deposit",
+        "amount": 1000
+      },
+      {
+        "type": "deposit",
+        "amount": 1000
+      },
+      {
+        "type": "deposit",
+        "amount": 1211.8548855
+      },
+      {
+        "type": "deposit",
+        "amount": 3000
+      },
+      {
+        "type": "deposit",
+        "amount": 3624.9999999999995
+      },
+      {
+        "type": "withdraw",
+        "amount": 7963.437999613525
+      },
+      {
+        "type": "withdraw",
+        "amount": 9.334754671385399
+      },
+      {
+        "type": "deposit",
+        "amount": 1000
+      }
+    ]
+  },
+  {
+    "owner": "0x19b7b9deb388b019dbaa639fe02da85cc0fe8f14daff846fb27034b3ebe836b",
+    "sum": 155.49528794648054,
+    "size": 155.34522845432446,
+    "diff": -0.15005949215608894,
+    "percent": -0.09659742603565731,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 115
+      },
+      {
+        "type": "deposit",
+        "amount": 50
+      },
+      {
+        "type": "deposit",
+        "amount": 50
+      },
+      {
+        "type": "withdraw",
+        "amount": 214.50471205351946
+      },
+      {
+        "type": "deposit",
+        "amount": 155
+      }
+    ]
+  },
+  {
+    "owner": "0x74e3b59a1973012c0c3ec84cbb32c694a75f647105aad1589f158199786ea0f",
+    "sum": 100,
+    "size": 99.99833529048328,
+    "diff": -0.0016647095167172665,
+    "percent": -0.0016647372297563586,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 100
+      }
+    ]
+  },
+  {
+    "owner": "0x6bcfc16a27d3169fd0ee0412285ea2d3e249b56e129617cc63cec0938838dde",
+    "sum": 1.9672,
+    "size": 1.987789978100876,
+    "diff": 0.02058997810087604,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 1.9672
+      }
+    ]
+  },
+  {
+    "owner": "0x2e48df8e04fc000d43ab4ffc8f4a908b50a6aa550758d76267718d7cdccbca1",
+    "sum": 324.8393280202139,
+    "size": 0,
+    "diff": -324.8393280202139,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 11100.000000000002
+      },
+      {
+        "type": "withdraw",
+        "amount": 10775.467568354323
+      },
+      {
+        "type": "deposit",
+        "amount": 10776
+      },
+      {
+        "type": "withdraw",
+        "amount": 10767.742177177219
+      },
+      {
+        "type": "withdraw",
+        "amount": 7.950926448243165
+      }
+    ]
+  },
+  {
+    "owner": "0x11b6e878cc575025b488b2e7af5f58f9df99b9f9aa03f22f932ae0b69a955f1",
+    "sum": -0.4055654590810153,
+    "size": 0.5529687808424744,
+    "diff": 0.9585342399234897,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 620.0071285083849
+      },
+      {
+        "type": "withdraw",
+        "amount": 620.412693967466
+      }
+    ]
+  },
+  {
+    "owner": "0x75ef1ec82283d2d9419bc6204e7ce851f5abf592160b54d8003969a211f9108",
+    "sum": 203.01302876289554,
+    "size": 3.2835954166676187,
+    "diff": -199.72943334622792,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 5099.637071691
+      },
+      {
+        "type": "deposit",
+        "amount": 97.33173215822859
+      },
+      {
+        "type": "withdraw",
+        "amount": 5135.805788338898
+      },
+      {
+        "type": "deposit",
+        "amount": 100.1326626186585
+      },
+      {
+        "type": "deposit",
+        "amount": 4000
+      },
+      {
+        "type": "withdraw",
+        "amount": 3958.2826493660928
+      }
+    ]
+  },
+  {
+    "owner": "0x2cf3e183c81d9623a49afbd61eccec964a6ec652006367b3dbb992d4dd79906",
+    "sum": 85.33899505845484,
+    "size": 2.3295597215919055,
+    "diff": -83.00943533686294,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 2880.5693605978195
+      },
+      {
+        "type": "withdraw",
+        "amount": 2795.230365539365
+      }
+    ]
+  },
+  {
+    "owner": "0x64fb7f85fd9dee10c313696b0aef1f4afc888ce8422edbc2f1695ec5ed152e9",
+    "sum": 236.70810836633467,
+    "size": 1.5346594717272866,
+    "diff": -235.1734488946074,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 1900
+      },
+      {
+        "type": "deposit",
+        "amount": 1000
+      },
+      {
+        "type": "deposit",
+        "amount": 3000
+      },
+      {
+        "type": "deposit",
+        "amount": 500
+      },
+      {
+        "type": "withdraw",
+        "amount": 1919.3486881018164
+      },
+      {
+        "type": "withdraw",
+        "amount": 2303.2824768238193
+      },
+      {
+        "type": "withdraw",
+        "amount": 1940.6607267080296
+      }
+    ]
+  },
+  {
+    "owner": "0x30bc1cd112a8efb45a8824a17e6d802e50bf3f516766c606d0ee0463fc8554f",
+    "sum": 12.795728589676337,
+    "size": 1.7307330901037603,
+    "diff": -11.064995499572577,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 360
+      },
+      {
+        "type": "deposit",
+        "amount": 260
+      },
+      {
+        "type": "withdraw",
+        "amount": 614.8065327077989
+      },
+      {
+        "type": "deposit",
+        "amount": 4400
+      },
+      {
+        "type": "withdraw",
+        "amount": 4392.397738702524
+      }
+    ]
+  },
+  {
+    "owner": "0x7f1dacfeb345925aaa56d864cb19908009e606319cf49e9e769b514eb5129cd",
+    "sum": 0.8135103259945848,
+    "size": 0.30836746530028536,
+    "diff": -0.5051428606942995,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 16
+      },
+      {
+        "type": "deposit",
+        "amount": 1000
+      },
+      {
+        "type": "deposit",
+        "amount": 16
+      },
+      {
+        "type": "deposit",
+        "amount": 17
+      },
+      {
+        "type": "withdraw",
+        "amount": 496.616718344484
+      },
+      {
+        "type": "withdraw",
+        "amount": 551.5697713295214
+      }
+    ]
+  },
+  {
+    "owner": "0x4f2bc157736d58a285013b6c0d8a44189c0c51658a26b805b4b0b80991e3801",
+    "sum": 25.49982629450989,
+    "size": 5.976891626665708,
+    "diff": -19.522934667844183,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 2452.7976041780935
+      },
+      {
+        "type": "deposit",
+        "amount": 1104.524086875518
+      },
+      {
+        "type": "deposit",
+        "amount": 829.5
+      },
+      {
+        "type": "deposit",
+        "amount": 58.41481753312171
+      },
+      {
+        "type": "withdraw",
+        "amount": 98.67706104719144
+      },
+      {
+        "type": "withdraw",
+        "amount": 4321.059621245032
+      }
+    ]
+  },
+  {
+    "owner": "0x11fa229ed4aac827c7baee1cd120ec4b3e162a84042d6a6b037b45edc58ae6b",
+    "sum": 83.37643964166307,
+    "size": 0.272176756321388,
+    "diff": -83.10426288534168,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 3088.229967993515
+      },
+      {
+        "type": "withdraw",
+        "amount": 2998.099491691926
+      },
+      {
+        "type": "withdraw",
+        "amount": 6.754036659925749
+      }
+    ]
+  },
+  {
+    "owner": "0x5063120f5df6ede7bffc6e0730bbea776c1bad0e3071685a83f103eba1fcd77",
+    "sum": 75.33717285860689,
+    "size": 0.256758030239067,
+    "diff": -75.08041482836782,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 3208.3594585619426
+      },
+      {
+        "type": "withdraw",
+        "amount": 3126.0047803300195
+      },
+      {
+        "type": "withdraw",
+        "amount": 7.017505373316048
+      }
+    ]
+  },
+  {
+    "owner": "0x544ce7422993c6ba8e6031abea374c5e3bf1e01a00eca09161f37d190cbb6e5",
+    "sum": 82.09115674259618,
+    "size": 0.26562206094849417,
+    "diff": -81.8255346816477,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 3156.7178281106635
+      },
+      {
+        "type": "withdraw",
+        "amount": 3067.7227807256922
+      },
+      {
+        "type": "withdraw",
+        "amount": 6.903890642374733
+      }
+    ]
+  },
+  {
+    "owner": "0x48e2ed7ffe08d1fc67a90bf9fd80212753b7ce3a8216f466dacca79ca4276c5",
+    "sum": -37.657357866275525,
+    "size": 1.6395684105780026,
+    "diff": 39.296926276853526,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 5000
+      },
+      {
+        "type": "withdraw",
+        "amount": 5026.621983899048
+      },
+      {
+        "type": "withdraw",
+        "amount": 11.035373967227338
+      }
+    ]
+  },
+  {
+    "owner": "0x5183b119dcb6cd539007b00459aaf8cf6a5a85b6b56df50565ad6e3ba4730d1",
+    "sum": 6.529553637010935,
+    "size": 2.5172306823732264,
+    "diff": -4.012322954637709,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 1690
+      },
+      {
+        "type": "deposit",
+        "amount": 10
+      },
+      {
+        "type": "withdraw",
+        "amount": 1693.4704463629892
+      }
+    ]
+  },
+  {
+    "owner": "0x3f6ed9efde99413cd49e6b7b88b0522b539668fabd14b71642b58c1705842c7",
+    "sum": 242.73055660700828,
+    "size": 5.470632468147233,
+    "diff": -237.25992413886104,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 506
+      },
+      {
+        "type": "deposit",
+        "amount": 1608.9028679088467
+      },
+      {
+        "type": "deposit",
+        "amount": 150
+      },
+      {
+        "type": "deposit",
+        "amount": 335.8105908638845
+      },
+      {
+        "type": "deposit",
+        "amount": 3800
+      },
+      {
+        "type": "withdraw",
+        "amount": 6157.982902165722
+      }
+    ]
+  },
+  {
+    "owner": "0x3a9ec5776e1170435b540347f534842ab08ea303e043a46474ee4621000d221",
+    "sum": 4.841319430101834,
+    "size": 0.000035931526714614,
+    "diff": -4.841283498575119,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 700
+      },
+      {
+        "type": "withdraw",
+        "amount": 694.2643051219367
+      },
+      {
+        "type": "withdraw",
+        "amount": 0.4471878016329922
+      },
+      {
+        "type": "withdraw",
+        "amount": 0.4471876463284722
+      }
+    ]
+  },
+  {
+    "owner": "0x2f829cb79c0ad34a16d3dbfcb9e328317eaa74e42d9da8ff152ef171f0a0827",
+    "sum": 5.423891024801532,
+    "size": 5.463241493613127,
+    "diff": 0.03935046881159554,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 5.423891024801532
+      }
+    ]
+  },
+  {
+    "owner": "0x3495dd1e4838aa06666aac236036d86e81a6553e222fc02e70c2cbc0062e8d0",
+    "sum": 0.03175525875837358,
+    "size": 0.00314127054119412,
+    "diff": -0.028613988217179462,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 1
+      },
+      {
+        "type": "withdraw",
+        "amount": 0.9682447412416264
+      }
+    ]
+  },
+  {
+    "owner": "0x1dd39a78344e6b296c79b8fd06b479f95740070e6b0a2f1d22d00f2e54a72ba",
+    "sum": -20.785893897014546,
+    "size": 0.003146272880676898,
+    "diff": 20.789040169895223,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 6000
+      },
+      {
+        "type": "withdraw",
+        "amount": 6007.003507684702
+      },
+      {
+        "type": "withdraw",
+        "amount": 13.782386212312382
+      }
+    ]
+  },
+  {
+    "owner": "0x79ed472a3bf24fc3d6c740791191f30f8157a0d1dfcbb3d292fdde19f709039",
+    "sum": 89.47887041284322,
+    "size": 1.5717288963816163,
+    "diff": -87.9071415164616,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 1871
+      },
+      {
+        "type": "deposit",
+        "amount": 890
+      },
+      {
+        "type": "withdraw",
+        "amount": 2671.521129587157
+      }
+    ]
+  },
+  {
+    "owner": "0x3faa3a949211db53991e8d51de063d36eea2ce5d1f199dcf97178f85380f834",
+    "sum": 322.0111652850265,
+    "size": 4.896329237731532,
+    "diff": -317.11483604729494,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 30560
+      },
+      {
+        "type": "withdraw",
+        "amount": 30237.988834714975
+      }
+    ]
+  },
+  {
+    "owner": "0x64c18c6cf64378194be9ae880cc6589cc97c5d2ca4296725a312426117fc0e5",
+    "sum": 11.490450144472382,
+    "size": 0.050295274186239,
+    "diff": -11.440154870286143,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 100
+      },
+      {
+        "type": "withdraw",
+        "amount": 99.16176741843505
+      },
+      {
+        "type": "deposit",
+        "amount": 1000
+      },
+      {
+        "type": "withdraw",
+        "amount": 989.3477824370926
+      }
+    ]
+  },
+  {
+    "owner": "0x38517c12ccc681a665aaf39dcc8d5655cd21217fce1bf73e18eb0ccc451b1e6",
+    "sum": 0.9738034256004104,
+    "size": 0.000064476640732208,
+    "diff": -0.9737389489596783,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 202
+      },
+      {
+        "type": "withdraw",
+        "amount": 200.79821917386548
+      },
+      {
+        "type": "withdraw",
+        "amount": 0.22797740053410384
+      }
+    ]
+  },
+  {
+    "owner": "0x64605a16d36e399bdcb3d8939f24f860d2a9217ca172325a073c10902ebd9e0",
+    "sum": 1,
+    "size": 1.0052914799430182,
+    "diff": 0.005291479943018151,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "owner": "0x51d718e226ab5d22f25baeb820bc596e28c20b5544168e0c5bd2cbf385f8d48",
+    "sum": 5.740028618649402,
+    "size": 5.756051742682069,
+    "diff": 0.01602312403266737,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 2
+      },
+      {
+        "type": "deposit",
+        "amount": 3.740028618649401
+      }
+    ]
+  },
+  {
+    "owner": "0x6b600a2d9cd60d59f320a5cdc60d73e2c4eca6a5c512db945edef40497268e1",
+    "sum": 5,
+    "size": 5.018137846427028,
+    "diff": 0.018137846427028315,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 5
+      }
+    ]
+  },
+  {
+    "owner": "0x1ae9c83076d5cc2990c121378a42a12682bdaaf0d042988113256213d578bb8",
+    "sum": 1.114318457565657,
+    "size": 0,
+    "diff": -1.114318457565657,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 30
+      },
+      {
+        "type": "withdraw",
+        "amount": 28.885681542434344
+      }
+    ]
+  },
+  {
+    "owner": "0x2074a664712177854e37b38f59843d254321d5f3557a2cdd1c5f6133dec46d7",
+    "sum": 0.02409510806138259,
+    "size": 0.00174270450569894,
+    "diff": -0.02235240355568365,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 3
+      },
+      {
+        "type": "withdraw",
+        "amount": 2.9759048919386175
+      }
+    ]
+  },
+  {
+    "owner": "0xa695db0214dda0b99bf2d007b2f534fc8d15cabfe67551698e1504737c8b02",
+    "sum": 8.86734853118618,
+    "size": 0.7040509331610696,
+    "diff": -8.16329759802511,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 1000
+      },
+      {
+        "type": "withdraw",
+        "amount": 991.1326514688137
+      }
+    ]
+  },
+  {
+    "owner": "0x7e11e20fa4ec6d7ba422955f47ebe05c129d88b9a5dbb686caa5332f943c9b8",
+    "sum": 2.865235463464652,
+    "size": 0.04345261185855474,
+    "diff": -2.8217828516060974,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 75
+      },
+      {
+        "type": "withdraw",
+        "amount": 72.13476453653536
+      }
+    ]
+  },
+  {
+    "owner": "0x3b5d43847dcc4384c5fbcd2e1994564bb35c054138e9572d36d2b5e72462a38",
+    "sum": 40.06919055226148,
+    "size": 0.6992306847240787,
+    "diff": -39.3699598675374,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 1000
+      },
+      {
+        "type": "withdraw",
+        "amount": 959.9308094477385
+      }
+    ]
+  },
+  {
+    "owner": "0x1dc18294ec8d0b13dc38f0ee0c429cfb153f327de8db25549dbadd3a6677786",
+    "sum": 40.88501785672698,
+    "size": 0,
+    "diff": -40.88501785672698,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 1000
+      },
+      {
+        "type": "withdraw",
+        "amount": 959.1149821432731
+      }
+    ]
+  },
+  {
+    "owner": "0x4ee4b1386ba891c82364ed5d52305cd4a0964b3a929825c0bb0bbd6aad5474c",
+    "sum": 0.1,
+    "size": 0.10117777267547445,
+    "diff": 0.0011777726754744477,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 0.1
+      }
+    ]
+  },
+  {
+    "owner": "0xb1ddd66dfd43f359706730088685770a2dc23ba097d56837d06efe6004247e",
+    "sum": 3930,
+    "size": 3930.2934114181617,
+    "diff": 0.2934114181616678,
+    "percent": 0.007465382032528626,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 3930
+      }
+    ]
+  },
+  {
+    "owner": "0x571d4b6f5a34d7a43517d2eca4166804f753a643ec28bec0f51143bef50a9a6",
+    "sum": 118464.11553900124,
+    "size": 118509.33623935338,
+    "diff": 45.22070035213255,
+    "percent": 0.03815792222546946,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 20999.999999999996
+      },
+      {
+        "type": "deposit",
+        "amount": 1000
+      },
+      {
+        "type": "deposit",
+        "amount": 403.1283145052259
+      },
+      {
+        "type": "deposit",
+        "amount": 440
+      },
+      {
+        "type": "deposit",
+        "amount": 5000.18792120475
+      },
+      {
+        "type": "deposit",
+        "amount": 100.79930329127782
+      },
+      {
+        "type": "deposit",
+        "amount": 70000
+      },
+      {
+        "type": "deposit",
+        "amount": 20519.999999999996
+      }
+    ]
+  },
+  {
+    "owner": "0x7ad60dd5544e0585f15f14c8578823749386387f7100b858202372270dda2a6",
+    "sum": 521,
+    "size": 521.9365147907686,
+    "diff": 0.9365147907685696,
+    "percent": 0.17943078597288697,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 21
+      },
+      {
+        "type": "deposit",
+        "amount": 500
+      }
+    ]
+  },
+  {
+    "owner": "0xc5b1c44647224481be75e17dce2539d56017794e8ffea9b278fd11c99cd282",
+    "sum": 380,
+    "size": 380.7545137073457,
+    "diff": 0.7545137073457227,
+    "percent": 0.19816277422403836,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 380
+      }
+    ]
+  },
+  {
+    "owner": "0x22fd5b3344f6c55f49a8f26afee1c4c9722fb484f6511d00c63c3e43cd981ae",
+    "sum": 248.5068923520051,
+    "size": 249.04466456847902,
+    "diff": 0.5377722164739112,
+    "percent": 0.21593404436337227,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 248.5068923520051
+      }
+    ]
+  },
+  {
+    "owner": "0x411e8f0da11019e947dfa017096f28cee04497e10f3543cf475b2b250ee3884",
+    "sum": 700,
+    "size": 701.8360618298707,
+    "diff": 1.8360618298706868,
+    "percent": 0.26160836265432014,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 700
+      }
+    ]
+  },
+  {
+    "owner": "0x27ee383790ec41e778bb317c05248a4ba8ea575736ffdc12f49951006f57db2",
+    "sum": 2325.8440409799123,
+    "size": 2332.009031672384,
+    "diff": 6.164990692471747,
+    "percent": 0.26436392864441727,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 2325.8440409799123
+      }
+    ]
+  },
+  {
+    "owner": "0x5f7173d900618518b08de724c53ac05a089dff4c80e868c7c0658658e9a8e91",
+    "sum": 223.01987295263916,
+    "size": 223.68007324049228,
+    "diff": 0.6602002878531152,
+    "percent": 0.2951538231764137,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 223.01987295263916
+      }
+    ]
+  },
+  {
+    "owner": "0x299713aa82dee87e89f6f9025eae26130a303361da97e82c73d5858add64584",
+    "sum": 360,
+    "size": 361.14541959863266,
+    "diff": 1.1454195986326567,
+    "percent": 0.31716298656248926,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 100
+      },
+      {
+        "type": "deposit",
+        "amount": 260
+      }
+    ]
+  },
+  {
+    "owner": "0x76d03040d437ad18d56eb9b4915664fba636124045057b3fca67b604efb54f9",
+    "sum": 617.9,
+    "size": 619.9056620553256,
+    "diff": 2.0056620553256153,
+    "percent": 0.3235431095556945,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 617.9
+      }
+    ]
+  },
+  {
+    "owner": "0x463597970ec65ea31a7ae79819102879d12cfcb5f923311a67e9db75618da36",
+    "sum": 40.407474419395975,
+    "size": 40.54482836599598,
+    "diff": 0.13735394660000821,
+    "percent": 0.33877057108275693,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 17.61385302592766
+      },
+      {
+        "type": "deposit",
+        "amount": 22.793621393468314
+      }
+    ]
+  },
+  {
+    "owner": "0x3d3678e4d0c5ce2a6980b2f1f55a658aa7fa9b074d86f4857c6e1f91a91239",
+    "sum": 134.97016397407484,
+    "size": 135.43248095481746,
+    "diff": 0.46231698074262795,
+    "percent": 0.3413634436017344,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 134.97016397407484
+      }
+    ]
+  },
+  {
+    "owner": "0x4eb20526acac5faff57854c3ece106908c87cf8ca82340b047475b901c066b3",
+    "sum": 126,
+    "size": 126.43325064877266,
+    "diff": 0.4332506487726562,
+    "percent": 0.34267144643477687,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 126
+      }
+    ]
+  },
+  {
+    "owner": "0x17d37679b19f0ed615d2a9adee1fa5f0b4677ceef4c8698c83c0d56424236dc",
+    "sum": 251,
+    "size": 251.86398692390188,
+    "diff": 0.8639869239018765,
+    "percent": 0.3430371028641428,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 251
+      }
+    ]
+  },
+  {
+    "owner": "0x2f57b48b8f886ffec150e46f6697828d02586fd92163e8ba1ae09279ff2b6a7",
+    "sum": 20,
+    "size": 20.086609571121627,
+    "diff": 0.08660957112162748,
+    "percent": 0.43118063710535515,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 20
+      }
+    ]
+  },
+  {
+    "owner": "0x5aed32c092b4d597e524160d749c4ac4bfe38960693b79f3c407e9fdf6ec7f4",
+    "sum": 9991.86759558555,
+    "size": 10036.257931434522,
+    "diff": 44.39033584897152,
+    "percent": 0.44229967137389653,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 15988.885335658935
+      },
+      {
+        "type": "withdraw",
+        "amount": 3020.0828145556957
+      },
+      {
+        "type": "withdraw",
+        "amount": 2976.93492551769
+      }
+    ]
+  },
+  {
+    "owner": "0x720eba8edea43289347d8cc5518a1944b3eb5c9bde8f255c4946f9ff21d782d",
+    "sum": 500,
+    "size": 502.2542798982319,
+    "diff": 2.254279898231914,
+    "percent": 0.4488323919686025,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 500
+      }
+    ]
+  },
+  {
+    "owner": "0x390094f7f1c3effef32a29a83f4c92ebd9e7f10bd7e4b2ca5d23579aa8a5c77",
+    "sum": 1382.7101358030716,
+    "size": 1389.247141432646,
+    "diff": 6.537005629574423,
+    "percent": 0.47054303259772823,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 554
+      },
+      {
+        "type": "deposit",
+        "amount": 349.05274716727723
+      },
+      {
+        "type": "deposit",
+        "amount": 246.75024325575856
+      },
+      {
+        "type": "deposit",
+        "amount": 232.90714538003584
+      }
+    ]
+  },
+  {
+    "owner": "0x718505b87b5a448205ae22ac84a21b9e568b532ed95285c4c03973f8b1a73e8",
+    "sum": 1500,
+    "size": 1507.149061552272,
+    "diff": 7.149061552272087,
+    "percent": 0.47434336354952095,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 1500
+      }
+    ]
+  },
+  {
+    "owner": "0x4b3db608163d81a9b2fcccba6e538859a74ce4266727ea160ffb1c8c83e66f1",
+    "sum": 70400,
+    "size": 70736.6998003449,
+    "diff": 336.6998003448971,
+    "percent": 0.4759902586567311,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 400
+      },
+      {
+        "type": "deposit",
+        "amount": 20000
+      },
+      {
+        "type": "deposit",
+        "amount": 49999.99999999999
+      }
+    ]
+  },
+  {
+    "owner": "0x5970da1011e2f8dc15bc12fc1b0eb8e382300a334de06ad17d1404384b168e4",
+    "sum": 200.87821714436737,
+    "size": 201.9628594761512,
+    "diff": 1.08464233178384,
+    "percent": 0.5370503936204766,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 200.87821714436737
+      }
+    ]
+  },
+  {
+    "owner": "0x31c807b795cb29a145e297db078be265946294f60f88a71a1d260a2478b6f5c",
+    "sum": 1144,
+    "size": 1150.6101168630976,
+    "diff": 6.6101168630975735,
+    "percent": 0.5744879839157595,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 1055
+      },
+      {
+        "type": "deposit",
+        "amount": 22
+      },
+      {
+        "type": "deposit",
+        "amount": 24
+      },
+      {
+        "type": "deposit",
+        "amount": 43
+      }
+    ]
+  },
+  {
+    "owner": "0x7fb2eaa6d50e56d6afdbc23b1313285cc159223168ea3e48e20344d38c482c8",
+    "sum": 300,
+    "size": 301.7378860081656,
+    "diff": 1.7378860081656171,
+    "percent": 0.5759588333957462,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 300
+      }
+    ]
+  },
+  {
+    "owner": "0x75ced90c16964bddf85428a8df1b5e16fc638bea918759281b3d96f7b37998",
+    "sum": 13001,
+    "size": 13077.287483026485,
+    "diff": 76.28748302648455,
+    "percent": 0.5833586141277464,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 7000
+      },
+      {
+        "type": "deposit",
+        "amount": 4000
+      },
+      {
+        "type": "deposit",
+        "amount": 2000
+      },
+      {
+        "type": "deposit",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "owner": "0x1cb1270ff2d6d5ed9965d101b61c7e486d06bde1c2aabb8a2b4f3806ea30ac",
+    "sum": 6560,
+    "size": 6599.590419842857,
+    "diff": 39.590419842857045,
+    "percent": 0.5998920739660043,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 4060
+      },
+      {
+        "type": "deposit",
+        "amount": 2500
+      }
+    ]
+  },
+  {
+    "owner": "0x4cced5156ab726bf0e0ca2afeb1f521de0362e748b8bdf07857b088dbc7b457",
+    "sum": 1621.440453706808,
+    "size": 1631.3057225450082,
+    "diff": 9.865268838200109,
+    "percent": 0.6047467805611111,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 1621.440453706808
+      }
+    ]
+  },
+  {
+    "owner": "0x55741fd3ec832f7b9500e24a885b8729f213357be4a8e209c4bca1f3b909ae",
+    "sum": 301.65038707721425,
+    "size": 303.52859122435177,
+    "diff": 1.8782041471375237,
+    "percent": 0.618789860804005,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 100
+      },
+      {
+        "type": "deposit",
+        "amount": 100
+      },
+      {
+        "type": "withdraw",
+        "amount": 198.34961292278575
+      },
+      {
+        "type": "deposit",
+        "amount": 300
+      }
+    ]
+  },
+  {
+    "owner": "0x2b27457428b94b38ccad5339ebc17a211b7c482c008ac8ad22e01b30e923628",
+    "sum": 145.35606249684975,
+    "size": 146.26724636870824,
+    "diff": 0.9111838718584977,
+    "percent": 0.6229582455949155,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 145.35606249684975
+      }
+    ]
+  },
+  {
+    "owner": "0x7540f121b6e92018f038d38672bd15a981c8d435d2f7b610ef79a53b048cef5",
+    "sum": 17293,
+    "size": 17401.64493064673,
+    "diff": 108.64493064672934,
+    "percent": 0.6243371306547603,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 5633
+      },
+      {
+        "type": "deposit",
+        "amount": 9090
+      },
+      {
+        "type": "deposit",
+        "amount": 2570
+      }
+    ]
+  },
+  {
+    "owner": "0x4e6bcc0024323ad1588a2425779b0bc70fc1919e1b5f6505e572e291ac3b5f5",
+    "sum": 420,
+    "size": 422.6446392180975,
+    "diff": 2.6446392180974954,
+    "percent": 0.6257358955244623,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 420
+      }
+    ]
+  },
+  {
+    "owner": "0x1fb5483b9f8c6eda957b987bacb8a6ad3f1564c9b35d76304e94743127efce2",
+    "sum": 430,
+    "size": 432.72113848508343,
+    "diff": 2.7211384850834293,
+    "percent": 0.628843438203616,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 10
+      },
+      {
+        "type": "deposit",
+        "amount": 210
+      },
+      {
+        "type": "deposit",
+        "amount": 100
+      },
+      {
+        "type": "deposit",
+        "amount": 110
+      }
+    ]
+  },
+  {
+    "owner": "0x5c38a6664b83d9b651be1926476019c286bcbc0626b6b1b6eff61604f036ca3",
+    "sum": 288,
+    "size": 289.8576923935934,
+    "diff": 1.8576923935934246,
+    "percent": 0.6408980828671236,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 284
+      },
+      {
+        "type": "deposit",
+        "amount": 4
+      }
+    ]
+  },
+  {
+    "owner": "0x8c1060e65eb111a6a00fc5606e4189ebebbc37d6b6eba51326bb400573feef",
+    "sum": 3000,
+    "size": 3019.6304916207937,
+    "diff": 19.63049162079369,
+    "percent": 0.6500958205073952,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 3000
+      }
+    ]
+  },
+  {
+    "owner": "0x479c10a66423011bed776683b975fd2a96a90c1ba985cffe8acc6db2de4bbe2",
+    "sum": 1640.9527010896165,
+    "size": 1651.7453270604651,
+    "diff": 10.792625970848576,
+    "percent": 0.6534073863587502,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 1640.9527010896165
+      }
+    ]
+  },
+  {
+    "owner": "0x1a1865109fb8c0e11309b59977185b40f45d6947a68c6d61cd52e0d3f70bdf4",
+    "sum": 50,
+    "size": 50.32954261687841,
+    "diff": 0.32954261687841324,
+    "percent": 0.6547697430651764,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 50
+      }
+    ]
+  },
+  {
+    "owner": "0x50393e851e40de930abcd9569d9df55883b9f2836d4bae724f126d2258cd292",
+    "sum": 7000,
+    "size": 7046.483132447271,
+    "diff": 46.48313244727069,
+    "percent": 0.6596642832114028,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 7000
+      }
+    ]
+  },
+  {
+    "owner": "0x3c75143521a005ebd8828730dddb2da764e9c7fb6605dcae1a661ee4ab45058",
+    "sum": 672.6655453201242,
+    "size": 678.2544722309912,
+    "diff": 5.588926910866917,
+    "percent": 0.8240162269012673,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 626.046448847363
+      },
+      {
+        "type": "deposit",
+        "amount": 46.6190964727612
+      }
+    ]
+  },
+  {
+    "owner": "0x6fd089667ad15016fa88eb492049d1ad723f6d37c2b39e9669745318963830d",
+    "sum": 6138.433100000001,
+    "size": 6193.169029413729,
+    "diff": 54.73592941372772,
+    "percent": 0.8838113275088384,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 2000
+      },
+      {
+        "type": "deposit",
+        "amount": 87.2042
+      },
+      {
+        "type": "deposit",
+        "amount": 3778
+      },
+      {
+        "type": "deposit",
+        "amount": 94
+      },
+      {
+        "type": "deposit",
+        "amount": 93.087
+      },
+      {
+        "type": "deposit",
+        "amount": 86.14190000000082
+      }
+    ]
+  },
+  {
+    "owner": "0x2140e267cf7e44f2f8556e75870f12632f85c3aad571a1d649828e476d6a811",
+    "sum": 1081,
+    "size": 1090.6877163214654,
+    "diff": 9.68771632146536,
+    "percent": 0.8882209065431554,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 1081
+      }
+    ]
+  },
+  {
+    "owner": "0x367000a411f9b7f53fec24afbb986ac98ffece1dc5085877f78436dc04cb2a8",
+    "sum": 5238.774040098324,
+    "size": 5286.756829530186,
+    "diff": 47.98278943186233,
+    "percent": 0.907603488850581,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 5238.774040098324
+      }
+    ]
+  },
+  {
+    "owner": "0x3325ad4dcc88e39be83a0070dbbb18efc6d087b0a3bd0ea22c57f4ba0b5c5ab",
+    "sum": 700,
+    "size": 706.6869898887861,
+    "diff": 6.686989888786115,
+    "percent": 0.9462449407535395,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 700
+      }
+    ]
+  },
+  {
+    "owner": "0x746d952482f38cfbc7b0b15c84838ed037d58cee9e98741ef4efd4d73b6e8cc",
+    "sum": 20,
+    "size": 20.193423859443186,
+    "diff": 0.19342385944318607,
+    "percent": 0.9578556899984744,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 20
+      }
+    ]
+  },
+  {
+    "owner": "0x14dfc4e19d57c72220bb04f58e7a47588f878a840d7532627473b9c85633f36",
+    "sum": 7700,
+    "size": 7774.708335457665,
+    "diff": 74.70833545766527,
+    "percent": 0.9609149595612129,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 7700
+      }
+    ]
+  },
+  {
+    "owner": "0x5095078578a59f8a9c17df97188db1b59574c6d4836dd3e705fe8537624228a",
+    "sum": 20,
+    "size": 20.234937877705413,
+    "diff": 0.23493787770541275,
+    "percent": 1.1610506497490372,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 20
+      }
+    ]
+  },
+  {
+    "owner": "0x780fd42f0237b143d8991946a6da6d3b06b9bfb6569d4cb342a69f4c6aa1bd1",
+    "sum": 3508.5504965874306,
+    "size": 3638.9362808929986,
+    "diff": 130.385784305568,
+    "percent": 3.583074124990482,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 1690
+      },
+      {
+        "type": "withdraw",
+        "amount": 1681.449503412569
+      },
+      {
+        "type": "deposit",
+        "amount": 3500
+      }
+    ]
+  },
+  {
+    "owner": "0x65c384bb53b6325915e311b7630bbca22f34e0642d89a0baeffbb7dfaaca32c",
+    "sum": 21.84375386886155,
+    "size": 22.6559905526836,
+    "diff": 0.81223668382205,
+    "percent": 3.5850857279150863,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 2.7381141866968925
+      },
+      {
+        "type": "withdraw",
+        "amount": 2.7307866436033295
+      },
+      {
+        "type": "deposit",
+        "amount": 21.836426325767988
+      }
+    ]
+  },
+  {
+    "owner": "0x6419f7dea356b74bc1443bd1600ab3831b7808d1ef897789facfad11a172da7",
+    "sum": 195,
+    "size": 202.26353536519534,
+    "diff": 7.263535365195338,
+    "percent": 3.5911244961088604,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 195
+      }
+    ]
+  },
+  {
+    "owner": "0x26a4aa9c14c1a532438c54786a8c62b95f9bfc844c3d21c77afa227ecb32eb",
+    "sum": 310,
+    "size": 321.66217274065207,
+    "diff": 11.662172740652068,
+    "percent": 3.6255965820559752,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 310
+      }
+    ]
+  },
+  {
+    "owner": "0x424ec6c0d9c74141ee4f59f8a5f1cb73a345814b8e9e6953408d2fdfcbace8c",
+    "sum": 15503,
+    "size": 16090.043240775394,
+    "diff": 587.0432407753942,
+    "percent": 3.6484876515913207,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 15495
+      },
+      {
+        "type": "deposit",
+        "amount": 8
+      }
+    ]
+  },
+  {
+    "owner": "0x1a70fc475ec39e03b613a1e34ba01883f4440b831c49cb7d263ecc77874b9b6",
+    "sum": 7752.063824427171,
+    "size": 8050.1602864450815,
+    "diff": 298.0964620179102,
+    "percent": 3.7029879084500616,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 7679.571284754629
+      },
+      {
+        "type": "deposit",
+        "amount": 72.49253967254253
+      }
+    ]
+  },
+  {
+    "owner": "0x392befcfd649f1f60100d49b38d634b70ae04e2bbdcc2f56ccce8ecb90e8e25",
+    "sum": 150.36210250950745,
+    "size": 156.2635618229846,
+    "diff": 5.901459313477147,
+    "percent": 3.7766061675736804,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 150.36210250950745
+      }
+    ]
+  }
+]

@@ -2,7 +2,8 @@ import { PrismaClient } from "@prisma/client";
 import { writeFileSync, readFileSync} from 'fs';
 import yahooFinance from 'yahoo-finance2';
 import { getClosePriceAtTimestamp } from "./graphql/utils";
-import { Contract, num, RpcProvider } from "starknet";
+import { CairoCustomEnum, Contract, num, RpcProvider } from "starknet";
+import pLimit from 'p-limit';
 
 async function run() {
     const prisma = new PrismaClient();
@@ -647,10 +648,259 @@ function updateWithdrawalAmountsUsingFIFO(transactions: Transaction[]): Transact
         .sort((a, b) => a.timestamp - b.timestamp);
 }
 
+async function assertTotalShares() {
+    const addr = '0x9140757f8fb5748379be582be39d6daf704cc3a0408882c0d57981a885eed9'
+    const provider = new RpcProvider({
+        nodeUrl: process.env.RPC_URL
+    });
+    const cls = await provider.getClassAt(addr);
+    const contract = new Contract(cls.abi, addr, provider);
+    const limit = pLimit(10);
+
+    const all_shares = await contract.call('get_all_shares', []);
+    console.log(all_shares);
+    
+    const prisma = new PrismaClient();
+    const txs = await prisma.investment_flows.findMany({
+        where: {
+            contract: standariseAddress(addr),
+        },
+        select: {
+            owner: true,
+        }
+    })
+    const uniqueUsers = Array.from(new Set(txs.map((tx) => tx.owner)));
+    console.log(`uniqueUsers: ${uniqueUsers.length}`);
+
+    let sum_shares_supply = BigInt(0);
+    let sum_shares_borrow = BigInt(0);
+    let sharesByUser: any[] = [];
+    const promises = uniqueUsers.map((user, i) => {
+        return limit(async () => {
+            const user = uniqueUsers[i];
+            const MAX = 3;
+            let retry = 0;
+            while (retry < MAX) {
+                try {
+                    const shares: any = await contract.call('describe_position', [num.getDecimalString(user)], {
+                        blockIdentifier: 1149539
+                    })
+                    sum_shares_supply += shares[0].acc1_supply_shares
+                    sum_shares_borrow += shares[0].acc1_borrow_shares
+                    const size = shares[1].estimated_size;
+                    
+                    console.log(`User: ${user}`);
+                    console.log(`shares for ${i}/${uniqueUsers.length}, ${user}:`, shares[0].acc1_supply_shares.toString(), shares[0].acc1_borrow_shares.toString(), size.toString());
+                    console.log(`sum_shares_supply: ${sum_shares_supply.toString()}, sum_shares_borrow: ${sum_shares_borrow.toString()}`);
+                    sharesByUser.push({
+                        user,
+                        supply: shares[0].acc2_supply_shares.toString(),
+                        borrow: shares[0].acc2_borrow_shares.toString()
+                    })
+                    break;
+                } catch (e) {
+                    console.error(`Error fetching shares for ${user}, retrying... ${retry}`);
+                    retry++;
+                    await new Promise((resolve) => setTimeout(resolve, 10000));
+                    if (retry === MAX) {
+                        throw e;
+                    }
+                }
+            }
+        });
+    })
+    const result = await Promise.all(promises);
+    console.log('done');
+
+    // sort descending on borrow
+    sharesByUser.sort((a, b) => Number((BigInt(b.borrow) - BigInt(a.borrow))));
+    console.log(JSON.stringify(sharesByUser, null, 2));
+
+}
+
+async function getPrices() {
+
+    const prisma = new PrismaClient();
+    const results = await prisma.dnmm_user_actions.findMany({
+        orderBy: {
+            block_number: 'asc'
+        },
+        where: {
+            contract: '0x7023a5cadc8a5db80e4f0fde6b330cbd3c17bbbf9cb145cbabd7bd5e6fb7b0b',
+        }
+    });
+
+    console.log(results.length);
+    // for (let result of results) {
+    //     const supply = result.position_acc2_supply_shares;
+    //     const borrow = result.position_acc2_borrow_shares;
+    //     if (supply === '0' || borrow === '0') {
+    //         continue;
+    //     }
+    //     const ratio = BigInt(supply) * 10000n / BigInt(borrow);
+    //     if (ratio <= 10000n) {
+    //         console.log(ratio.toString());
+    //         console.log(result);
+    //     }
+    // }
+
+    // const uniqueOwners = new Set(results.map((result) => result.owner));
+    // console.log(`uniqueOwners: ${uniqueOwners.size}`);
+    // writeFileSync('uniqueOwners.json', JSON.stringify(Array.from(uniqueOwners), null, 2));
+    // return;
+
+    const uniqueOwners = JSON.parse(readFileSync('uniqueOwners.json', {
+        encoding: 'utf-8'
+    }));
+    console.log(`uniqueOwners: ${uniqueOwners.length}`);
+    const provider = new RpcProvider({
+        nodeUrl: process.env.RPC_URL
+    });
+    const xSTRK_DNMM = '0x7023a5cadc8a5db80e4f0fde6b330cbd3c17bbbf9cb145cbabd7bd5e6fb7b0b';
+    const cls = await provider.getClassAt(xSTRK_DNMM);
+    const contract = new Contract(cls.abi, xSTRK_DNMM, provider);
+
+
+    const positions: any[] = [];
+    let loss = 0;
+    let count = 0;
+    for (let owner of uniqueOwners) {
+        console.log(`Fetching position for ${owner}`);
+        try {
+            const result: any = await contract.call('describe_position', [
+                num.getDecimalString(owner)
+            ]);
+            const size = result[1].estimated_size;
+
+            const investment_flows = await prisma.investment_flows.findMany({
+                where: {
+                    owner: owner,
+                    contract: '0x7023a5cadc8a5db80e4f0fde6b330cbd3c17bbbf9cb145cbabd7bd5e6fb7b0b',
+                }
+            });
+            if (investment_flows.length == 0) {
+                throw new Error(`No investment flows for ${owner}`);
+            }
+
+            const sum = investment_flows.reduce((acc, flow) => {
+                if (flow.type === 'deposit') {
+                    return acc + BigInt(flow.amount);
+                } else {
+                    return acc - BigInt(flow.amount);
+                }
+            }, 0n);
+
+            const sumNum = Number(sum) / 10**18;
+            const sizeNum = Number(size) / 10**18;
+            const diff = sizeNum - sumNum;
+            positions.push({
+                owner: owner,
+                sum: sumNum,
+                size: sizeNum,
+                diff: diff,
+                percent: sizeNum < 10 ? 0 : diff * 100 / sizeNum,
+                actions: investment_flows.map((flow) => ({
+                    type: flow.type,
+                    amount: Number(flow.amount) / 10**18,
+                }))
+            });
+            console.log(`sum: ${sumNum}`);
+            console.log(`size: ${sizeNum}`);
+            console.log(`diff: ${diff}`);
+            if (diff < 0) {
+                loss += Number(diff);
+                count += 1;
+            }
+            console.log(`loss: ${loss}`);
+            console.log(`count: ${count}`);
+
+            positions.sort((a, b) => Number(a.percent - Number(b.percent)));
+            writeFileSync('positions.json', JSON.stringify(positions, null, 2));
+        
+        } catch(err) {
+            console.error(`Error fetching position for ${owner}: ${err}`);
+        }
+    }
+
+   
+    // let summary = ISummaryStatsABIDispatcher { contract_address: self.summary_address.read() };
+    //             let (value, decimals) = summary
+    //                 .calculate_twap(
+    //                     DataType::SpotEntry(pragma_key),
+    //                     aggregation_mode,
+    //                     time_window,
+    //                     get_block_timestamp() - start_time_offset
+    //                 );
+
+    // const provider = new RpcProvider({
+    //     nodeUrl: process.env.RPC_URL
+    // });
+    // const pragmaTWAP = '0x049eefafae944d07744d07cc72a5bf14728a6fb463c3eae5bca13552f5d455fd'
+    // const cls = await provider.getClassAt(pragmaTWAP);
+    // const pragmaContract = new Contract(cls.abi, pragmaTWAP, provider);
+
+    // const ekuboCore = '0x00000005dd3D2F4429AF886cD1a3b08289DBcEa99A294197E9eB43b0e0325b4b'
+    // const ekuboCoreCls = await provider.getClassAt(ekuboCore);
+    // const ekuboCoreContract = new Contract(ekuboCoreCls.abi, ekuboCore, provider);
+
+    // const START_BLOCK = 1165330;
+    // const now = await provider.getBlockNumber();
+
+    // const ekuboPriceInfo: any[] = [];
+    // const limit = pLimit(10);
+    
+    // const promises: any[] = [];
+    // for (let ii = START_BLOCK; ii < now; ii += 1) {
+    //     const fn = async (block: number) => {
+    //         console.log(`block: ${block}`);
+    //         const result: any = await ekuboCoreContract.call('get_pool_price', [
+    //             {
+    //                 token0: '0x028d709c875c0ceac3dce7065bec5328186dc89fe254527084d1689910954b0a',
+    //                 token1: '0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d',
+    //                 fee: '34028236692093847977029636859101184',
+    //                 tick_spacing: '200',
+    //                 extension: '0'
+    //             }
+    //         ], {
+    //             blockIdentifier: block
+    //         });
+    //         console.log(result);
+    //         ekuboPriceInfo.push({
+    //             block: block,
+    //             sqrtPrice: result.sqrt_ratio.toString(),
+    //             tick: {mag: result.tick.mag.toString(), sign: result.tick.sign},
+    //         });
+
+    //         if (block % 100 === 0) {
+    //             writeFileSync('ekuboPriceInfo.json', JSON.stringify(ekuboPriceInfo));
+    //         }
+
+    //         // const keyEnum = new CairoCustomEnum({ SpotEntry: 1629317993172502401860 });
+    //         // const aggregationEnum = new CairoCustomEnum({ Median: {} });
+    //         // const blockInfo = await provider.getBlock(i);
+    //         // const result = await pragmaContract.call('calculate_twap', [
+    //         //     keyEnum,
+    //         //     aggregationEnum,
+    //         //     blockInfo.timestamp,
+    //         //     blockInfo.timestamp - 3600
+    //         // ], {
+    //         //     blockIdentifier: i
+    //         // });
+    //         // console.log(result);
+    //     }
+    //     promises.push(limit(fn, ii));
+    // }
+
+    // const result = await Promise.all(promises);
+    // writeFileSync('ekuboPriceInfo.json', JSON.stringify(ekuboPriceInfo));
+}
+
 // run();
-dnmm()
+// dnmm()
 // getInvestmentFlowsGroupedByUser();
 // depositsAndWithdraws();
 // OGFarmerNFTEligibleUsers();
 // impact();
 // impact2();
+// assertTotalShares();
+getPrices();

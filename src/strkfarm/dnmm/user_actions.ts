@@ -2,10 +2,10 @@ import { standariseAddress, toBigInt, toHex, toNumber } from "../../utils.ts";
 import { CONTRACTS_INFO, isTLS } from "../constants.ts";
 
 const CONTRACTS = [
-    "0x04937b58e05a3a2477402d1f74e66686f58a61a5070fcc6f694fb9a0b3bae422",
-    "0x020d5fc4c9df4f943ebb36078e703369c04176ed00accf290e8295b659d2cea6",
-    "0x9d23d9b1fa0db8c9d75a1df924c3820e594fc4ab1475695889286f3f6df250",
-    '0x9140757f8fb5748379be582be39d6daf704cc3a0408882c0d57981a885eed9',
+    // "0x04937b58e05a3a2477402d1f74e66686f58a61a5070fcc6f694fb9a0b3bae422",
+    // "0x020d5fc4c9df4f943ebb36078e703369c04176ed00accf290e8295b659d2cea6",
+    // "0x9d23d9b1fa0db8c9d75a1df924c3820e594fc4ab1475695889286f3f6df250",
+    // '0x9140757f8fb5748379be582be39d6daf704cc3a0408882c0d57981a885eed9',
     '0x7023a5cadc8a5db80e4f0fde6b330cbd3c17bbbf9cb145cbabd7bd5e6fb7b0b'
 ]
 // Initiate a filter builder
