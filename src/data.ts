@@ -649,15 +649,17 @@ function updateWithdrawalAmountsUsingFIFO(transactions: Transaction[]): Transact
 }
 
 async function assertTotalShares() {
-    const addr = '0x9140757f8fb5748379be582be39d6daf704cc3a0408882c0d57981a885eed9'
+    const addr = '0x04937b58e05a3a2477402d1f74e66686f58a61a5070fcc6f694fb9a0b3bae422'
     const provider = new RpcProvider({
-        nodeUrl: process.env.RPC_URL
+        nodeUrl: process.env.MAINNET_RPC_URL
     });
     const cls = await provider.getClassAt(addr);
     const contract = new Contract(cls.abi, addr, provider);
     const limit = pLimit(10);
 
-    const all_shares = await contract.call('get_all_shares', []);
+    const all_shares: any = await contract.call('get_all_shares', [], {
+        blockIdentifier: 1192086
+    });
     console.log(all_shares);
     
     const prisma = new PrismaClient();
@@ -675,6 +677,7 @@ async function assertTotalShares() {
     let sum_shares_supply = BigInt(0);
     let sum_shares_borrow = BigInt(0);
     let sharesByUser: any[] = [];
+    let totalClaimAmount = BigInt(0);
     const promises = uniqueUsers.map((user, i) => {
         return limit(async () => {
             const user = uniqueUsers[i];
@@ -683,20 +686,28 @@ async function assertTotalShares() {
             while (retry < MAX) {
                 try {
                     const shares: any = await contract.call('describe_position', [num.getDecimalString(user)], {
-                        blockIdentifier: 1149539
+                        blockIdentifier: 1192086
                     })
+
+                    let claimAmount: any = await contract.call('nostra_position', [user], {
+                        blockIdentifier: 1192086
+                    });
+                    
                     sum_shares_supply += shares[0].acc1_supply_shares
-                    sum_shares_borrow += shares[0].acc1_borrow_shares
+                    sum_shares_borrow += shares[0].acc2_borrow_shares
                     const size = shares[1].estimated_size;
                     
                     console.log(`User: ${user}`);
-                    console.log(`shares for ${i}/${uniqueUsers.length}, ${user}:`, shares[0].acc1_supply_shares.toString(), shares[0].acc1_borrow_shares.toString(), size.toString());
+                    console.log(`shares for ${i}/${uniqueUsers.length}, ${user}:`, shares[0].acc1_supply_shares.toString(), shares[0].acc2_borrow_shares.toString(), size.toString());
                     console.log(`sum_shares_supply: ${sum_shares_supply.toString()}, sum_shares_borrow: ${sum_shares_borrow.toString()}`);
                     sharesByUser.push({
                         user,
-                        supply: shares[0].acc2_supply_shares.toString(),
-                        borrow: shares[0].acc2_borrow_shares.toString()
+                        supply: shares[0].acc1_supply_shares.toString(),
+                        borrow: shares[0].acc2_borrow_shares.toString(),
+                        size: size.toString()
                     })
+
+                    totalClaimAmount += claimAmount;
                     break;
                 } catch (e) {
                     console.error(`Error fetching shares for ${user}, retrying... ${retry}`);
@@ -715,6 +726,21 @@ async function assertTotalShares() {
     // sort descending on borrow
     sharesByUser.sort((a, b) => Number((BigInt(b.borrow) - BigInt(a.borrow))));
     console.log(JSON.stringify(sharesByUser, null, 2));
+
+    console.log(`totalClaimAmount: ${totalClaimAmount.toString()}`);
+
+    // assert sum is less then total shares and 1000 max diff
+    const diff = all_shares.acc2_borrow_shares - sum_shares_borrow;
+    console.log(`diff: ${diff.toString()}`);
+    if (diff > 1000n || diff < 0n) {
+        throw new Error(`Total shares mismatch: ${diff}`);
+    }
+
+    const diff2 = all_shares.acc1_supply_shares - sum_shares_supply;
+    console.log(`diff2: ${diff2.toString()}`);
+    if (diff2 > 1000n || diff2 < 0n) {
+        throw new Error(`Total shares mismatch: ${diff2}`);
+    }
 
 }
 
@@ -802,6 +828,7 @@ async function getPrices() {
                 actions: investment_flows.map((flow) => ({
                     type: flow.type,
                     amount: Number(flow.amount) / 10**18,
+                    txHash: flow.txHash,
                 }))
             });
             console.log(`sum: ${sumNum}`);
@@ -902,5 +929,5 @@ async function getPrices() {
 // OGFarmerNFTEligibleUsers();
 // impact();
 // impact2();
-// assertTotalShares();
-getPrices();
+assertTotalShares();
+// getPrices();

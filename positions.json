@@ -2,1883 +2,2228 @@
   {
     "owner": "0x1b2f8be5af42429e1d10e0ccb910a5471e7937e6479fe61df58a9fda57787bc",
     "sum": 3906.531284339678,
-    "size": 59.31478891823597,
-    "diff": -3847.2164954214422,
-    "percent": -6486.099951775499,
+    "size": 59.48245090042297,
+    "diff": -3847.0488334392553,
+    "percent": -6467.535844949354,
     "actions": [
       {
         "type": "deposit",
-        "amount": 500
+        "amount": 500,
+        "txHash": "0x63b49a3ad677abdeb239a0235a5e4c4304c9a9b27d6589273417c4984bcc046"
       },
       {
         "type": "deposit",
-        "amount": 1000
+        "amount": 1000,
+        "txHash": "0x286b60ac452d1cafba06ef98fabe3432b835b04e20947be2e74a57b0ca6f75c"
       },
       {
         "type": "deposit",
-        "amount": 1000
+        "amount": 1000,
+        "txHash": "0x447bc6e7c5deb8ce39e37891d842771b05f5baaacc29c040a45102a7c15f990"
       },
       {
         "type": "deposit",
-        "amount": 2000
+        "amount": 2000,
+        "txHash": "0x28a280934b92c6be488597f452de22b6652f74cf61aad1c1e4e9e48f170b1f1"
       },
       {
         "type": "deposit",
-        "amount": 5000
+        "amount": 5000,
+        "txHash": "0x2aeba3ac95da078a9d5359b8f4eb81ba796b0647ff1fa10aafef7f30547a74c"
       },
       {
         "type": "deposit",
-        "amount": 20000
+        "amount": 20000,
+        "txHash": "0x21d5ca368b6b02d6086074e6f9bdf31f2e302e0b1b396b54123eebed3804425"
       },
       {
         "type": "deposit",
-        "amount": 20000
+        "amount": 20000,
+        "txHash": "0x116af6e40da5f6aae64bb8d0307fec3f369326a524d7b7c4496791059fca44c"
       },
       {
         "type": "deposit",
-        "amount": 15000
+        "amount": 15000,
+        "txHash": "0x1d7c94a602443a6c57bd214f6e29bb85e63edf928642f9999be96af169763a"
       },
       {
         "type": "deposit",
-        "amount": 2000
+        "amount": 2000,
+        "txHash": "0x50dd405d41567497217bea9d9dc592c7338fcb4a305eef25ab1626eed1283ca"
       },
       {
         "type": "withdraw",
-        "amount": 9516.813975022593
+        "amount": 9516.813975022593,
+        "txHash": "0x2ff130bfbd52590a2e2948d779a8c37e9099eed298921ed0cb6d5f2d60ef519"
       },
       {
         "type": "withdraw",
-        "amount": 9491.424810349119
+        "amount": 9491.424810349119,
+        "txHash": "0x7fbc222062f7cc77df94f82e574627f9946fec65176acd457dec9f3b221c3f0"
       },
       {
         "type": "withdraw",
-        "amount": 9494.623760865641
+        "amount": 9494.623760865641,
+        "txHash": "0x337716bcbf8396c344bdb3eb1c7b0597a4053efa7b7434ec6409889e154cee1"
       },
       {
         "type": "withdraw",
-        "amount": 9487.93079709929
+        "amount": 9487.93079709929,
+        "txHash": "0x6cb933554a2693e7dafbe9894882e870489e239733e402470fbb93aa8651ccc"
       },
       {
         "type": "withdraw",
-        "amount": 24602.675372323676
+        "amount": 24602.675372323676,
+        "txHash": "0x198a64850ffa4f25e943da1cb6a892ff92f4032e8881f40ec2370897b35905b"
       }
     ]
   },
   {
     "owner": "0x2ba76c537f6cfd944bad5e6dda9b112578f5803050e693e2ad8d6bd6e6e7ac9",
     "sum": 812.5808762953321,
-    "size": 15.729769280782799,
-    "diff": -796.8511070145494,
-    "percent": -5065.87917972878,
+    "size": 15.77423178912276,
+    "diff": -796.8066445062094,
+    "percent": -5051.318220489529,
     "actions": [
       {
         "type": "deposit",
-        "amount": 24999.999999999996
+        "amount": 24999.999999999996,
+        "txHash": "0x3e86ef4305939d2b887bf06d765a2aeb837776aa136b468eb939a9192a11e27"
       },
       {
         "type": "withdraw",
-        "amount": 24187.41912370467
+        "amount": 24187.41912370467,
+        "txHash": "0x73edb3e701da3230306a29a297b44a868d78524e12e7a351777535b314fb00d"
       }
     ]
   },
   {
     "owner": "0x4b68570b4a7f72df4843853c5dc77131c885222a584d4e2df9fb3b12229902d",
     "sum": 1663.0629885794378,
-    "size": 41.77875144157339,
-    "diff": -1621.2842371378645,
-    "percent": -3880.6431049170833,
+    "size": 41.896845232476835,
+    "diff": -1621.166143346961,
+    "percent": -3869.42294664777,
     "actions": [
       {
         "type": "deposit",
-        "amount": 49999.99999999999
+        "amount": 49999.99999999999,
+        "txHash": "0x4da45d9706415b42545c37b08693670b33e7642ec6ffe1544efd326f39cd89a"
       },
       {
         "type": "withdraw",
-        "amount": 48336.93701142057
+        "amount": 48336.93701142057,
+        "txHash": "0x507feec46aa0fd6bb0ec360b3fe3afd3344d083d4ce793633ec7203e85787ff"
       }
     ]
   },
   {
     "owner": "0x223715c943925b7e4d338c5c014770ccf6b710d987072b67b3d6fccafad894",
     "sum": 179.31877945780394,
-    "size": 13.666063327227734,
-    "diff": -165.6527161305762,
-    "percent": -1212.1465572352222,
+    "size": 13.704692788010048,
+    "diff": -165.6140866697939,
+    "percent": -1208.4480055962017,
     "actions": [
       {
         "type": "deposit",
-        "amount": 350.4456352578992
+        "amount": 350.4456352578992,
+        "txHash": "0x54b350c502f29db1c26cc02cee86fe45e7257c8fe24ffe908227ca7fce8f70d"
       },
       {
         "type": "deposit",
-        "amount": 4704.659292427
+        "amount": 4704.659292427,
+        "txHash": "0xa12951a6ee00f947791d6a6a396118b24ac766fe8742609a48ad1712d759d0"
       },
       {
         "type": "withdraw",
-        "amount": 4875.7861482270955
+        "amount": 4875.7861482270955,
+        "txHash": "0x1e59a7d6acb2cf5e4299ba5f4849babb5e9c4e1a32b725d3b3e1a2aa1a72585"
+      }
+    ]
+  },
+  {
+    "owner": "0xf087259d3921f39c634a5d35ec4c377be5bc12ff44cfb67540b2731326c16b",
+    "sum": 31309.451865187766,
+    "size": 30233.972347806743,
+    "diff": -1075.4795173810235,
+    "percent": -3.557188929753856,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 40000,
+        "txHash": "0x66203b07ad0730a914168b4eea8da0899ace41cf16c2952d3f9a5c4b96c19a"
+      },
+      {
+        "type": "withdraw",
+        "amount": 38700.548134812234,
+        "txHash": "0x77f4a3bea975905f2483c121be86a1e60c4af61e4207ea06f0a16163913cca2"
+      },
+      {
+        "type": "deposit",
+        "amount": 20000,
+        "txHash": "0x39b54fdecd5cff1ca4784b97e0148146f59e35ef8189cafc97fbf436dd0e9e2"
+      },
+      {
+        "type": "deposit",
+        "amount": 10000,
+        "txHash": "0x7025fbd6b54fc019b6a8abbfb099c4f5a02ccb31b7592cdf980f9c4540a7a20"
+      },
+      {
+        "type": "deposit",
+        "amount": 10,
+        "txHash": "0x664518429d8c5860ad60e3cf01982f4981c5277b41004dffa0ad11062351890"
+      }
+    ]
+  },
+  {
+    "owner": "0x5f821705e1da9b42a1431a239ac132125bed45f3470777e51e26f0626450e6d",
+    "sum": 2027,
+    "size": 2016.6681104689576,
+    "diff": -10.331889531042407,
+    "percent": -0.5123247339216278,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 998,
+        "txHash": "0x59fd0b0f8a2737d87cc6fcfd3e9ab326dc71087e89234ad3601119fbbb3cf54"
+      },
+      {
+        "type": "deposit",
+        "amount": 1029,
+        "txHash": "0x2dafd671c5fbd80701f4bb73e5f40cb29574ae104578bdf121b2133f8342077"
       }
     ]
   },
   {
     "owner": "0x1dabf726b0df1a2280113038126fed174bf3e74844b97eee932020b49c35abe",
     "sum": 350,
-    "size": 243.9306102368958,
-    "diff": -106.0693897631042,
-    "percent": -43.48342738129248,
+    "size": 349.3074190047097,
+    "diff": -0.6925809952903137,
+    "percent": -0.1982726268064108,
     "actions": [
       {
         "type": "deposit",
-        "amount": 350
-      }
-    ]
-  },
-  {
-    "owner": "0x578cd02604f7eabe732c4c77cd31dbd90834b20e58bf791eab295b5e596f4cf",
-    "sum": 166428.41301967786,
-    "size": 165864.81376699192,
-    "diff": -563.5992526859336,
-    "percent": -0.33979434208251175,
-    "actions": [
-      {
-        "type": "deposit",
-        "amount": 2495.0000000000005
-      },
-      {
-        "type": "deposit",
-        "amount": 17400
-      },
-      {
-        "type": "deposit",
-        "amount": 16519.349520444975
-      },
-      {
-        "type": "deposit",
-        "amount": 99999.99999999999
-      },
-      {
-        "type": "deposit",
-        "amount": 49999.99999999999
-      },
-      {
-        "type": "withdraw",
-        "amount": 19985.93650076713
-      }
-    ]
-  },
-  {
-    "owner": "0x4ca38390360cd6d4f99c6428f9da176074a6fdb0e8cd6a1db8e355c548c1cda",
-    "sum": 200,
-    "size": 199.60711290671836,
-    "diff": -0.39288709328164373,
-    "percent": -0.19683020688007755,
-    "actions": [
-      {
-        "type": "deposit",
-        "amount": 200
-      }
-    ]
-  },
-  {
-    "owner": "0x612ef5b8649adf82e746d5e19930945ccc04ace0eb34587c5418016ea56fd37",
-    "sum": 1000,
-    "size": 998.2782708715322,
-    "diff": -1.721729128467814,
-    "percent": -0.1724698592271956,
-    "actions": [
-      {
-        "type": "deposit",
-        "amount": 1000
-      }
-    ]
-  },
-  {
-    "owner": "0xb10b74c5cf03034b84b712aaf6dfee5d231c0fa293615d902b41e7ab5c3a88",
-    "sum": 60.797414456956766,
-    "size": 60.69502522743735,
-    "diff": -0.10238922951941731,
-    "percent": -0.16869459916318147,
-    "actions": [
-      {
-        "type": "deposit",
-        "amount": 60.797414456956766
-      }
-    ]
-  },
-  {
-    "owner": "0x113686f6c9ed00bb4d93ef4cf26ed3c64d3358bde2162a7af250d5567a4a04d",
-    "sum": 2520,
-    "size": 2516.4761554215193,
-    "diff": -3.523844578480748,
-    "percent": -0.14003091469350684,
-    "actions": [
-      {
-        "type": "deposit",
-        "amount": 2520
-      }
-    ]
-  },
-  {
-    "owner": "0x4481f7b6f4510a66a8fb0fb86bae460bcbe11e0e6ff8ca3b800afb349e17abd",
-    "sum": 19003.965451255695,
-    "size": 18978.155273734043,
-    "diff": -25.810177521652804,
-    "percent": -0.13599940115030226,
-    "actions": [
-      {
-        "type": "deposit",
-        "amount": 442.3101856951823
-      },
-      {
-        "type": "deposit",
-        "amount": 18561.655265560516
-      }
-    ]
-  },
-  {
-    "owner": "0x6e29d45bd9a3efaf0dc85d7fa08153aa6b827877acd3b47fec65e466d697529",
-    "sum": 500,
-    "size": 499.34219888792035,
-    "diff": -0.6578011120796532,
-    "percent": -0.13173353134276153,
-    "actions": [
-      {
-        "type": "deposit",
-        "amount": 500
-      }
-    ]
-  },
-  {
-    "owner": "0x5e1fbc78ed8cf70f2beb53b4eed1ecb40de3838cf6e741a1c52cb57ad0c433a",
-    "sum": 7931.082746398618,
-    "size": 7922.938952120581,
-    "diff": -8.143794278036694,
-    "percent": -0.10278754294650977,
-    "actions": [
-      {
-        "type": "deposit",
-        "amount": 2411.2831982966445
-      },
-      {
-        "type": "deposit",
-        "amount": 1786.0089968868836
-      },
-      {
-        "type": "deposit",
-        "amount": 869.7084199999999
-      },
-      {
-        "type": "deposit",
-        "amount": 1000
-      },
-      {
-        "type": "deposit",
-        "amount": 1000
-      },
-      {
-        "type": "deposit",
-        "amount": 1211.8548855
-      },
-      {
-        "type": "deposit",
-        "amount": 3000
-      },
-      {
-        "type": "deposit",
-        "amount": 3624.9999999999995
-      },
-      {
-        "type": "withdraw",
-        "amount": 7963.437999613525
-      },
-      {
-        "type": "withdraw",
-        "amount": 9.334754671385399
-      },
-      {
-        "type": "deposit",
-        "amount": 1000
-      }
-    ]
-  },
-  {
-    "owner": "0x19b7b9deb388b019dbaa639fe02da85cc0fe8f14daff846fb27034b3ebe836b",
-    "sum": 155.49528794648054,
-    "size": 155.34522845432446,
-    "diff": -0.15005949215608894,
-    "percent": -0.09659742603565731,
-    "actions": [
-      {
-        "type": "deposit",
-        "amount": 115
-      },
-      {
-        "type": "deposit",
-        "amount": 50
-      },
-      {
-        "type": "deposit",
-        "amount": 50
-      },
-      {
-        "type": "withdraw",
-        "amount": 214.50471205351946
-      },
-      {
-        "type": "deposit",
-        "amount": 155
-      }
-    ]
-  },
-  {
-    "owner": "0x74e3b59a1973012c0c3ec84cbb32c694a75f647105aad1589f158199786ea0f",
-    "sum": 100,
-    "size": 99.99833529048328,
-    "diff": -0.0016647095167172665,
-    "percent": -0.0016647372297563586,
-    "actions": [
-      {
-        "type": "deposit",
-        "amount": 100
+        "amount": 350,
+        "txHash": "0x73e5f162c6e414d8ea7aa95dca28bc522483d91cabd9135dd05733732fa2d12"
       }
     ]
   },
   {
     "owner": "0x6bcfc16a27d3169fd0ee0412285ea2d3e249b56e129617cc63cec0938838dde",
     "sum": 1.9672,
-    "size": 1.987789978100876,
-    "diff": 0.02058997810087604,
+    "size": 2.0046833666287442,
+    "diff": 0.037483366628744186,
     "percent": 0,
     "actions": [
       {
         "type": "deposit",
-        "amount": 1.9672
+        "amount": 1.9672,
+        "txHash": "0x11a3a4f3ac3dc473d7f1f06efb6f22c423bac950a1dd00d3b6c69b6f7ab8307"
       }
     ]
   },
   {
     "owner": "0x2e48df8e04fc000d43ab4ffc8f4a908b50a6aa550758d76267718d7cdccbca1",
     "sum": 324.8393280202139,
-    "size": 0,
-    "diff": -324.8393280202139,
+    "size": 0.003249106825264653,
+    "diff": -324.83607891338863,
     "percent": 0,
     "actions": [
       {
         "type": "deposit",
-        "amount": 11100.000000000002
+        "amount": 11100.000000000002,
+        "txHash": "0x7b575295b274537cbfa8fba0ef73a6da7aadf436e643ee64191f71f9b6d22bc"
       },
       {
         "type": "withdraw",
-        "amount": 10775.467568354323
+        "amount": 10775.467568354323,
+        "txHash": "0x4fdd9aa7e139874c174b6827930d29208cf30893d5932edcaf24f439d5fad89"
       },
       {
         "type": "deposit",
-        "amount": 10776
+        "amount": 10776,
+        "txHash": "0x6fd5fc757fb3a885bf7a419c93eadf9f1fc5599f6975c7106dc44ac1e86e82d"
       },
       {
         "type": "withdraw",
-        "amount": 10767.742177177219
+        "amount": 10767.742177177219,
+        "txHash": "0x82bbaad155f1ca4ccde4bcdc55e1d94f6023d7979c95cd8fdfcf639bce9ee0"
       },
       {
         "type": "withdraw",
-        "amount": 7.950926448243165
+        "amount": 7.950926448243165,
+        "txHash": "0x20486f6c56dcf60f4875f31d5bfe1c2a90b5124ce8073103dc5d46d51da2994"
       }
     ]
   },
   {
     "owner": "0x11b6e878cc575025b488b2e7af5f58f9df99b9f9aa03f22f932ae0b69a955f1",
     "sum": -0.4055654590810153,
-    "size": 0.5529687808424744,
-    "diff": 0.9585342399234897,
+    "size": 0.5545318382523778,
+    "diff": 0.9600972973333932,
     "percent": 0,
     "actions": [
       {
         "type": "deposit",
-        "amount": 620.0071285083849
+        "amount": 620.0071285083849,
+        "txHash": "0x51541f9903dcf90c3ddc378acb0c9f9713f5a3acd20e99327dd8254b5df30cd"
       },
       {
         "type": "withdraw",
-        "amount": 620.412693967466
+        "amount": 620.412693967466,
+        "txHash": "0x5307cd796e75e23097e935e54c517bfa733cb0d8e37d3ad3877e9ba3e884de7"
       }
     ]
   },
   {
     "owner": "0x75ef1ec82283d2d9419bc6204e7ce851f5abf592160b54d8003969a211f9108",
     "sum": 203.01302876289554,
-    "size": 3.2835954166676187,
-    "diff": -199.72943334622792,
+    "size": 3.292877040377601,
+    "diff": -199.72015172251795,
     "percent": 0,
     "actions": [
       {
         "type": "deposit",
-        "amount": 5099.637071691
+        "amount": 5099.637071691,
+        "txHash": "0x5c4bfc255bf5a7c8d0fd4a91686b9687d0129dba0fdaa077c34cb77877af3ec"
       },
       {
         "type": "deposit",
-        "amount": 97.33173215822859
+        "amount": 97.33173215822859,
+        "txHash": "0x7c97343cffa715e4b8dec8e9e84027f5f1efcafb3e700132e3ab098c90adbc4"
       },
       {
         "type": "withdraw",
-        "amount": 5135.805788338898
+        "amount": 5135.805788338898,
+        "txHash": "0x43c16e4e6777eb2c6b4cdb5ef882c68ff9a2c0427be88cd141d1dac96ca09c6"
       },
       {
         "type": "deposit",
-        "amount": 100.1326626186585
+        "amount": 100.1326626186585,
+        "txHash": "0x4715061a8486cefd4d924177a04fd49103d9f6bed931047ef5355da64405bab"
       },
       {
         "type": "deposit",
-        "amount": 4000
+        "amount": 4000,
+        "txHash": "0x5dc0defda1970c4441f54076fcfb4c83fad4340736171e5adff5cfda3af3e8a"
       },
       {
         "type": "withdraw",
-        "amount": 3958.2826493660928
+        "amount": 3958.2826493660928,
+        "txHash": "0x5360b8518dca5ab85c551f0ecec11bb50396d328622be07ddb72d50917bc6c6"
       }
     ]
   },
   {
     "owner": "0x2cf3e183c81d9623a49afbd61eccec964a6ec652006367b3dbb992d4dd79906",
     "sum": 85.33899505845484,
-    "size": 2.3295597215919055,
-    "diff": -83.00943533686294,
+    "size": 2.336144606147412,
+    "diff": -83.00285045230743,
     "percent": 0,
     "actions": [
       {
         "type": "deposit",
-        "amount": 2880.5693605978195
+        "amount": 2880.5693605978195,
+        "txHash": "0x2ac58747c4f8cc79c9b29bb3c09e15c11ca6b1939feb0c3bb6bc6772da29fca"
       },
       {
         "type": "withdraw",
-        "amount": 2795.230365539365
+        "amount": 2795.230365539365,
+        "txHash": "0x263a4673f3d9743a00866874b61508e58c98806c64b21ff0be03f6be4333edb"
       }
     ]
   },
   {
     "owner": "0x64fb7f85fd9dee10c313696b0aef1f4afc888ce8422edbc2f1695ec5ed152e9",
     "sum": 236.70810836633467,
-    "size": 1.5346594717272866,
-    "diff": -235.1734488946074,
+    "size": 1.5389974396959434,
+    "diff": -235.16911092663872,
     "percent": 0,
     "actions": [
       {
         "type": "deposit",
-        "amount": 1900
+        "amount": 1900,
+        "txHash": "0x2d1c59f3ed2f6e242a57b8d1b074c5f75de4f8ee758d5c616ef1f4aeb06468b"
       },
       {
         "type": "deposit",
-        "amount": 1000
+        "amount": 1000,
+        "txHash": "0x3fbb5ebc5635f1b67e987293042f67f1584b6eab16b4df1632c5a2495543869"
       },
       {
         "type": "deposit",
-        "amount": 3000
+        "amount": 3000,
+        "txHash": "0x137c1846059a1bdcef5f05e94c9252c508ca86ed755ddbc9a8a4688467e52fa"
       },
       {
         "type": "deposit",
-        "amount": 500
+        "amount": 500,
+        "txHash": "0x532f79fc4da0520f57400468d374643949db253dd253b306ea649ff41f1fa6b"
       },
       {
         "type": "withdraw",
-        "amount": 1919.3486881018164
+        "amount": 1919.3486881018164,
+        "txHash": "0x6e1441d2b6c7fe607f9b4e8022c495e13dd9a21c872f4622eac782a3049077c"
       },
       {
         "type": "withdraw",
-        "amount": 2303.2824768238193
+        "amount": 2303.2824768238193,
+        "txHash": "0x2fc817f50531d742b58194ce545fc2b322776ee417b772eeb977a9198b99ffc"
       },
       {
         "type": "withdraw",
-        "amount": 1940.6607267080296
+        "amount": 1940.6607267080296,
+        "txHash": "0x43e9d8f57c11746590b2809a5380c3b044c44346cb98e4ca350940089fb10b4"
       }
     ]
   },
   {
     "owner": "0x30bc1cd112a8efb45a8824a17e6d802e50bf3f516766c606d0ee0463fc8554f",
     "sum": 12.795728589676337,
-    "size": 1.7307330901037603,
-    "diff": -11.064995499572577,
+    "size": 1.7356252924753488,
+    "diff": -11.060103297200987,
     "percent": 0,
     "actions": [
       {
         "type": "deposit",
-        "amount": 360
+        "amount": 360,
+        "txHash": "0x40b6213229b7ec12dfa3b3db773f427caa166e8b67bcb0aee7a482823522e80"
       },
       {
         "type": "deposit",
-        "amount": 260
+        "amount": 260,
+        "txHash": "0x6b4a09b12466c98f9ffa1f402493ad5e65fd21d80cafe6d95b8026a4bc2aa11"
       },
       {
         "type": "withdraw",
-        "amount": 614.8065327077989
+        "amount": 614.8065327077989,
+        "txHash": "0xabf8ea95068d41843455387c7a2df5f17b7356996767696238b741f47e5e75"
       },
       {
         "type": "deposit",
-        "amount": 4400
+        "amount": 4400,
+        "txHash": "0x687227c394ace28f544bb2dd73175ae27ff929f3918c4c832a78bc5fbaacb6c"
       },
       {
         "type": "withdraw",
-        "amount": 4392.397738702524
+        "amount": 4392.397738702524,
+        "txHash": "0x5e268fd812b5554226cae94d48ba187ccfae364245a324ca12c5277a0271bf9"
       }
     ]
   },
   {
     "owner": "0x7f1dacfeb345925aaa56d864cb19908009e606319cf49e9e769b514eb5129cd",
     "sum": 0.8135103259945848,
-    "size": 0.30836746530028536,
-    "diff": -0.5051428606942995,
+    "size": 0.309239123113293,
+    "diff": -0.5042712028812919,
     "percent": 0,
     "actions": [
       {
         "type": "deposit",
-        "amount": 16
+        "amount": 16,
+        "txHash": "0x2afbdc030d4599b406c54adf03a257a2baab010b2f55a5837b2ae6d489a3f56"
       },
       {
         "type": "deposit",
-        "amount": 1000
+        "amount": 1000,
+        "txHash": "0x7bc44c63b652be391450a5076f01ebc1d86767035ba13a80b7baee3a73041c7"
       },
       {
         "type": "deposit",
-        "amount": 16
+        "amount": 16,
+        "txHash": "0x2f029c94bf1fb71e1dd2efb6879f064d4c60bb117422f14b72ad513791bb232"
       },
       {
         "type": "deposit",
-        "amount": 17
+        "amount": 17,
+        "txHash": "0x5e994ad63ab00d87ba7e2c9f571d23ba00f94a73b917896f2376a7b01e7e701"
       },
       {
         "type": "withdraw",
-        "amount": 496.616718344484
+        "amount": 496.616718344484,
+        "txHash": "0x77358b51f1d180b60edf2b279bfd6294578dfb30095c3de2209dab8f5ef4d5d"
       },
       {
         "type": "withdraw",
-        "amount": 551.5697713295214
+        "amount": 551.5697713295214,
+        "txHash": "0x707b9ac6646c37917dce299ac5fa36722fe386dab177d3aa40e9997db6ede7f"
       }
     ]
   },
   {
     "owner": "0x4f2bc157736d58a285013b6c0d8a44189c0c51658a26b805b4b0b80991e3801",
     "sum": 25.49982629450989,
-    "size": 5.976891626665708,
-    "diff": -19.522934667844183,
+    "size": 5.993786296073655,
+    "diff": -19.506039998436236,
     "percent": 0,
     "actions": [
       {
         "type": "deposit",
-        "amount": 2452.7976041780935
+        "amount": 2452.7976041780935,
+        "txHash": "0x560debb016533e4fdc6cafc46d434d1a8a1a8ffe653ddb8e9ddf0e05c4d405e"
       },
       {
         "type": "deposit",
-        "amount": 1104.524086875518
+        "amount": 1104.524086875518,
+        "txHash": "0x2f2ed3b9e0019941625e6b31fabc14fbe32f03018414df00ede8fbc0bc5e49d"
       },
       {
         "type": "deposit",
-        "amount": 829.5
+        "amount": 829.5,
+        "txHash": "0x7a3067a708d811b3bb7196a8195765dcee45c8498af2c487c9570b308c8fa1e"
       },
       {
         "type": "deposit",
-        "amount": 58.41481753312171
+        "amount": 58.41481753312171,
+        "txHash": "0x2949cb180650d8dd51f47c38184eb23452b4f5e95264e44d6d99ad755bde533"
       },
       {
         "type": "withdraw",
-        "amount": 98.67706104719144
+        "amount": 98.67706104719144,
+        "txHash": "0x6e4541531fd8f1552b1676c8a029f2a055d9bbaff7e2a6c0d5fe20ea1e98b"
       },
       {
         "type": "withdraw",
-        "amount": 4321.059621245032
+        "amount": 4321.059621245032,
+        "txHash": "0x3c6470c80a612310a2c34caf4f05fdd1702e38011b54d3d9e8abe5e3a2c2ce3"
       }
     ]
   },
   {
     "owner": "0x11fa229ed4aac827c7baee1cd120ec4b3e162a84042d6a6b037b45edc58ae6b",
     "sum": 83.37643964166307,
-    "size": 0.272176756321388,
-    "diff": -83.10426288534168,
+    "size": 0.27294611438559097,
+    "diff": -83.10349352727748,
     "percent": 0,
     "actions": [
       {
         "type": "deposit",
-        "amount": 3088.229967993515
+        "amount": 3088.229967993515,
+        "txHash": "0x38f1785354928913fee116159790722a423b5ba039901c95ec82a1a312c0ea2"
       },
       {
         "type": "withdraw",
-        "amount": 2998.099491691926
+        "amount": 2998.099491691926,
+        "txHash": "0x4bbe2086c18be010526aedbef1d2fc9044305665beba0bc92a605eeda790aee"
       },
       {
         "type": "withdraw",
-        "amount": 6.754036659925749
+        "amount": 6.754036659925749,
+        "txHash": "0x3264f5f6e39271dfcb8b1b351b197d61d6552f66fe41dee83585c6bc8061324"
       }
     ]
   },
   {
     "owner": "0x5063120f5df6ede7bffc6e0730bbea776c1bad0e3071685a83f103eba1fcd77",
     "sum": 75.33717285860689,
-    "size": 0.256758030239067,
-    "diff": -75.08041482836782,
+    "size": 0.25748380441531604,
+    "diff": -75.07968905419158,
     "percent": 0,
     "actions": [
       {
         "type": "deposit",
-        "amount": 3208.3594585619426
+        "amount": 3208.3594585619426,
+        "txHash": "0xc06c94b2f760b52c2238a71b84f251c12e46e25b2e6cbeb789948ca9b81190"
       },
       {
         "type": "withdraw",
-        "amount": 3126.0047803300195
+        "amount": 3126.0047803300195,
+        "txHash": "0x45c873810c925f312cdeb7e767d3ba93619f0dd97a1a6cd647c10e3679ab51c"
       },
       {
         "type": "withdraw",
-        "amount": 7.017505373316048
+        "amount": 7.017505373316048,
+        "txHash": "0x5781214d4c6f8d8e1977c717540d377fb08621d71d1099f353afee51c3d554c"
       }
     ]
   },
   {
     "owner": "0x544ce7422993c6ba8e6031abea374c5e3bf1e01a00eca09161f37d190cbb6e5",
     "sum": 82.09115674259618,
-    "size": 0.26562206094849417,
-    "diff": -81.8255346816477,
+    "size": 0.26637289095096367,
+    "diff": -81.82478385164522,
     "percent": 0,
     "actions": [
       {
         "type": "deposit",
-        "amount": 3156.7178281106635
+        "amount": 3156.7178281106635,
+        "txHash": "0x1927f9bf53c61fd2f571248bb8fa1311ec08fca6ad32f84fc2d6639b18370c"
       },
       {
         "type": "withdraw",
-        "amount": 3067.7227807256922
+        "amount": 3067.7227807256922,
+        "txHash": "0x7464c4145756c1d748ca668fc6088a443fbfa1bfbb1b601d2a7fca5492c2399"
       },
       {
         "type": "withdraw",
-        "amount": 6.903890642374733
+        "amount": 6.903890642374733,
+        "txHash": "0x47d1f4415d4ca114c9197bc03e4b821e44505d2d332c0d1ff4752f8c5e9957c"
       }
     ]
   },
   {
     "owner": "0x48e2ed7ffe08d1fc67a90bf9fd80212753b7ce3a8216f466dacca79ca4276c5",
     "sum": -37.657357866275525,
-    "size": 1.6395684105780026,
-    "diff": 39.296926276853526,
+    "size": 1.6442029546718457,
+    "diff": 39.30156082094737,
     "percent": 0,
     "actions": [
       {
         "type": "deposit",
-        "amount": 5000
+        "amount": 5000,
+        "txHash": "0x1ae14ebd5e0f98ffb039ffcd2ac29ad6e96fd2b23a89f77dd722042c360fad1"
       },
       {
         "type": "withdraw",
-        "amount": 5026.621983899048
+        "amount": 5026.621983899048,
+        "txHash": "0x676648414012b1e79eae0a3b4672bac0bf8e1eb40f308ed1ae6529cc9191835"
       },
       {
         "type": "withdraw",
-        "amount": 11.035373967227338
+        "amount": 11.035373967227338,
+        "txHash": "0x6460ac0fd0eeefe601d7a8e1a5265cf815c97b3ffd1fd068828226655935cce"
+      }
+    ]
+  },
+  {
+    "owner": "0x3c75143521a005ebd8828730dddb2da764e9c7fb6605dcae1a661ee4ab45058",
+    "sum": -5.876670046901653,
+    "size": 0,
+    "diff": 5.876670046901653,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 626.046448847363,
+        "txHash": "0x84b8646750c724b711cbad8aba872b4407b91825fc19de82a9c2b873b20791"
+      },
+      {
+        "type": "deposit",
+        "amount": 46.6190964727612,
+        "txHash": "0x25c6594b881bbf3028fb9bce84e3f04fc5465c7788c9896c0c0c8fb75cf143c"
+      },
+      {
+        "type": "withdraw",
+        "amount": 678.5422153670258,
+        "txHash": "0x31a05fd340de076a8c85ad32b4a2c7a2d30885b071f2657ca97d9faaeb39c57"
       }
     ]
   },
   {
     "owner": "0x5183b119dcb6cd539007b00459aaf8cf6a5a85b6b56df50565ad6e3ba4730d1",
     "sum": 6.529553637010935,
-    "size": 2.5172306823732264,
-    "diff": -4.012322954637709,
+    "size": 2.524346101599754,
+    "diff": -4.005207535411181,
     "percent": 0,
     "actions": [
       {
         "type": "deposit",
-        "amount": 1690
+        "amount": 1690,
+        "txHash": "0x7452d61073844c93a4ce81ec1fb249c58d304c0d1673770fd84ba543ef0f0b1"
       },
       {
         "type": "deposit",
-        "amount": 10
+        "amount": 10,
+        "txHash": "0x4e24695946e5c12f9087d04b5fdddcee16e738816944782e63d6bb823389072"
       },
       {
         "type": "withdraw",
-        "amount": 1693.4704463629892
+        "amount": 1693.4704463629892,
+        "txHash": "0x42cef0eac1e02de6db233b005ece050185cd3239be907fefcdc86c17ee31260"
       }
     ]
   },
   {
     "owner": "0x3f6ed9efde99413cd49e6b7b88b0522b539668fabd14b71642b58c1705842c7",
     "sum": 242.73055660700828,
-    "size": 5.470632468147233,
-    "diff": -237.25992413886104,
+    "size": 5.4860962250915986,
+    "diff": -237.2444603819167,
     "percent": 0,
     "actions": [
       {
         "type": "deposit",
-        "amount": 506
+        "amount": 506,
+        "txHash": "0x22f7eef00df1e503d2a222276b2c604b410a0f02fdf8993d7bc5e0c310a01bb"
       },
       {
         "type": "deposit",
-        "amount": 1608.9028679088467
+        "amount": 1608.9028679088467,
+        "txHash": "0x1a20310361f4caabffb7acc2f407b84c01497f8be242af07004cf06c3e2ac8"
       },
       {
         "type": "deposit",
-        "amount": 150
+        "amount": 150,
+        "txHash": "0x7ccc65ad835dbe9a417652342d9f455dae968975add762677a1c89d6b86e60b"
       },
       {
         "type": "deposit",
-        "amount": 335.8105908638845
+        "amount": 335.8105908638845,
+        "txHash": "0x5ad1797260f379820b7536efd0a19681841ee0a66e70e1b32251f41fe13c956"
       },
       {
         "type": "deposit",
-        "amount": 3800
+        "amount": 3800,
+        "txHash": "0x6513d6f072e056714d9f8dc9d26ba99f53961a7bc61fd5f370041e6da7c97e2"
       },
       {
         "type": "withdraw",
-        "amount": 6157.982902165722
+        "amount": 6157.982902165722,
+        "txHash": "0x767a8c761abb3a79f5aa474df800eb5b161515929263d65f84d2ebf0545ac52"
       }
     ]
   },
   {
     "owner": "0x3a9ec5776e1170435b540347f534842ab08ea303e043a46474ee4621000d221",
     "sum": 4.841319430101834,
-    "size": 0.000035931526714614,
-    "diff": -4.841283498575119,
+    "size": 0.000036033093836694,
+    "diff": -4.841283397007997,
     "percent": 0,
     "actions": [
       {
         "type": "deposit",
-        "amount": 700
+        "amount": 700,
+        "txHash": "0x669059b3ce411ff1d2926f878368710ec6b5a4ecf9a869c68cad0847cf6c9b7"
       },
       {
         "type": "withdraw",
-        "amount": 694.2643051219367
+        "amount": 694.2643051219367,
+        "txHash": "0x39f4834182abddba77f1d7abfb0b7d43fb4fa15b481f600e751bd8d29ced638"
       },
       {
         "type": "withdraw",
-        "amount": 0.4471878016329922
+        "amount": 0.4471878016329922,
+        "txHash": "0x3150f51161f6b3f36e14fcde9f904d3af68acce6fc089f1f58467f5b9791a9e"
       },
       {
         "type": "withdraw",
-        "amount": 0.4471876463284722
+        "amount": 0.4471876463284722,
+        "txHash": "0x37699971fe4df1b809e68c4341cafa5d340e376efaa425c4fa518626fd7dfbb"
       }
     ]
   },
   {
     "owner": "0x2f829cb79c0ad34a16d3dbfcb9e328317eaa74e42d9da8ff152ef171f0a0827",
     "sum": 5.423891024801532,
-    "size": 5.463241493613127,
-    "diff": 0.03935046881159554,
+    "size": 5.5095749384915464,
+    "diff": 0.08568391369001471,
     "percent": 0,
     "actions": [
       {
         "type": "deposit",
-        "amount": 5.423891024801532
+        "amount": 5.423891024801532,
+        "txHash": "0x1e0123063a1085df63a644f6e4095896a49969e949f3745abbea233ea3b5681"
       }
     ]
   },
   {
     "owner": "0x3495dd1e4838aa06666aac236036d86e81a6553e222fc02e70c2cbc0062e8d0",
     "sum": 0.03175525875837358,
-    "size": 0.00314127054119412,
-    "diff": -0.028613988217179462,
+    "size": 0.003150149878591594,
+    "diff": -0.028605108879781987,
     "percent": 0,
     "actions": [
       {
         "type": "deposit",
-        "amount": 1
+        "amount": 1,
+        "txHash": "0x261899935165c071766b84b721fa6b728a73f1a9d5beeb3b368c36d0c2982f8"
       },
       {
         "type": "withdraw",
-        "amount": 0.9682447412416264
+        "amount": 0.9682447412416264,
+        "txHash": "0x5e75aea673dd0d36391393764e0a803ace30f8ee3c3e03435f5a2ff0205095d"
       }
     ]
   },
   {
     "owner": "0x1dd39a78344e6b296c79b8fd06b479f95740070e6b0a2f1d22d00f2e54a72ba",
     "sum": -20.785893897014546,
-    "size": 0.003146272880676898,
-    "diff": 20.789040169895223,
+    "size": 0.003155166284114659,
+    "diff": 20.78904906329866,
     "percent": 0,
     "actions": [
       {
         "type": "deposit",
-        "amount": 6000
+        "amount": 6000,
+        "txHash": "0x2e31efe516dfbfca48faa5cfb1462c19839df775fbfdc25244dd7ee4c79986"
       },
       {
         "type": "withdraw",
-        "amount": 6007.003507684702
+        "amount": 6007.003507684702,
+        "txHash": "0x6c5ef47384e5d96e1b1fa0e469809559ee33d6327d2456212a2efe9c85c0df2"
       },
       {
         "type": "withdraw",
-        "amount": 13.782386212312382
+        "amount": 13.782386212312382,
+        "txHash": "0x513b65fbb21dd54e5a662da043fc35f8dabee2e219b20971d7ac8dd75205804"
       }
     ]
   },
   {
     "owner": "0x79ed472a3bf24fc3d6c740791191f30f8157a0d1dfcbb3d292fdde19f709039",
     "sum": 89.47887041284322,
-    "size": 1.5717288963816163,
-    "diff": -87.9071415164616,
+    "size": 1.5761716194703084,
+    "diff": -87.9026987933729,
     "percent": 0,
     "actions": [
       {
         "type": "deposit",
-        "amount": 1871
+        "amount": 1871,
+        "txHash": "0x6b38ba84d439cf0c8262e633eedb99585b2ade2315a683847d3049f33c50858"
       },
       {
         "type": "deposit",
-        "amount": 890
+        "amount": 890,
+        "txHash": "0x571d37f94c65717b1baff621104f3f7b193b9eb8f7f1a5651be6178c68ab7af"
       },
       {
         "type": "withdraw",
-        "amount": 2671.521129587157
+        "amount": 2671.521129587157,
+        "txHash": "0x5148abc6f71661b92700a7730a950cfbbd033137007124c532f027014b38994"
       }
     ]
   },
   {
     "owner": "0x3faa3a949211db53991e8d51de063d36eea2ce5d1f199dcf97178f85380f834",
     "sum": 322.0111652850265,
-    "size": 4.896329237731532,
-    "diff": -317.11483604729494,
+    "size": 4.9101694330758985,
+    "diff": -317.1009958519506,
     "percent": 0,
     "actions": [
       {
         "type": "deposit",
-        "amount": 30560
+        "amount": 30560,
+        "txHash": "0x401c5a3356c3342df9f926c30db39017f66de5a473f2054146e102e9d7012c8"
       },
       {
         "type": "withdraw",
-        "amount": 30237.988834714975
+        "amount": 30237.988834714975,
+        "txHash": "0x112ca4b17eef8a57b58af10ac2bb7fd323947d28b5a7d611bf51273efa20e99"
       }
     ]
   },
   {
     "owner": "0x64c18c6cf64378194be9ae880cc6589cc97c5d2ca4296725a312426117fc0e5",
     "sum": 11.490450144472382,
-    "size": 0.050295274186239,
-    "diff": -11.440154870286143,
+    "size": 0.05043744118233719,
+    "diff": -11.440012703290044,
     "percent": 0,
     "actions": [
       {
         "type": "deposit",
-        "amount": 100
+        "amount": 100,
+        "txHash": "0x68b6b48abfb0d89be94880454b42c120f569adb5b29456df5677b1d08fa5c41"
       },
       {
         "type": "withdraw",
-        "amount": 99.16176741843505
+        "amount": 99.16176741843505,
+        "txHash": "0x79c621305007c09498c3194782a4203a394a5a4671c527012f7c9a9f54375e9"
       },
       {
         "type": "deposit",
-        "amount": 1000
+        "amount": 1000,
+        "txHash": "0x75431b4b7ac6d366abd6089538cb4139a95c59969abfd93b4e96ed039611014"
       },
       {
         "type": "withdraw",
-        "amount": 989.3477824370926
+        "amount": 989.3477824370926,
+        "txHash": "0x7fec0f7800bc79b6d8962e3166c5160e0976e5726adc073ecca8b8778914f89"
       }
     ]
   },
   {
     "owner": "0x38517c12ccc681a665aaf39dcc8d5655cd21217fce1bf73e18eb0ccc451b1e6",
     "sum": 0.9738034256004104,
-    "size": 0.000064476640732208,
-    "diff": -0.9737389489596783,
+    "size": 0.000064658893448385,
+    "diff": -0.973738766706962,
     "percent": 0,
     "actions": [
       {
         "type": "deposit",
-        "amount": 202
+        "amount": 202,
+        "txHash": "0x2e70de829921ca92ec9f4255f07fff471bc48d97c1dcf81167224c66f5ec9b1"
       },
       {
         "type": "withdraw",
-        "amount": 200.79821917386548
+        "amount": 200.79821917386548,
+        "txHash": "0x7246a3d2db53e7b12be4b74a53d48616045631fed94bea0d8dfe9f1267308ec"
       },
       {
         "type": "withdraw",
-        "amount": 0.22797740053410384
+        "amount": 0.22797740053410384,
+        "txHash": "0x75de6c0bf48565c488771527798738c1cbeb07d850f20b1f6ea176f63fae659"
       }
     ]
   },
   {
     "owner": "0x64605a16d36e399bdcb3d8939f24f860d2a9217ca172325a073c10902ebd9e0",
     "sum": 1,
-    "size": 1.0052914799430182,
-    "diff": 0.005291479943018151,
+    "size": 1.013811982864931,
+    "diff": 0.013811982864931016,
     "percent": 0,
     "actions": [
       {
         "type": "deposit",
-        "amount": 1
+        "amount": 1,
+        "txHash": "0x6aac610cdec34ce11c2690e1bc39970f4eff13df14c01bac9c2df6a49f05b80"
+      }
+    ]
+  },
+  {
+    "owner": "0x718505b87b5a448205ae22ac84a21b9e568b532ed95285c4c03973f8b1a73e8",
+    "sum": 4.915246292970132,
+    "size": 2.4309714262057844,
+    "diff": -2.484274866764348,
+    "percent": 0,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 1500,
+        "txHash": "0x78cd242367a4669838653ad875dfecb426832cc14e8fe9af9e264ae35f2608b"
+      },
+      {
+        "type": "withdraw",
+        "amount": 1495.0847537070297,
+        "txHash": "0x3245970cc0311c0dd39735d99d43edc3381ae2bb3116bd70a49cec869d531e"
       }
     ]
   },
   {
     "owner": "0x51d718e226ab5d22f25baeb820bc596e28c20b5544168e0c5bd2cbf385f8d48",
     "sum": 5.740028618649402,
-    "size": 5.756051742682069,
-    "diff": 0.01602312403266737,
+    "size": 5.804715757002374,
+    "diff": 0.0646871383529728,
     "percent": 0,
     "actions": [
       {
         "type": "deposit",
-        "amount": 2
+        "amount": 2,
+        "txHash": "0x41d5161663cb31e224229a7e81a8afa9b863b8f8ed8db821d574856caf2c7fa"
       },
       {
         "type": "deposit",
-        "amount": 3.740028618649401
+        "amount": 3.740028618649401,
+        "txHash": "0x72f75c27485615da1707f2276dfd0c201ba18fd93fe7401e19e81045a62aaba"
       }
     ]
   },
   {
     "owner": "0x6b600a2d9cd60d59f320a5cdc60d73e2c4eca6a5c512db945edef40497268e1",
     "sum": 5,
-    "size": 5.018137846427028,
-    "diff": 0.018137846427028315,
+    "size": 5.060656275277099,
+    "diff": 0.060656275277098715,
     "percent": 0,
     "actions": [
       {
         "type": "deposit",
-        "amount": 5
+        "amount": 5,
+        "txHash": "0x6f14b005de0a5eaacea298abe714b8b0a8138e491be7f83c63f1a1d3293539f"
       }
     ]
   },
   {
     "owner": "0x1ae9c83076d5cc2990c121378a42a12682bdaaf0d042988113256213d578bb8",
     "sum": 1.114318457565657,
-    "size": 0,
-    "diff": -1.114318457565657,
+    "size": 0.01820563436706533,
+    "diff": -1.0961128231985917,
     "percent": 0,
     "actions": [
       {
         "type": "deposit",
-        "amount": 30
+        "amount": 30,
+        "txHash": "0xd11c951862303159e790bd2210682e8ba27b5f4b0cc93f753ffae2b61b3911"
       },
       {
         "type": "withdraw",
-        "amount": 28.885681542434344
+        "amount": 28.885681542434344,
+        "txHash": "0x3565acad0f7521defc224742b7218f04428cee5f7c4025729e6a52839b80dc2"
       }
     ]
   },
   {
     "owner": "0x2074a664712177854e37b38f59843d254321d5f3557a2cdd1c5f6133dec46d7",
     "sum": 0.02409510806138259,
-    "size": 0.00174270450569894,
-    "diff": -0.02235240355568365,
+    "size": 0.001747630516515474,
+    "diff": -0.022347477544867118,
     "percent": 0,
     "actions": [
       {
         "type": "deposit",
-        "amount": 3
+        "amount": 3,
+        "txHash": "0x13e5a47b6036d1be9b19f17a97533ecc3ab994f24792ab5948ef788dcf54b4e"
       },
       {
         "type": "withdraw",
-        "amount": 2.9759048919386175
+        "amount": 2.9759048919386175,
+        "txHash": "0x510b4a091230fe69e45209acf001deb7c2c1784bfa5e52f1f7b5b4ada3e50a"
       }
     ]
   },
   {
     "owner": "0xa695db0214dda0b99bf2d007b2f534fc8d15cabfe67551698e1504737c8b02",
     "sum": 8.86734853118618,
-    "size": 0.7040509331610696,
-    "diff": -8.16329759802511,
+    "size": 0.7060410367619964,
+    "diff": -8.161307494424182,
     "percent": 0,
     "actions": [
       {
         "type": "deposit",
-        "amount": 1000
+        "amount": 1000,
+        "txHash": "0x7d3d4059f2624fabc442466b4a163739a677e83583d11971e0863110b994213"
       },
       {
         "type": "withdraw",
-        "amount": 991.1326514688137
+        "amount": 991.1326514688137,
+        "txHash": "0x4aa1a96f78093cea22662f8948bfac1d1bac9f9127a9a37e0379a7097493d10"
       }
     ]
   },
   {
     "owner": "0x7e11e20fa4ec6d7ba422955f47ebe05c129d88b9a5dbb686caa5332f943c9b8",
     "sum": 2.865235463464652,
-    "size": 0.04345261185855474,
-    "diff": -2.8217828516060974,
+    "size": 0.04357543706232391,
+    "diff": -2.8216600264023284,
     "percent": 0,
     "actions": [
       {
         "type": "deposit",
-        "amount": 75
+        "amount": 75,
+        "txHash": "0x726c92bb785380876ad3b14f4456a035d0f50840ae7d203529b3e0126bca201"
       },
       {
         "type": "withdraw",
-        "amount": 72.13476453653536
+        "amount": 72.13476453653536,
+        "txHash": "0x5f2b074cd7b134590e28132d29f53ecb4c992c2460835e6fe3edd80e3541627"
       }
     ]
   },
   {
     "owner": "0x3b5d43847dcc4384c5fbcd2e1994564bb35c054138e9572d36d2b5e72462a38",
     "sum": 40.06919055226148,
-    "size": 0.6992306847240787,
-    "diff": -39.3699598675374,
+    "size": 0.7012071631832436,
+    "diff": -39.36798338907824,
     "percent": 0,
     "actions": [
       {
         "type": "deposit",
-        "amount": 1000
+        "amount": 1000,
+        "txHash": "0x5b1267f4e0e6e69263052ddfb39dfa22fe28b01fdf74fa662e6151583998296"
       },
       {
         "type": "withdraw",
-        "amount": 959.9308094477385
+        "amount": 959.9308094477385,
+        "txHash": "0x784562513e6cdc4b150859e77ddb9500b28e571f8e64a30d6de070145f556d7"
       }
     ]
   },
   {
     "owner": "0x1dc18294ec8d0b13dc38f0ee0c429cfb153f327de8db25549dbadd3a6677786",
     "sum": 40.88501785672698,
-    "size": 0,
-    "diff": -40.88501785672698,
+    "size": 0.18458668968283654,
+    "diff": -40.700431167044144,
     "percent": 0,
     "actions": [
       {
         "type": "deposit",
-        "amount": 1000
+        "amount": 1000,
+        "txHash": "0x5c9c2f8a22616dafb01645012b43375c2ad63444cba13726424c79ca8336825"
       },
       {
         "type": "withdraw",
-        "amount": 959.1149821432731
+        "amount": 959.1149821432731,
+        "txHash": "0x2da42ea8f61144f9b435ccd2f2b14fb8aff68ada43e116e1c43a8e42d865e74"
       }
     ]
   },
   {
     "owner": "0x4ee4b1386ba891c82364ed5d52305cd4a0964b3a929825c0bb0bbd6aad5474c",
     "sum": 0.1,
-    "size": 0.10117777267547445,
-    "diff": 0.0011777726754744477,
+    "size": 0.1019331486746029,
+    "diff": 0.001933148674602897,
     "percent": 0,
     "actions": [
       {
         "type": "deposit",
-        "amount": 0.1
+        "amount": 0.1,
+        "txHash": "0x79e5d296949ed405b6531893698ffc62a057d30726cef889e2568a858b3cb6"
+      }
+    ]
+  },
+  {
+    "owner": "0x578cd02604f7eabe732c4c77cd31dbd90834b20e58bf791eab295b5e596f4cf",
+    "sum": 166428.41301967786,
+    "size": 167265.52077598157,
+    "diff": 837.1077563037106,
+    "percent": 0.5004664155650151,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 2495.0000000000005,
+        "txHash": "0x134f231f73c68bd768a9e32e082679bcdb9a91a876b01c92932fc6ce2a0a9c6"
+      },
+      {
+        "type": "deposit",
+        "amount": 17400,
+        "txHash": "0x2559734ccbabdc81bff828a53d75af0e85d468d4f0dd32e065b5f85398f49e8"
+      },
+      {
+        "type": "deposit",
+        "amount": 16519.349520444975,
+        "txHash": "0x4db2b0e1db8c0959e657fd68621a98e0df827417e26e2f572e3a795b790c07b"
+      },
+      {
+        "type": "deposit",
+        "amount": 99999.99999999999,
+        "txHash": "0x25412ae8a4ab88212898d5b230c218d527fe3bd1efe0e8abe9bff7ee5212f94"
+      },
+      {
+        "type": "deposit",
+        "amount": 49999.99999999999,
+        "txHash": "0x5b61451d040debe024e232e59250b9240e135520734ec32f4a1cfb59143111d"
+      },
+      {
+        "type": "withdraw",
+        "amount": 19985.93650076713,
+        "txHash": "0x2d93be5a0d6b36cd706c57bdd2aa1914f6d41fa99c6bb18c90eb54d8a2e3ea6"
+      }
+    ]
+  },
+  {
+    "owner": "0x19b7b9deb388b019dbaa639fe02da85cc0fe8f14daff846fb27034b3ebe836b",
+    "sum": 155.49528794648054,
+    "size": 156.47364859067977,
+    "diff": 0.9783606441992276,
+    "percent": 0.6252558517111889,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 115,
+        "txHash": "0x48a21b7be01cf2d9c302b2774761c8d0e1edf1484236b14bf3299573c349c5"
+      },
+      {
+        "type": "deposit",
+        "amount": 50,
+        "txHash": "0x233d4a4d65e041a91e7e412d397f496fd374933ec996ba38cd6786d7c505a0b"
+      },
+      {
+        "type": "deposit",
+        "amount": 50,
+        "txHash": "0x6b827e503418d936dfd44418735bb25f59d4af3dbf46c09bbd5eef36ddfa386"
+      },
+      {
+        "type": "withdraw",
+        "amount": 214.50471205351946,
+        "txHash": "0x7a4a6327a711cd80c89476cb3792a58a4f550842b00a2da0eb5424381244feb"
+      },
+      {
+        "type": "deposit",
+        "amount": 155,
+        "txHash": "0x5cb8f32e95fc722c1f1c3b01ee885193df667800e07f25a0886c23b63be6b4c"
+      }
+    ]
+  },
+  {
+    "owner": "0x4ca38390360cd6d4f99c6428f9da176074a6fdb0e8cd6a1db8e355c548c1cda",
+    "sum": 200,
+    "size": 201.2872436052693,
+    "diff": 1.2872436052693104,
+    "percent": 0.63950580385195,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 200,
+        "txHash": "0x4ce670b79f37aa418ff364899a178c63fff7f5103f348fc36c30c39fe83336a"
+      }
+    ]
+  },
+  {
+    "owner": "0x612ef5b8649adf82e746d5e19930945ccc04ace0eb34587c5418016ea56fd37",
+    "sum": 1000,
+    "size": 1006.6827877034245,
+    "diff": 6.6827877034245375,
+    "percent": 0.6638424521661069,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 1000,
+        "txHash": "0x65701346e262f13bee6ff04772a73605d812815b6c68878be6115f02526489"
+      }
+    ]
+  },
+  {
+    "owner": "0xb10b74c5cf03034b84b712aaf6dfee5d231c0fa293615d902b41e7ab5c3a88",
+    "sum": 60.797414456956766,
+    "size": 61.20602575463349,
+    "diff": 0.4086112976767211,
+    "percent": 0.6675997871758369,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 60.797414456956766,
+        "txHash": "0x2699dd055f99d712b5d15707995c237336030a1c596adbe09d7cd1ac9623479"
+      }
+    ]
+  },
+  {
+    "owner": "0x113686f6c9ed00bb4d93ef4cf26ed3c64d3358bde2162a7af250d5567a4a04d",
+    "sum": 2520,
+    "size": 2537.6677878918786,
+    "diff": 17.66778789187856,
+    "percent": 0.6962214666623386,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 2520,
+        "txHash": "0x1641aa9b56229c664d8ff579401600066e7f4e17d4c24398856362e228477f9"
+      }
+    ]
+  },
+  {
+    "owner": "0x4481f7b6f4510a66a8fb0fb86bae460bcbe11e0e6ff8ca3b800afb349e17abd",
+    "sum": 19003.965451255695,
+    "size": 19137.992777212796,
+    "diff": 134.0273259571004,
+    "percent": 0.7003207050881737,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 442.3101856951823,
+        "txHash": "0x6a7d4f7937ccb6ce839686a8571e14404c41a8af5b9300168434c70eb7ed5ec"
+      },
+      {
+        "type": "deposit",
+        "amount": 18561.655265560516,
+        "txHash": "0x36dbf591d477aa507aa3f8223d14463dc8e071cde3bc7111895e28a4a20327"
+      }
+    ]
+  },
+  {
+    "owner": "0x6e29d45bd9a3efaf0dc85d7fa08153aa6b827877acd3b47fec65e466d697529",
+    "sum": 500,
+    "size": 503.54783472928983,
+    "diff": 3.547834729289832,
+    "percent": 0.7045675672892463,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 500,
+        "txHash": "0x7151614466758d1a68d38028f96e964cd8c829468daaef80d1d6bd05f048e70"
+      }
+    ]
+  },
+  {
+    "owner": "0x5e1fbc78ed8cf70f2beb53b4eed1ecb40de3838cf6e741a1c52cb57ad0c433a",
+    "sum": 7931.082746398618,
+    "size": 7989.884873940947,
+    "diff": 58.80212754232889,
+    "percent": 0.7359571316742292,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 2411.2831982966445,
+        "txHash": "0x2b2777c7fc7e37b23749f7ab9933a44c180537f6d60a5ea217bb2064df82132"
+      },
+      {
+        "type": "deposit",
+        "amount": 1786.0089968868836,
+        "txHash": "0x60d5c7bdab5d1e8336c07d81d422db7b640bbb240790cf5875ce65fb2b5d480"
+      },
+      {
+        "type": "deposit",
+        "amount": 869.7084199999999,
+        "txHash": "0x7b4e3e9617e4b981fda0bed0cb691c8f1538e1f227b8cde558ee9a71d7915c6"
+      },
+      {
+        "type": "deposit",
+        "amount": 1000,
+        "txHash": "0x1b2f7ea13496c7301c62dd37ce792ef9075cee1c6a5d850a99fee6bb7cd1e2b"
+      },
+      {
+        "type": "deposit",
+        "amount": 1000,
+        "txHash": "0x782ca5e7e648a3305096df2376b04bc516cfda6d93a99cfd39981c24b61743e"
+      },
+      {
+        "type": "deposit",
+        "amount": 1211.8548855,
+        "txHash": "0x6f06465988fcb7a89e3a20c17204de26854474b0bce9de555f63069dcf32f6f"
+      },
+      {
+        "type": "deposit",
+        "amount": 3000,
+        "txHash": "0x2d1efbf43ea9d5f1dc0493c948bf435ecb260b1ebbcf5b1dcd5bd8cac5807d"
+      },
+      {
+        "type": "deposit",
+        "amount": 3624.9999999999995,
+        "txHash": "0x3823537748cf46f672bfae6875524d80d190500fa3c9a2d1d4c909a8fc849aa"
+      },
+      {
+        "type": "withdraw",
+        "amount": 7963.437999613525,
+        "txHash": "0x83e44217b01a14b8974e031808129988b79b05554ad91bff66cfa73dbc763e"
+      },
+      {
+        "type": "withdraw",
+        "amount": 9.334754671385399,
+        "txHash": "0x70f09a968c2495c0cbad686d88f559a2dcb22cbd393d57b00cb38e6b9267543"
+      },
+      {
+        "type": "deposit",
+        "amount": 1000,
+        "txHash": "0x45d2c18d82082b2d08d32d4182987f31fd9d713b5308066ee69ef116ec06ac3"
+      }
+    ]
+  },
+  {
+    "owner": "0x74e3b59a1973012c0c3ec84cbb32c694a75f647105aad1589f158199786ea0f",
+    "sum": 100,
+    "size": 100.84132268419064,
+    "diff": 0.8413226841906436,
+    "percent": 0.8343034995935665,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 100,
+        "txHash": "0x765fbdb9d65f21e3399bd2e0e7bc4bfc0c40ef7ceb20bd710085e2d4572e69f"
       }
     ]
   },
   {
     "owner": "0xb1ddd66dfd43f359706730088685770a2dc23ba097d56837d06efe6004247e",
     "sum": 3930,
-    "size": 3930.2934114181617,
-    "diff": 0.2934114181616678,
-    "percent": 0.007465382032528626,
+    "size": 3963.455172487504,
+    "diff": 33.455172487504115,
+    "percent": 0.8440911031297804,
     "actions": [
       {
         "type": "deposit",
-        "amount": 3930
+        "amount": 3930,
+        "txHash": "0x13722043a026c6baf28cf217d8b8c281dc08a138ff928b11cbb9bd6839a33a1"
       }
     ]
   },
   {
     "owner": "0x571d4b6f5a34d7a43517d2eca4166804f753a643ec28bec0f51143bef50a9a6",
     "sum": 118464.11553900124,
-    "size": 118509.33623935338,
-    "diff": 45.22070035213255,
-    "percent": 0.03815792222546946,
+    "size": 119508.99013137323,
+    "diff": 1044.8745923719835,
+    "percent": 0.874306268694413,
     "actions": [
       {
         "type": "deposit",
-        "amount": 20999.999999999996
+        "amount": 20999.999999999996,
+        "txHash": "0x5a321704bd5b61f68099c4d83ba07f0b554600a8ecb4f4b35584686fa68a327"
       },
       {
         "type": "deposit",
-        "amount": 1000
+        "amount": 1000,
+        "txHash": "0x1e49341b40ed91dc9e7c711cd55cdbacf81d49e3ecc9a72b5b1a77f0bc00c46"
       },
       {
         "type": "deposit",
-        "amount": 403.1283145052259
+        "amount": 403.1283145052259,
+        "txHash": "0x6222903bfcdec9d17cc0d1a97ead4d59f3c7602343a52dcaa69caee05c8b5e7"
       },
       {
         "type": "deposit",
-        "amount": 440
+        "amount": 440,
+        "txHash": "0x422ff82f26771469dc45dd10295ef7c448797fcbfa59b00070a3f74a4640b8e"
       },
       {
         "type": "deposit",
-        "amount": 5000.18792120475
+        "amount": 5000.18792120475,
+        "txHash": "0x190a9c71c1c141487bfe57420dc4f0293c5f55c1a06f4f24d9499ad452e7bbd"
       },
       {
         "type": "deposit",
-        "amount": 100.79930329127782
+        "amount": 100.79930329127782,
+        "txHash": "0x2e24306c916cff904bb9a7e7080bce2bed812a41c21dfe4a05c7aaee94d88a8"
       },
       {
         "type": "deposit",
-        "amount": 70000
+        "amount": 70000,
+        "txHash": "0x63704deec6c937304b2f926c599aca3dc6ba8c7392bc3764b588dbd1d5183"
       },
       {
         "type": "deposit",
-        "amount": 20519.999999999996
+        "amount": 20519.999999999996,
+        "txHash": "0x9489431bd89b02b5992d784f5bdbff5f9e376ba3d32f4ea676fb91d178940f"
       }
     ]
   },
   {
     "owner": "0x7ad60dd5544e0585f15f14c8578823749386387f7100b858202372270dda2a6",
     "sum": 521,
-    "size": 521.9365147907686,
-    "diff": 0.9365147907685696,
-    "percent": 0.17943078597288697,
+    "size": 526.3446612224054,
+    "diff": 5.344661222405421,
+    "percent": 1.0154299295052693,
     "actions": [
       {
         "type": "deposit",
-        "amount": 21
+        "amount": 21,
+        "txHash": "0x32fbaa67238633766cfea74b87c86320a235bd133d82ce30acbe408fd51e9c"
       },
       {
         "type": "deposit",
-        "amount": 500
+        "amount": 500,
+        "txHash": "0x21f78b4c37fc7537e058852e6a2e8ca00369828c51098f195bf7910c685120"
       }
     ]
   },
   {
     "owner": "0xc5b1c44647224481be75e17dce2539d56017794e8ffea9b278fd11c99cd282",
     "sum": 380,
-    "size": 380.7545137073457,
-    "diff": 0.7545137073457227,
-    "percent": 0.19816277422403836,
+    "size": 383.9723681375165,
+    "diff": 3.9723681375165256,
+    "percent": 1.0345453129309177,
     "actions": [
       {
         "type": "deposit",
-        "amount": 380
+        "amount": 380,
+        "txHash": "0x373519b40578f3bf09d30a418ad283644ac3da93749f9b665ae6034199a2974"
       }
     ]
   },
   {
     "owner": "0x22fd5b3344f6c55f49a8f26afee1c4c9722fb484f6511d00c63c3e43cd981ae",
     "sum": 248.5068923520051,
-    "size": 249.04466456847902,
-    "diff": 0.5377722164739112,
-    "percent": 0.21593404436337227,
+    "size": 251.15041445353555,
+    "diff": 2.6435221015304364,
+    "percent": 1.05256529529618,
     "actions": [
       {
         "type": "deposit",
-        "amount": 248.5068923520051
+        "amount": 248.5068923520051,
+        "txHash": "0x54a45f50864550175e03b607e4af493e8eeb4995fca1bd7fd6e171be0be41a5"
       }
     ]
   },
   {
     "owner": "0x411e8f0da11019e947dfa017096f28cee04497e10f3543cf475b2b250ee3884",
     "sum": 700,
-    "size": 701.8360618298707,
-    "diff": 1.8360618298706868,
-    "percent": 0.26160836265432014,
+    "size": 707.7758172605734,
+    "diff": 7.775817260573376,
+    "percent": 1.0986271459046821,
     "actions": [
       {
         "type": "deposit",
-        "amount": 700
+        "amount": 700,
+        "txHash": "0x7c8a4365bf1ea6415b5b39112da137ef835834b2dd4e1d820a506643a16aa2f"
       }
     ]
   },
   {
     "owner": "0x27ee383790ec41e778bb317c05248a4ba8ea575736ffdc12f49951006f57db2",
     "sum": 2325.8440409799123,
-    "size": 2332.009031672384,
-    "diff": 6.164990692471747,
-    "percent": 0.26436392864441727,
+    "size": 2351.746115740169,
+    "diff": 25.90207476025671,
+    "percent": 1.1013975780333969,
     "actions": [
       {
         "type": "deposit",
-        "amount": 2325.8440409799123
+        "amount": 2325.8440409799123,
+        "txHash": "0x3c6050276e60d344ab186fe8fb7fca3039a49da0cffa63b5d76c299fba0179a"
+      }
+    ]
+  },
+  {
+    "owner": "0x69257dd02708446a287cddb6906b746a3491ab02b43718db1ecd8d5179d0116",
+    "sum": 1000,
+    "size": 1011.1373921825199,
+    "diff": 11.137392182519875,
+    "percent": 1.1014716959957376,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 1000,
+        "txHash": "0x6316de3107ad104b5a7e95add462df8cd1e570987aaffe641739e3805724d33"
       }
     ]
   },
   {
     "owner": "0x5f7173d900618518b08de724c53ac05a089dff4c80e868c7c0658658e9a8e91",
     "sum": 223.01987295263916,
-    "size": 223.68007324049228,
-    "diff": 0.6602002878531152,
-    "percent": 0.2951538231764137,
+    "size": 225.57403231956962,
+    "diff": 2.554159366930463,
+    "percent": 1.132293172519077,
     "actions": [
       {
         "type": "deposit",
-        "amount": 223.01987295263916
+        "amount": 223.01987295263916,
+        "txHash": "0x8f8e1a6d261bd3a0659ae134d591f60b30c3139d48b855ea5a807c17c99bff"
       }
     ]
   },
   {
     "owner": "0x299713aa82dee87e89f6f9025eae26130a303361da97e82c73d5858add64584",
     "sum": 360,
-    "size": 361.14541959863266,
-    "diff": 1.1454195986326567,
-    "percent": 0.31716298656248926,
+    "size": 364.20409206625317,
+    "diff": 4.204092066253168,
+    "percent": 1.15432312756343,
     "actions": [
       {
         "type": "deposit",
-        "amount": 100
+        "amount": 100,
+        "txHash": "0x1fa87c273d1d8d546b09759a4de6835f8daf1910bb543e54f856ee4f1cc184"
       },
       {
         "type": "deposit",
-        "amount": 260
+        "amount": 260,
+        "txHash": "0x5d9a0846e4eb98f3d6dbcafe306e44c60bb12b1f2a1bc7e8eee0d90250ef314"
       }
     ]
   },
   {
     "owner": "0x76d03040d437ad18d56eb9b4915664fba636124045057b3fca67b604efb54f9",
     "sum": 617.9,
-    "size": 619.9056620553256,
-    "diff": 2.0056620553256153,
-    "percent": 0.3235431095556945,
+    "size": 625.156002682051,
+    "diff": 7.256002682051076,
+    "percent": 1.1606707207355116,
     "actions": [
       {
         "type": "deposit",
-        "amount": 617.9
+        "amount": 617.9,
+        "txHash": "0x5706323c70b38c558f8f550144427ea8cdd8b967b7dc0a3bd2bb297b836d104"
       }
     ]
   },
   {
     "owner": "0x463597970ec65ea31a7ae79819102879d12cfcb5f923311a67e9db75618da36",
     "sum": 40.407474419395975,
-    "size": 40.54482836599598,
-    "diff": 0.13735394660000821,
-    "percent": 0.33877057108275693,
+    "size": 40.88827703993825,
+    "diff": 0.48080262054227774,
+    "percent": 1.1758935698675843,
     "actions": [
       {
         "type": "deposit",
-        "amount": 17.61385302592766
+        "amount": 17.61385302592766,
+        "txHash": "0x7f932cab7e71a87261fc432f11208929fc8522560921c5c49c886b6495e09e2"
       },
       {
         "type": "deposit",
-        "amount": 22.793621393468314
+        "amount": 22.793621393468314,
+        "txHash": "0x599c190eb5f98feb4b565e203ffde0274cda68ae43e1f0064b15e1b6eca7b8"
       }
     ]
   },
   {
     "owner": "0x3d3678e4d0c5ce2a6980b2f1f55a658aa7fa9b074d86f4857c6e1f91a91239",
     "sum": 134.97016397407484,
-    "size": 135.43248095481746,
-    "diff": 0.46231698074262795,
-    "percent": 0.3413634436017344,
+    "size": 136.5797304511986,
+    "diff": 1.6095664771237637,
+    "percent": 1.178481222511183,
     "actions": [
       {
         "type": "deposit",
-        "amount": 134.97016397407484
+        "amount": 134.97016397407484,
+        "txHash": "0x6b828671a123b2f84dd63d005ade3a4604fa3dadd44acf2288d4dae4a942bcd"
       }
     ]
   },
   {
     "owner": "0x4eb20526acac5faff57854c3ece106908c87cf8ca82340b047475b901c066b3",
     "sum": 126,
-    "size": 126.43325064877266,
-    "diff": 0.4332506487726562,
-    "percent": 0.34267144643477687,
+    "size": 127.50427327985824,
+    "diff": 1.5042732798582392,
+    "percent": 1.1797826387798942,
     "actions": [
       {
         "type": "deposit",
-        "amount": 126
+        "amount": 126,
+        "txHash": "0x2da65b50a618770e3221d97359438d99e52421ee7fa3b5b2083fb61069235b3"
       }
     ]
   },
   {
     "owner": "0x17d37679b19f0ed615d2a9adee1fa5f0b4677ceef4c8698c83c0d56424236dc",
     "sum": 251,
-    "size": 251.86398692390188,
-    "diff": 0.8639869239018765,
-    "percent": 0.3430371028641428,
+    "size": 253.9975318831543,
+    "diff": 2.997531883154295,
+    "percent": 1.1801421300948862,
     "actions": [
       {
         "type": "deposit",
-        "amount": 251
+        "amount": 251,
+        "txHash": "0x59528c667ca137a14a630481951bab29c3f2be0465902a77e8088eabd8f94d9"
       }
     ]
   },
   {
     "owner": "0x2f57b48b8f886ffec150e46f6697828d02586fd92163e8ba1ae09279ff2b6a7",
     "sum": 20,
-    "size": 20.086609571121627,
-    "diff": 0.08660957112162748,
-    "percent": 0.43118063710535515,
+    "size": 20.25675548351636,
+    "diff": 0.25675548351636124,
+    "percent": 1.267505468609187,
     "actions": [
       {
         "type": "deposit",
-        "amount": 20
+        "amount": 20,
+        "txHash": "0x76b4d7cd8de4fa587ef8918e3c487e4c8e97926199ec138a9d61f9d9be4b1ee"
       }
     ]
   },
   {
     "owner": "0x5aed32c092b4d597e524160d749c4ac4bfe38960693b79f3c407e9fdf6ec7f4",
     "sum": 9991.86759558555,
-    "size": 10036.257931434522,
-    "diff": 44.39033584897152,
-    "percent": 0.44229967137389653,
+    "size": 10121.347547247466,
+    "diff": 129.47995166191504,
+    "percent": 1.2792758183383155,
     "actions": [
       {
         "type": "deposit",
-        "amount": 15988.885335658935
+        "amount": 15988.885335658935,
+        "txHash": "0x7ad87787f8c147a7b7f6ebf201f683ffd4967d6ee11ab228ba7b0dd7cfeae1"
       },
       {
         "type": "withdraw",
-        "amount": 3020.0828145556957
+        "amount": 3020.0828145556957,
+        "txHash": "0x1402c30049a7a95d70d25e7146adcd958d285cdd9c76f0c9499c9e4b8302ebb"
       },
       {
         "type": "withdraw",
-        "amount": 2976.93492551769
+        "amount": 2976.93492551769,
+        "txHash": "0x32e7999a48abb2775f2acfbc37c2ff6b6354dadc400ee2ec5c24d3c6e5e5f0a"
       }
     ]
   },
   {
     "owner": "0x720eba8edea43289347d8cc5518a1944b3eb5c9bde8f255c4946f9ff21d782d",
     "sum": 500,
-    "size": 502.2542798982319,
-    "diff": 2.254279898231914,
-    "percent": 0.4488323919686025,
+    "size": 506.5092475687123,
+    "diff": 6.509247568712283,
+    "percent": 1.2851191957416825,
     "actions": [
       {
         "type": "deposit",
-        "amount": 500
+        "amount": 500,
+        "txHash": "0x1d90aec9c7dfa37bd0ce2c16e88f9a518e811a332665a701566d1f55e3add61"
       }
     ]
   },
   {
     "owner": "0x390094f7f1c3effef32a29a83f4c92ebd9e7f10bd7e4b2ca5d23579aa8a5c77",
     "sum": 1382.7101358030716,
-    "size": 1389.247141432646,
-    "diff": 6.537005629574423,
-    "percent": 0.47054303259772823,
+    "size": 1401.0038729589319,
+    "diff": 18.2937371558603,
+    "percent": 1.3057592137289225,
     "actions": [
       {
         "type": "deposit",
-        "amount": 554
+        "amount": 554,
+        "txHash": "0x1c15390ce6254335939d1c6ceaa9f9fa49bb63ae752fc557b063f70af35728b"
       },
       {
         "type": "deposit",
-        "amount": 349.05274716727723
+        "amount": 349.05274716727723,
+        "txHash": "0x1548d71c97576e3848a06814c1f5dbe2ad608ba29ba169f7cd1b99041a687dc"
       },
       {
         "type": "deposit",
-        "amount": 246.75024325575856
+        "amount": 246.75024325575856,
+        "txHash": "0x1c099806125d6ea120a327cb4eb10dfab437506b3eb3c4421e0417faaa93229"
       },
       {
         "type": "deposit",
-        "amount": 232.90714538003584
-      }
-    ]
-  },
-  {
-    "owner": "0x718505b87b5a448205ae22ac84a21b9e568b532ed95285c4c03973f8b1a73e8",
-    "sum": 1500,
-    "size": 1507.149061552272,
-    "diff": 7.149061552272087,
-    "percent": 0.47434336354952095,
-    "actions": [
-      {
-        "type": "deposit",
-        "amount": 1500
+        "amount": 232.90714538003584,
+        "txHash": "0x3c55cf47182b3be903e5b3522f5ae4ec67a0b0483746a40dc7626adcb59423"
       }
     ]
   },
   {
     "owner": "0x4b3db608163d81a9b2fcccba6e538859a74ce4266727ea160ffb1c8c83e66f1",
     "sum": 70400,
-    "size": 70736.6998003449,
-    "diff": 336.6998003448971,
-    "percent": 0.4759902586567311,
+    "size": 71336.06858485455,
+    "diff": 936.0685848545545,
+    "percent": 1.3121953640339696,
     "actions": [
       {
         "type": "deposit",
-        "amount": 400
+        "amount": 400,
+        "txHash": "0x71bd1a57ffe4bf18db292da72da95812aa69376f6b59868b8690f2e858ac40b"
       },
       {
         "type": "deposit",
-        "amount": 20000
+        "amount": 20000,
+        "txHash": "0x6ad65a10dbb86891dd7c28559a5506957eb139c6f8228dd0712f3d5dfb52149"
       },
       {
         "type": "deposit",
-        "amount": 49999.99999999999
+        "amount": 49999.99999999999,
+        "txHash": "0x12e54a6dadd69e39911ed227b527ad41044c6513843f514168e4e857e6453d1"
       }
     ]
   },
   {
     "owner": "0x5970da1011e2f8dc15bc12fc1b0eb8e382300a334de06ad17d1404384b168e4",
     "sum": 200.87821714436737,
-    "size": 201.9628594761512,
-    "diff": 1.08464233178384,
-    "percent": 0.5370503936204766,
+    "size": 203.67473598993826,
+    "diff": 2.796518845570887,
+    "percent": 1.3730317763657431,
     "actions": [
       {
         "type": "deposit",
-        "amount": 200.87821714436737
-      }
-    ]
-  },
-  {
-    "owner": "0x31c807b795cb29a145e297db078be265946294f60f88a71a1d260a2478b6f5c",
-    "sum": 1144,
-    "size": 1150.6101168630976,
-    "diff": 6.6101168630975735,
-    "percent": 0.5744879839157595,
-    "actions": [
-      {
-        "type": "deposit",
-        "amount": 1055
-      },
-      {
-        "type": "deposit",
-        "amount": 22
-      },
-      {
-        "type": "deposit",
-        "amount": 24
-      },
-      {
-        "type": "deposit",
-        "amount": 43
-      }
-    ]
-  },
-  {
-    "owner": "0x7fb2eaa6d50e56d6afdbc23b1313285cc159223168ea3e48e20344d38c482c8",
-    "sum": 300,
-    "size": 301.7378860081656,
-    "diff": 1.7378860081656171,
-    "percent": 0.5759588333957462,
-    "actions": [
-      {
-        "type": "deposit",
-        "amount": 300
-      }
-    ]
-  },
-  {
-    "owner": "0x75ced90c16964bddf85428a8df1b5e16fc638bea918759281b3d96f7b37998",
-    "sum": 13001,
-    "size": 13077.287483026485,
-    "diff": 76.28748302648455,
-    "percent": 0.5833586141277464,
-    "actions": [
-      {
-        "type": "deposit",
-        "amount": 7000
-      },
-      {
-        "type": "deposit",
-        "amount": 4000
-      },
-      {
-        "type": "deposit",
-        "amount": 2000
-      },
-      {
-        "type": "deposit",
-        "amount": 1
-      }
-    ]
-  },
-  {
-    "owner": "0x1cb1270ff2d6d5ed9965d101b61c7e486d06bde1c2aabb8a2b4f3806ea30ac",
-    "sum": 6560,
-    "size": 6599.590419842857,
-    "diff": 39.590419842857045,
-    "percent": 0.5998920739660043,
-    "actions": [
-      {
-        "type": "deposit",
-        "amount": 4060
-      },
-      {
-        "type": "deposit",
-        "amount": 2500
-      }
-    ]
-  },
-  {
-    "owner": "0x4cced5156ab726bf0e0ca2afeb1f521de0362e748b8bdf07857b088dbc7b457",
-    "sum": 1621.440453706808,
-    "size": 1631.3057225450082,
-    "diff": 9.865268838200109,
-    "percent": 0.6047467805611111,
-    "actions": [
-      {
-        "type": "deposit",
-        "amount": 1621.440453706808
-      }
-    ]
-  },
-  {
-    "owner": "0x55741fd3ec832f7b9500e24a885b8729f213357be4a8e209c4bca1f3b909ae",
-    "sum": 301.65038707721425,
-    "size": 303.52859122435177,
-    "diff": 1.8782041471375237,
-    "percent": 0.618789860804005,
-    "actions": [
-      {
-        "type": "deposit",
-        "amount": 100
-      },
-      {
-        "type": "deposit",
-        "amount": 100
-      },
-      {
-        "type": "withdraw",
-        "amount": 198.34961292278575
-      },
-      {
-        "type": "deposit",
-        "amount": 300
-      }
-    ]
-  },
-  {
-    "owner": "0x2b27457428b94b38ccad5339ebc17a211b7c482c008ac8ad22e01b30e923628",
-    "sum": 145.35606249684975,
-    "size": 146.26724636870824,
-    "diff": 0.9111838718584977,
-    "percent": 0.6229582455949155,
-    "actions": [
-      {
-        "type": "deposit",
-        "amount": 145.35606249684975
-      }
-    ]
-  },
-  {
-    "owner": "0x7540f121b6e92018f038d38672bd15a981c8d435d2f7b610ef79a53b048cef5",
-    "sum": 17293,
-    "size": 17401.64493064673,
-    "diff": 108.64493064672934,
-    "percent": 0.6243371306547603,
-    "actions": [
-      {
-        "type": "deposit",
-        "amount": 5633
-      },
-      {
-        "type": "deposit",
-        "amount": 9090
-      },
-      {
-        "type": "deposit",
-        "amount": 2570
-      }
-    ]
-  },
-  {
-    "owner": "0x4e6bcc0024323ad1588a2425779b0bc70fc1919e1b5f6505e572e291ac3b5f5",
-    "sum": 420,
-    "size": 422.6446392180975,
-    "diff": 2.6446392180974954,
-    "percent": 0.6257358955244623,
-    "actions": [
-      {
-        "type": "deposit",
-        "amount": 420
+        "amount": 200.87821714436737,
+        "txHash": "0x4ca980c38b1ded3ef4eef1c7b612aed7a94c323821bda8038aaba25e70345ea"
       }
     ]
   },
   {
     "owner": "0x1fb5483b9f8c6eda957b987bacb8a6ad3f1564c9b35d76304e94743127efce2",
     "sum": 430,
-    "size": 432.72113848508343,
-    "diff": 2.7211384850834293,
-    "percent": 0.628843438203616,
+    "size": 436.11922540664807,
+    "diff": 6.11922540664807,
+    "percent": 1.403108381874786,
     "actions": [
       {
         "type": "deposit",
-        "amount": 10
+        "amount": 10,
+        "txHash": "0x6352321becb06bc83344a9c85f4d7498b1db470df702c5c90d0c2f6ac8039c2"
       },
       {
         "type": "deposit",
-        "amount": 210
+        "amount": 210,
+        "txHash": "0x4c987e1e92c8d06e38e566aa882fa075dd8ad8da0aa0dde80561f9fa2f78ceb"
       },
       {
         "type": "deposit",
-        "amount": 100
+        "amount": 100,
+        "txHash": "0x75650c352f535ce2d61cbaf7a707214062ae354dc2e9bb2dea3261fdd823df9"
       },
       {
         "type": "deposit",
-        "amount": 110
+        "amount": 110,
+        "txHash": "0x705501249805130715fbbbe03ed4ae15e76eae7f1cf9252cae679d75da6b86e"
+      }
+    ]
+  },
+  {
+    "owner": "0x31c807b795cb29a145e297db078be265946294f60f88a71a1d260a2478b6f5c",
+    "sum": 1144,
+    "size": 1160.2988010057504,
+    "diff": 16.29880100575042,
+    "percent": 1.404707217797913,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 1055,
+        "txHash": "0x62c62f3d3f6a0250a0b78c1525c58217127837ca7c3bdf28156e53e2e415d1"
+      },
+      {
+        "type": "deposit",
+        "amount": 22,
+        "txHash": "0xaa3bf76b16ee0500c2bd9b66ba9b78d6d86fd33bb47aa9199298b326a27a58"
+      },
+      {
+        "type": "deposit",
+        "amount": 24,
+        "txHash": "0x5dc1303ffafbe840318cf71e363c08d0d89ec10867495f82e7b604048d84541"
+      },
+      {
+        "type": "deposit",
+        "amount": 43,
+        "txHash": "0x155d556208e6b9115f7091600615206780711f6ee19f405bd2f7c89424b94c9"
+      }
+    ]
+  },
+  {
+    "owner": "0x7fb2eaa6d50e56d6afdbc23b1313285cc159223168ea3e48e20344d38c482c8",
+    "sum": 300,
+    "size": 304.295996505182,
+    "diff": 4.295996505182018,
+    "percent": 1.4117821313856356,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 300,
+        "txHash": "0x56ed135a8f9c1905d1f7073af3f0de384abf0a17e294a08ed8cf05d606df0dd"
+      }
+    ]
+  },
+  {
+    "owner": "0x75ced90c16964bddf85428a8df1b5e16fc638bea918759281b3d96f7b37998",
+    "sum": 13001,
+    "size": 13188.158589982708,
+    "diff": 187.15858998270778,
+    "percent": 1.4191411841594572,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 7000,
+        "txHash": "0x4b5c2be2b5fde5d90634aab22f5b6055b66f8a1a42b9abc37b7a192d6e9023e"
+      },
+      {
+        "type": "deposit",
+        "amount": 4000,
+        "txHash": "0x3c02bb4934f897f881104c06cb91f6e4b9564496a32443d99084d47f140ebee"
+      },
+      {
+        "type": "deposit",
+        "amount": 2000,
+        "txHash": "0x4165a57be2af3bfd746ef934c66362d76a28c44a1aa84c4c04ba7fa2d23b913"
+      },
+      {
+        "type": "deposit",
+        "amount": 1,
+        "txHash": "0x2d9f6dced4a2bc2d26f9bad6a02c7122eb03d1a9d693b947c4008e67b4cae88"
+      }
+    ]
+  },
+  {
+    "owner": "0x1cb1270ff2d6d5ed9965d101b61c7e486d06bde1c2aabb8a2b4f3806ea30ac",
+    "sum": 6560,
+    "size": 6655.543004864542,
+    "diff": 95.54300486454213,
+    "percent": 1.4355403427595563,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 4060,
+        "txHash": "0x6ab1cda13201c6fd82fb95001c9175856d7bb47e2f4f0dc7e3f55e80b249604"
+      },
+      {
+        "type": "deposit",
+        "amount": 2500,
+        "txHash": "0x55241f9d75d5d0bdc92bab2fee275a5227c234366d64db6bb5c2fc23324caff"
+      }
+    ]
+  },
+  {
+    "owner": "0x4cced5156ab726bf0e0ca2afeb1f521de0362e748b8bdf07857b088dbc7b457",
+    "sum": 1621.440453706808,
+    "size": 1645.1372897335796,
+    "diff": 23.696836026771507,
+    "percent": 1.4404169290095583,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 1621.440453706808,
+        "txHash": "0x31d9231eeef7efe4b0857f2cde3b4f1d74a495dd781204ba81bb51b0216188d"
+      }
+    ]
+  },
+  {
+    "owner": "0x55741fd3ec832f7b9500e24a885b8729f213357be4a8e209c4bca1f3b909ae",
+    "sum": 301.65038707721425,
+    "size": 306.0728921946972,
+    "diff": 4.422505117482956,
+    "percent": 1.4449189164618144,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 100,
+        "txHash": "0x35226cc2b6fdb260886df29aac5b8098596b93666eaa3ab26efdfdba97d8b54"
+      },
+      {
+        "type": "deposit",
+        "amount": 100,
+        "txHash": "0x114d0ee22f5b2f6eb0e2e7518e9617b2a91b9b122ba92fd224454acb9c380af"
+      },
+      {
+        "type": "withdraw",
+        "amount": 198.34961292278575,
+        "txHash": "0x2110997a8ed436a332458b9ba945d3bf0b3cfa0abfa9fd486f5d50c6b26afce"
+      },
+      {
+        "type": "deposit",
+        "amount": 300,
+        "txHash": "0x113db89a2284daf4449ac6d7a35316bcfd452852af66c4d7f048309c3525b37"
+      }
+    ]
+  },
+  {
+    "owner": "0x2b27457428b94b38ccad5339ebc17a211b7c482c008ac8ad22e01b30e923628",
+    "sum": 145.35606249684975,
+    "size": 147.5074744745078,
+    "diff": 2.151411977658057,
+    "percent": 1.4585104824839663,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 145.35606249684975,
+        "txHash": "0x79bd038a1b2e1db5a7e170273719724b13c30c6fe05cb4669c00f700485c7cf"
+      }
+    ]
+  },
+  {
+    "owner": "0x7540f121b6e92018f038d38672bd15a981c8d435d2f7b610ef79a53b048cef5",
+    "sum": 17293,
+    "size": 17549.197241529575,
+    "diff": 256.19724152957497,
+    "percent": 1.459880118751489,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 5633,
+        "txHash": "0x5ded66e85dedcf98bbd31e642688bb3d1a4975d4d93570821af7bc8cd1d9f1c"
+      },
+      {
+        "type": "deposit",
+        "amount": 9090,
+        "txHash": "0x958712d88cc674b2f177ea15fa45cf4aa740c533db853141afbe3de64efb85"
+      },
+      {
+        "type": "deposit",
+        "amount": 2570,
+        "txHash": "0x5967d40a6389cf32a82ab5665789aae1cf7a42166961db9330341ae2e431b7b"
+      }
+    ]
+  },
+  {
+    "owner": "0x4e6bcc0024323ad1588a2425779b0bc70fc1919e1b5f6505e572e291ac3b5f5",
+    "sum": 420,
+    "size": 426.22835556838584,
+    "diff": 6.228355568385837,
+    "percent": 1.4612719888333505,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 420,
+        "txHash": "0x6f19bb9a6cfb54208d4ffca1735f6b52c09802659fd3132d49df602b3eed792"
       }
     ]
   },
   {
     "owner": "0x5c38a6664b83d9b651be1926476019c286bcbc0626b6b1b6eff61604f036ca3",
     "sum": 288,
-    "size": 289.8576923935934,
-    "diff": 1.8576923935934246,
-    "percent": 0.6408980828671236,
+    "size": 292.31544274350244,
+    "diff": 4.3154427435024445,
+    "percent": 1.4762965319246266,
     "actions": [
       {
         "type": "deposit",
-        "amount": 284
+        "amount": 284,
+        "txHash": "0x65cd3f8eb18a3bdc440af7ae32c90c8666dcaa723ba66befc80ad7628efe5a6"
       },
       {
         "type": "deposit",
-        "amount": 4
+        "amount": 4,
+        "txHash": "0x5547d94fdeca821ed63ef75cf8941d18bede7df7ac5f09f129852e440c9faf9"
       }
     ]
   },
   {
     "owner": "0x8c1060e65eb111a6a00fc5606e4189ebebbc37d6b6eba51326bb400573feef",
     "sum": 3000,
-    "size": 3019.6304916207937,
-    "diff": 19.63049162079369,
-    "percent": 0.6500958205073952,
+    "size": 3045.2364144958988,
+    "diff": 45.23641449589877,
+    "percent": 1.4854812020690715,
     "actions": [
       {
         "type": "deposit",
-        "amount": 3000
+        "amount": 3000,
+        "txHash": "0x60a84804b1e518e698c129633ce322aa83c52ee9dd0f7821c99432b60c2caa0"
       }
     ]
   },
   {
     "owner": "0x479c10a66423011bed776683b975fd2a96a90c1ba985cffe8acc6db2de4bbe2",
     "sum": 1640.9527010896165,
-    "size": 1651.7453270604651,
-    "diff": 10.792625970848576,
-    "percent": 0.6534073863587502,
+    "size": 1665.751921686441,
+    "diff": 24.799220596824398,
+    "percent": 1.4887703429282053,
     "actions": [
       {
         "type": "deposit",
-        "amount": 1640.9527010896165
+        "amount": 1640.9527010896165,
+        "txHash": "0x26a206be7132f822061933a73a739c44d1ad0a077be86cbb30660611d7df7af"
       }
     ]
   },
   {
     "owner": "0x1a1865109fb8c0e11309b59977185b40f45d6947a68c6d61cd52e0d3f70bdf4",
     "sum": 50,
-    "size": 50.32954261687841,
-    "diff": 0.32954261687841324,
-    "percent": 0.6547697430651764,
+    "size": 50.75633436315133,
+    "diff": 0.756334363151332,
+    "percent": 1.4901280256763858,
     "actions": [
       {
         "type": "deposit",
-        "amount": 50
+        "amount": 50,
+        "txHash": "0x20b8c1afabff5be7e0c40569d5fe8b6d6eb0b519eb1f21e3fa2fbe2199c4b04"
       }
     ]
   },
   {
     "owner": "0x50393e851e40de930abcd9569d9df55883b9f2836d4bae724f126d2258cd292",
     "sum": 7000,
-    "size": 7046.483132447271,
-    "diff": 46.48313244727069,
-    "percent": 0.6596642832114028,
+    "size": 7106.237339639046,
+    "diff": 106.23733963904579,
+    "percent": 1.4949872142103546,
     "actions": [
       {
         "type": "deposit",
-        "amount": 7000
-      }
-    ]
-  },
-  {
-    "owner": "0x3c75143521a005ebd8828730dddb2da764e9c7fb6605dcae1a661ee4ab45058",
-    "sum": 672.6655453201242,
-    "size": 678.2544722309912,
-    "diff": 5.588926910866917,
-    "percent": 0.8240162269012673,
-    "actions": [
-      {
-        "type": "deposit",
-        "amount": 626.046448847363
-      },
-      {
-        "type": "deposit",
-        "amount": 46.6190964727612
+        "amount": 7000,
+        "txHash": "0x276564c4d3142c224b90a1db0e51baedeefb348c871c1fe7d02dc9a40af9671"
       }
     ]
   },
   {
     "owner": "0x6fd089667ad15016fa88eb492049d1ad723f6d37c2b39e9669745318963830d",
     "sum": 6138.433100000001,
-    "size": 6193.169029413729,
-    "diff": 54.73592941372772,
-    "percent": 0.8838113275088384,
+    "size": 6245.718398827184,
+    "diff": 107.28529882718249,
+    "percent": 1.7177415306993098,
     "actions": [
       {
         "type": "deposit",
-        "amount": 2000
+        "amount": 2000,
+        "txHash": "0x4992bbc3c8076e7fe8f3a5bf1e51a8fbd4bd9af33b744086350c0860057ef7e"
       },
       {
         "type": "deposit",
-        "amount": 87.2042
+        "amount": 87.2042,
+        "txHash": "0x4681b880c5055aefc80129b08f033c47f5ecbf8432fec9615a8ef8ab05ddcd3"
       },
       {
         "type": "deposit",
-        "amount": 3778
+        "amount": 3778,
+        "txHash": "0x7b1fa134cbb3565752f198a6c6e005707bcaa8cdb73918cd48f5eddc0ddf112"
       },
       {
         "type": "deposit",
-        "amount": 94
+        "amount": 94,
+        "txHash": "0x2fa195759263218b7c2dedf046c568ce3adae6e7c6cdc37257b00841bf98b4a"
       },
       {
         "type": "deposit",
-        "amount": 93.087
+        "amount": 93.087,
+        "txHash": "0x18f9b090f4a3fd4c336780ccc770f250bdd810c691f758c478d4a555c61fbe1"
       },
       {
         "type": "deposit",
-        "amount": 86.14190000000082
+        "amount": 86.14190000000082,
+        "txHash": "0x4ae179ed649c7303f307c71c7d569e6cb964c2cae8b09a3f08f1a3793b92b79"
       }
     ]
   },
   {
     "owner": "0x2140e267cf7e44f2f8556e75870f12632f85c3aad571a1d649828e476d6a811",
     "sum": 1081,
-    "size": 1090.6877163214654,
-    "diff": 9.68771632146536,
-    "percent": 0.8882209065431554,
+    "size": 1099.9416864583704,
+    "diff": 18.94168645837044,
+    "percent": 1.7220627867427705,
     "actions": [
       {
         "type": "deposit",
-        "amount": 1081
+        "amount": 1081,
+        "txHash": "0x780d90adfa65e52ce97e0c0cf74eeeee6e545d7bb472f4269c17bcebf0cdd58"
       }
     ]
   },
   {
     "owner": "0x367000a411f9b7f53fec24afbb986ac98ffece1dc5085877f78436dc04cb2a8",
     "sum": 5238.774040098324,
-    "size": 5286.756829530186,
-    "diff": 47.98278943186233,
-    "percent": 0.907603488850581,
+    "size": 5331.619855455969,
+    "diff": 92.84581535764482,
+    "percent": 1.7414185158499922,
     "actions": [
       {
         "type": "deposit",
-        "amount": 5238.774040098324
+        "amount": 5238.774040098324,
+        "txHash": "0x6000b6133fd4851d8c45e6450ad912940ca906000d03acb0d73e22e6aa1a7a7"
       }
     ]
   },
   {
     "owner": "0x3325ad4dcc88e39be83a0070dbbb18efc6d087b0a3bd0ea22c57f4ba0b5c5ab",
     "sum": 700,
-    "size": 706.6869898887861,
-    "diff": 6.686989888786115,
-    "percent": 0.9462449407535395,
+    "size": 712.686448847719,
+    "diff": 12.68644884771902,
+    "percent": 1.780088406090875,
     "actions": [
       {
         "type": "deposit",
-        "amount": 700
+        "amount": 700,
+        "txHash": "0x56b293bb996c2368660e8a1c0b2982d0b75b6a4c77b18a08e1ec567518df591"
       }
     ]
   },
   {
     "owner": "0x746d952482f38cfbc7b0b15c84838ed037d58cee9e98741ef4efd4d73b6e8cc",
     "sum": 20,
-    "size": 20.193423859443186,
-    "diff": 0.19342385944318607,
-    "percent": 0.9578556899984744,
+    "size": 20.36487579667483,
+    "diff": 0.3648757966748306,
+    "percent": 1.791691735897586,
     "actions": [
       {
         "type": "deposit",
-        "amount": 20
+        "amount": 20,
+        "txHash": "0x2a477587bdb02d29d33633941d5d3ace11929e2c9173c9549e4592969b21824"
       }
     ]
   },
   {
     "owner": "0x14dfc4e19d57c72220bb04f58e7a47588f878a840d7532627473b9c85633f36",
     "sum": 7700,
-    "size": 7774.708335457665,
-    "diff": 74.70833545766527,
-    "percent": 0.9609149595612129,
+    "size": 7840.721893000961,
+    "diff": 140.72189300096124,
+    "percent": 1.794756846644146,
     "actions": [
       {
         "type": "deposit",
-        "amount": 7700
+        "amount": 7700,
+        "txHash": "0x228f5bd7820328142e4a155663907500fcbf3d7e282c0575c22a0d74979b91b"
       }
     ]
   },
   {
     "owner": "0x5095078578a59f8a9c17df97188db1b59574c6d4836dd3e705fe8537624228a",
     "sum": 20,
-    "size": 20.234937877705413,
-    "diff": 0.23493787770541275,
-    "percent": 1.1610506497490372,
+    "size": 20.404548810198172,
+    "diff": 0.4045488101981718,
+    "percent": 1.9826403120267904,
     "actions": [
       {
         "type": "deposit",
-        "amount": 20
+        "amount": 20,
+        "txHash": "0x726016e403fb4e41c76686054939ff643cd1550aa3b3ac12049f446b60c3168"
       }
     ]
   },
   {
     "owner": "0x780fd42f0237b143d8991946a6da6d3b06b9bfb6569d4cb342a69f4c6aa1bd1",
     "sum": 3508.5504965874306,
-    "size": 3638.9362808929986,
-    "diff": 130.385784305568,
-    "percent": 3.583074124990482,
+    "size": 3668.562144257362,
+    "diff": 160.01164766993134,
+    "percent": 4.36169925376371,
     "actions": [
       {
         "type": "deposit",
-        "amount": 1690
+        "amount": 1690,
+        "txHash": "0x3d88b9614007ce957addaff213b1188c82d601edfbe1601d5c4f3b4dd0a9c47"
       },
       {
         "type": "withdraw",
-        "amount": 1681.449503412569
+        "amount": 1681.449503412569,
+        "txHash": "0x427029031efd46811ca02b2620cbaaf12cdb6775c0151221689ca626ad14fa"
       },
       {
         "type": "deposit",
-        "amount": 3500
+        "amount": 3500,
+        "txHash": "0x7003aa45e36b10c5fa4d4cd4881ae1922b76c8f6f8cd88cba4e2920b45ae0a8"
       }
     ]
   },
   {
     "owner": "0x65c384bb53b6325915e311b7630bbca22f34e0642d89a0baeffbb7dfaaca32c",
     "sum": 21.84375386886155,
-    "size": 22.6559905526836,
-    "diff": 0.81223668382205,
-    "percent": 3.5850857279150863,
+    "size": 22.845093758532407,
+    "diff": 1.0013398896708559,
+    "percent": 4.383172598260253,
     "actions": [
       {
         "type": "deposit",
-        "amount": 2.7381141866968925
+        "amount": 2.7381141866968925,
+        "txHash": "0x11bf4fcfb4e807e42f19d1eb876925f497958d5c4cafeb3fcf09076be82af3c"
       },
       {
         "type": "withdraw",
-        "amount": 2.7307866436033295
+        "amount": 2.7307866436033295,
+        "txHash": "0x2332d7eaa8989b2c6bc9c871677dfa57ba309e903f7da767516f26b09488985"
       },
       {
         "type": "deposit",
-        "amount": 21.836426325767988
-      }
-    ]
-  },
-  {
-    "owner": "0x6419f7dea356b74bc1443bd1600ab3831b7808d1ef897789facfad11a172da7",
-    "sum": 195,
-    "size": 202.26353536519534,
-    "diff": 7.263535365195338,
-    "percent": 3.5911244961088604,
-    "actions": [
-      {
-        "type": "deposit",
-        "amount": 195
+        "amount": 21.836426325767988,
+        "txHash": "0x7726d9ad478bf537a60df95ab5cde7cf681938ced3bf05327da81e032dca65e"
       }
     ]
   },
   {
     "owner": "0x26a4aa9c14c1a532438c54786a8c62b95f9bfc844c3d21c77afa227ecb32eb",
     "sum": 310,
-    "size": 321.66217274065207,
-    "diff": 11.662172740652068,
-    "percent": 3.6255965820559752,
+    "size": 324.3467274440471,
+    "diff": 14.346727444047076,
+    "percent": 4.423268752271294,
     "actions": [
       {
         "type": "deposit",
-        "amount": 310
+        "amount": 310,
+        "txHash": "0x6cde4a812861cafb2f5ec611ef3e0c9b668ccbf3e8e1d00258cd9e0ebcb4204"
       }
     ]
   },
   {
     "owner": "0x424ec6c0d9c74141ee4f59f8a5f1cb73a345814b8e9e6953408d2fdfcbace8c",
     "sum": 15503,
-    "size": 16090.043240775394,
-    "diff": 587.0432407753942,
-    "percent": 3.6484876515913207,
+    "size": 16224.29592360255,
+    "diff": 721.2959236025508,
+    "percent": 4.445776426903272,
     "actions": [
       {
         "type": "deposit",
-        "amount": 15495
+        "amount": 15495,
+        "txHash": "0x7dda5369a3676e2efd25802ccd532d546362b47251ada7a347b23dc254ca327"
       },
       {
         "type": "deposit",
-        "amount": 8
+        "amount": 8,
+        "txHash": "0x26ecdb114b7a0ee7ceb6afb4b7a0710f27fe2a02cd548482c87bdaedfebdf5d"
       }
     ]
   },
   {
     "owner": "0x1a70fc475ec39e03b613a1e34ba01883f4440b831c49cb7d263ecc77874b9b6",
     "sum": 7752.063824427171,
-    "size": 8050.1602864450815,
-    "diff": 298.0964620179102,
-    "percent": 3.7029879084500616,
+    "size": 8117.2933596249295,
+    "diff": 365.2295351977582,
+    "percent": 4.499400465361943,
     "actions": [
       {
         "type": "deposit",
-        "amount": 7679.571284754629
+        "amount": 7679.571284754629,
+        "txHash": "0x1f730baaba8a07e4f1bcb4b4bca8a2c6b6d3381a7c663ccbe49a12e38d49d24"
       },
       {
         "type": "deposit",
-        "amount": 72.49253967254253
+        "amount": 72.49253967254253,
+        "txHash": "0x82bc9ba8dd82b6eef812eb7e44a6e17a30812cbb20238ee9eeae28c98c1446"
       }
     ]
   },
   {
     "owner": "0x392befcfd649f1f60100d49b38d634b70ae04e2bbdcc2f56ccce8ecb90e8e25",
     "sum": 150.36210250950745,
-    "size": 156.2635618229846,
-    "diff": 5.901459313477147,
-    "percent": 3.7766061675736804,
+    "size": 157.56572407064593,
+    "diff": 7.203621561138476,
+    "percent": 4.571820174487105,
     "actions": [
       {
         "type": "deposit",
-        "amount": 150.36210250950745
+        "amount": 150.36210250950745,
+        "txHash": "0x593f8d34d2c3f7f197647d4aee61b3a2bcae430c10d072e2645024603e3aa85"
+      }
+    ]
+  },
+  {
+    "owner": "0x6419f7dea356b74bc1443bd1600ab3831b7808d1ef897789facfad11a172da7",
+    "sum": 185.02729363297843,
+    "size": 193.99857402916783,
+    "diff": 8.9712803961894,
+    "percent": 4.624405329309566,
+    "actions": [
+      {
+        "type": "deposit",
+        "amount": 195,
+        "txHash": "0x669704dcf563476c72a32216debed52a1fb65644458a3231c959745de6dcf5c"
+      },
+      {
+        "type": "withdraw",
+        "amount": 3.9912747962500017,
+        "txHash": "0x1cf39ba6ba1188c689384547e8ec50df80eb967a7218301a9581fea3f81847a"
+      },
+      {
+        "type": "withdraw",
+        "amount": 5.985958548184272,
+        "txHash": "0x5a1138fec49679d3bd880da1586600b543744235fcefc7befc663285256d5e3"
+      },
+      {
+        "type": "deposit",
+        "amount": 3,
+        "txHash": "0x57e19a81882c7b0617c79aa50bb883178dee932b64445be475519720966c490"
+      },
+      {
+        "type": "withdraw",
+        "amount": 2.9954730225873045,
+        "txHash": "0x57276650b4d6b7c318e599d9a4f05b8fb36e9c0584e7ecbd66b147b4a32f6a5"
       }
     ]
   }

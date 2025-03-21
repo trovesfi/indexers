@@ -135,3 +135,20 @@ model framethispeter {
   
   @@unique([block_number, txIndex, eventIndex], name: "event_id")
 }
+
+model pixels {
+  block_number Int
+  txIndex      Int    @default(0)
+  eventIndex   Int    @default(0)
+  txHash       String
+
+  placed_by String
+  position  Int
+  color    Int
+  canvas_id Int
+  
+  timestamp Int
+  cursor    BigInt? @map("_cursor")
+  
+  @@unique([block_number, txIndex, eventIndex], name: "event_id")
+}
