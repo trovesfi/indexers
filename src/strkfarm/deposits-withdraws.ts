@@ -1,6 +1,5 @@
 import { standariseAddress, toBigInt, toHex, toNumber } from "./../utils.ts";
 import { TOKENS, isTLS } from "./constants.ts";
-import { VesuRebalanceStrategies } from '@strkfarm/sdk';
 
 function dnmmProcessor(data: any[], type: 'deposit' | 'withdraw') {
     console.log(data, type)
@@ -25,6 +24,20 @@ function dnmmProcessor(data: any[], type: 'deposit' | 'withdraw') {
         throw new Error('strkfarm:deposit_withdraw:dnmm: unknown action type');
     }
 }
+
+const VesuRebalanceStrategies = [{
+    address: '0x778007f8136a5b827325d21613803e796bda4d676fbe1e34aeab0b2a2ec027f',
+    name: "Vesu Fusion STRK",
+    asset: TOKENS.STRK,
+}, {
+    name: "Vesu Fusion ETH",
+    address: '0x26ea414fdf74ace1df5bc5ac72cbac670d438ef19b31edf9d59f98718fc0ab2',
+    asset: TOKENS.ETH,
+}, {
+    name: 'Vesu Fusion USDC',
+    address: '0x3a69adeb993cddb266962d9c995e3d0641dab627df22b825fa31bda460c3c14',
+    asset: TOKENS.USDC,
+}]
 
 function erc4626Processor(data: any[], type: 'deposit' | 'withdraw') {
     console.log(data, type)
@@ -84,8 +97,8 @@ const CONTRACTS: any = {
             },
             ...VesuRebalanceStrategies.map((s) => {
                 return {
-                    address: standariseAddress(s.address.address),
-                    asset: s.depositTokens[0].address.address
+                    address: standariseAddress(s.address),
+                    asset: s.asset
                 }
             })
         ],
