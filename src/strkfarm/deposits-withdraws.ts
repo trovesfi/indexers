@@ -26,17 +26,21 @@ function dnmmProcessor(data: any[], type: 'deposit' | 'withdraw') {
 }
 
 const VesuRebalanceStrategies = [{
-    address: '0x778007f8136a5b827325d21613803e796bda4d676fbe1e34aeab0b2a2ec027f',
+    address: '0x7fb5bcb8525954a60fde4e8fb8220477696ce7117ef264775a1770e23571929',
     name: "Vesu Fusion STRK",
     asset: TOKENS.STRK,
 }, {
     name: "Vesu Fusion ETH",
-    address: '0x26ea414fdf74ace1df5bc5ac72cbac670d438ef19b31edf9d59f98718fc0ab2',
+    address: '0x5eaf5ee75231cecf79921ff8ded4b5ffe96be718bcb3daf206690ad1a9ad0ca',
     asset: TOKENS.ETH,
 }, {
     name: 'Vesu Fusion USDC',
-    address: '0x3a69adeb993cddb266962d9c995e3d0641dab627df22b825fa31bda460c3c14',
+    address: '0xa858c97e9454f407d1bd7c57472fc8d8d8449a777c822b41d18e387816f29c',
     asset: TOKENS.USDC,
+}, {
+    name: 'Vesu Fusion USDT',
+    address: '0x115e94e722cfc4c77a2f15c4aefb0928c1c0029e5a57570df24c650cb7cec2c',
+    asset: TOKENS.USDT,
 }]
 
 function erc4626Processor(data: any[], type: 'deposit' | 'withdraw') {
