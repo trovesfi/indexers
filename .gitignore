@@ -4,3 +4,5 @@ dist
 snapshots
 
 *.log
+run2.sh
+totalBridged.json

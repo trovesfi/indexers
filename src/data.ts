@@ -647,8 +647,21 @@ function updateWithdrawalAmountsUsingFIFO(transactions: Transaction[]): Transact
         .sort((a, b) => a.timestamp - b.timestamp);
 }
 
+async function deleteMany() {
+    const prisma = new PrismaClient();
+
+    // delete all records
+    const result = await prisma.harvests.deleteMany({
+        where: {
+            contract: '0x7fb5bcb8525954a60fde4e8fb8220477696ce7117ef264775a1770e23571929'
+        }
+    });
+    console.log(result);
+}
+
 // run();
-dnmm()
+// dnmm()
+deleteMany();
 // getInvestmentFlowsGroupedByUser();
 // depositsAndWithdraws();
 // OGFarmerNFTEligibleUsers();

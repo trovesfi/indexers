@@ -132,6 +132,23 @@ model framethispeter {
 
   timestamp Int
   cursor    BigInt? @map("_cursor")
-  
+
+  @@unique([block_number, txIndex, eventIndex], name: "event_id")
+}
+
+model transfers {
+  block_number Int
+  txIndex      Int    @default(0)
+  eventIndex   Int    @default(0)
+  txHash       String
+
+  contract String
+  from     String
+  receiver String
+  amount   String
+
+  timestamp Int
+  cursor    BigInt? @map("_cursor")
+
   @@unique([block_number, txIndex, eventIndex], name: "event_id")
 }

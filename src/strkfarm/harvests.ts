@@ -1,40 +1,59 @@
+import { hash } from "https://esm.run/starknet@5.29.0";
 import { standariseAddress, toBigInt, toHex, toNumber } from "./../utils.ts";
 import { TOKENS, isTLS } from "./constants.ts";
 
-function processClaim(data: any[], hash: string) {
-    if (data.length == 2) {
-        return {
-            claimee: standariseAddress(data[0]),
-            amount: toBigInt(data[1]).toString(),
+function processClaim(key: string, data: any[], fromAddress: string) {
+    if (key == claimedKey) {
+        if (data.length == 2) {
+            return {
+                claimee: standariseAddress(data[0]),
+                amount: toBigInt(data[1]).toString(),
+            }
+        } else if (data.length == 3) {
+            return {
+                claimee: standariseAddress(data[1]),
+                amount: toBigInt(data[2]).toString(),
+            }
+        } else {
+            // will be ignored
+            console.warn(`strkfarm:harvests:Unknown data length: ${data.length}`);
+            return null;
         }
-    } else if (data.length == 3) {
-        return {
-            claimee: standariseAddress(data[1]),
-            amount: toBigInt(data[2]).toString(),
+    } else if (key == harvestKeyUsual) {
+        if (data.length == 6) {
+            return {
+                claimee: standariseAddress(fromAddress),
+                amount: toBigInt(data[2]).toString(),
+            }
+        } else {
+            // will be ignored
+            console.warn(`[2]strkfarm:harvests:Unknown data length: ${data.length}`);
+            return null;
         }
-    } else {
-        // will be ignored
-        console.warn(`strkfarm:harvests:Unknown data length: ${data.length}`);
-        return null;
     }
 }
 
-const CONTRACTS: any = {
+const VesuRebalanceStrategies = [{
+    address: '0x7fb5bcb8525954a60fde4e8fb8220477696ce7117ef264775a1770e23571929',
+    name: "Vesu Fusion STRK",
+    asset: TOKENS.STRK,
+}, {
+    name: "Vesu Fusion ETH",
+    address: '0x5eaf5ee75231cecf79921ff8ded4b5ffe96be718bcb3daf206690ad1a9ad0ca',
+    asset: TOKENS.ETH,
+}, {
+    name: 'Vesu Fusion USDC',
+    address: '0xa858c97e9454f407d1bd7c57472fc8d8d8449a777c822b41d18e387816f29c',
+    asset: TOKENS.USDC,
+}, {
+    name: 'Vesu Fusion USDT',
+    address: '0x115e94e722cfc4c77a2f15c4aefb0928c1c0029e5a57570df24c650cb7cec2c',
+    asset: TOKENS.USDT,
+}]
+
+const CONTRACTS = {
     "dnmm": {
-        contracts: [
-            {
-                address: standariseAddress("0x04937b58e05a3a2477402d1f74e66686f58a61a5070fcc6f694fb9a0b3bae422"),
-                asset: TOKENS.USDC
-            }, {
-                address: standariseAddress("0x020d5fc4c9df4f943ebb36078e703369c04176ed00accf290e8295b659d2cea6"),
-                asset: TOKENS.STRK
-            }, {
-                address: standariseAddress("0x9d23d9b1fa0db8c9d75a1df924c3820e594fc4ab1475695889286f3f6df250"),
-                asset: TOKENS.ETH
-            }, {
-                address: standariseAddress('0x9140757f8fb5748379be582be39d6daf704cc3a0408882c0d57981a885eed9'),
-                asset: TOKENS.ETH
-            }, {
+        contracts: [{
                 address: standariseAddress('0x7023a5cadc8a5db80e4f0fde6b330cbd3c17bbbf9cb145cbabd7bd5e6fb7b0b'),
                 asset: TOKENS.STRK
             }
@@ -42,28 +61,37 @@ const CONTRACTS: any = {
     },
     "erc4626":  {
         contracts: [
-            {
-                address: standariseAddress("0x016912b22d5696e95ffde888ede4bd69fbbc60c5f873082857a47c543172694f"),
-                asset: TOKENS.USDC
-            }, {
-                address: standariseAddress("0x541681b9ad63dff1b35f79c78d8477f64857de29a27902f7298f7b620838ea"),
-                asset: TOKENS.STRK
-            }
+            ...VesuRebalanceStrategies.map((s) => ({
+                address: standariseAddress(s.address),
+                asset: s.asset,
+            }))
         ],
     }
 }
 // Initiate a filter builder
 const claimedKey = "0x35cc0235f835cc84da50813dc84eb10a75e24a21d74d6d86278c0f037cb7429"
-const KEYS = [claimedKey]
+const harvestKeyUsual = "0x7bfb812ef65292405e9c4e05f2befe48dae3e62d7ed27bada75d2384e733d3"; // hash.getSelectorFromName("Harvest");
+const LEGACY_KEYS = [claimedKey]
+const KEYS = [claimedKey, harvestKeyUsual]
 
 const filter: any = {
     events: [],
     header: {weak: false}
 }
 
-KEYS.forEach(k => {
+LEGACY_KEYS.forEach(k => {
     filter.events.push({
         keys: [k],
+        includeReceipt: true,
+        includeReverted: false,
+        fromAddress: "0x0387f3eb1d98632fbe3440a9f1385Aec9d87b6172491d3Dd81f1c35A7c61048F", // vesu harvest
+    })
+})
+
+CONTRACTS.erc4626.contracts.forEach((c) => {
+    filter.events.push({
+        fromAddress: c.address,
+        keys: [harvestKeyUsual],
         includeReceipt: false,
         includeReverted: false,
     })
@@ -71,7 +99,7 @@ KEYS.forEach(k => {
 
 export const config = {
     streamUrl: "https://mainnet.starknet.a5a.ch",
-    startingBlock: 628762, // deployment block of first contract
+    startingBlock: 1078316, // deployment block of first contract
     network: "starknet",
     finality: "DATA_STATUS_ACCEPTED",
     filter: filter,
@@ -108,7 +136,7 @@ export default function transform({ header, events }: any) {
         }
 
         const totalData = event.keys.slice(1).concat(event.data);
-        const claimInfo = processClaim(totalData, transactionHash);
+        const claimInfo = processClaim(key, totalData, event.fromAddress);
         if (!claimInfo) {
             return null;
         }
@@ -118,50 +146,25 @@ export default function transform({ header, events }: any) {
         let caller = '';
 
         // confirm the contract is one of my contracts
-        const contractInfo = Object.keys(CONTRACTS).map((key: string) => {
+        const contractInfo = (Object.keys(CONTRACTS) as ('dnmm' | 'erc4626')[]).map((key) => {
+            if (key == 'erc4626') {
+                return; // skip this key
+            }
             if (CONTRACTS[key].contracts.map((c: any) => c.address).includes(contract)) {
                 return CONTRACTS[key];
             }
         }).filter(e => e != null)[0];
 
-        if (!contractInfo) {
+        if (!contractInfo && key == claimedKey) {
             // ignore unknown contracts
             return null;
-        } else {
-            // if (receipt.executionStatus != 'executionStatus') {
-            //     // ideally this tx shouldnt be here, but if it is, we should throw an error
-            //     console.error(`strkfarm:harvests:Transaction failed: ${transactionHash}, cannot consider for harvest`);
-            //     throw new Error('strkfarm:harvests:Transaction failed');
-            // } else {
-            //     const events = receipt.events;
-            //     const thisEventIndex = events.findIndex((e: any) => standariseAddress(e.fromAddress) == fromAddress);
-            //     if (thisEventIndex <= 0) {
-            //         // bcz atleast one transfer event is expected before the claim event
-            //         console.error(`strkfarm:harvests:Event not found in transaction: ${transactionHash}`);
-            //         throw new Error('strkfarm:harvests:Event not found');
-            //     }
-            //     const transferEvent = events[thisEventIndex - 1];
-            //     if (standariseAddress(transferEvent.fromAddress) != standariseAddress(TOKENS.STRK)) {
-            //         console.error(`strkfarm:harvests:Transfer event not found in transaction: ${transactionHash}`);
-            //         throw new Error('strkfarm:harvests:Transfer event not found');                      
-            //     }
-            //     const receiver = standariseAddress(transferEvent.data[1]);
-            //     const transferAmount = toBigInt(transferEvent.data[2]).toString();
-            //     if (receiver != contract) {
-            //         console.error(`strkfarm:harvests:Receiver address mismatch: ${receiver} != ${contract}`);
-            //         throw new Error('strkfarm:harvests:Receiver address mismatch');
-            //     }
-            //     if (transferAmount != claimInfo.amount) {
-            //         console.error(`strkfarm:harvests:Transfer amount mismatch: ${transferAmount} != ${claimInfo.amount}`);
-            //         throw new Error('strkfarm:harvests:Transfer amount mismatch');
-            //     }
-            //     // all validations passed
+        }
 
-            //     caller = transaction.invokeV1?.senderAddress || transaction.invokeV2?.senderAddress || transaction.invokeV3?.senderAddress;
-            //     if (!caller) {
-            //         console.warn(`strkfarm:harvests:Caller address not found: ${transactionHash}`, transaction);
-            //     }
-            // }
+        if (key == claimedKey) {
+            // read the transfer event before the claim event from receipt
+            const events = receipt.events;
+            const transferEvent = events[Number(event.index) - 1]; // just the previous event
+            claimInfo.amount = toBigInt(transferEvent.data[2]).toString();
         }
 
         const action: any = {
