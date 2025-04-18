@@ -25,6 +25,11 @@ function processClaim(key: string, data: any[], fromAddress: string) {
                 claimee: standariseAddress(fromAddress),
                 amount: toBigInt(data[2]).toString(),
             }
+        } if (data.length == 9) {
+            return {
+                claimee: standariseAddress(fromAddress),
+                amount: toBigInt(data[3]).toString(),
+            }
         } else {
             // will be ignored
             console.warn(`[2]strkfarm:harvests:Unknown data length: ${data.length}`);
@@ -51,6 +56,12 @@ const VesuRebalanceStrategies = [{
     asset: TOKENS.USDT,
 }]
 
+const EkuboVaults = [{
+    address: '0x1f083b98674bc21effee29ef443a00c7b9a500fd92cf30341a3da12c73f2324',
+    name: "Ekubo xSTRK/STRK",
+    asset: TOKENS.STRK,
+}]
+
 const CONTRACTS = {
     "dnmm": {
         contracts: [{
@@ -62,6 +73,10 @@ const CONTRACTS = {
     "erc4626":  {
         contracts: [
             ...VesuRebalanceStrategies.map((s) => ({
+                address: standariseAddress(s.address),
+                asset: s.asset,
+            })),
+            ...EkuboVaults.map((s) => ({
                 address: standariseAddress(s.address),
                 asset: s.asset,
             }))
