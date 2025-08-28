@@ -14,7 +14,7 @@ export class CustomInvestmentFlowsResolver {
     @Arg("contract", () => String) contract: string,
   ): Promise<Investment_flows[]> {
     // Step 1: fetch all redeems
-    const redeemsWithoutClaims = await prisma.$queryRaw`
+    const redeemsWithoutClaims = await prisma.$queryRaw<Investment_flows[]>`
       SELECT *
       FROM investment_flows r
       WHERE r.type = 'redeem'
