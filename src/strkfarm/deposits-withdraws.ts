@@ -4,7 +4,7 @@ import { TOKENS, isTLS } from "./constants.ts";
 const depositKey = "0x9149d2123147c5f43d258257fef0b7b969db78269369ebcf5ebb9eef8592f2" // "Deposit"
 const withdrawKey = "0x17f87ab38a7f75a63dc465e10aadacecfca64c44ca774040b039bfb004e3367" // "Withdraw"
 const redeemKey = '0xfc5c8e7953c62fb357aebe6619c766f40a3e56113ec060b82286f715b6a7dc'; // RedeemRequested
-const claimKey = '0x0306482a50ea1a82bc2c1d79de5baf013f58ee2260881f6b6c60d31833ef220d' // RedeemClaimed
+const claimKey = standariseAddress('0x0306482a50ea1a82bc2c1d79de5baf013f58ee2260881f6b6c60d31833ef220d') // RedeemClaimed
 const erc4626Event = '0x20c620f0d41f84d5dcefe97ae96fb9becabb508b15b411d8f34aded3a984986' // ERC4626Event
 
 function dnmmProcessor(_data: any[]) {
