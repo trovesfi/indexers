@@ -1,7 +1,16 @@
 import { standariseAddress, toBigInt, toHex, toNumber } from "./../utils.ts";
 import { TOKENS, isTLS } from "./constants.ts";
 
-function dnmmProcessor(data: any[], type: 'deposit' | 'withdraw') {
+const depositKey = "0x9149d2123147c5f43d258257fef0b7b969db78269369ebcf5ebb9eef8592f2" // "Deposit"
+const withdrawKey = "0x17f87ab38a7f75a63dc465e10aadacecfca64c44ca774040b039bfb004e3367" // "Withdraw"
+const redeemKey = '0xfc5c8e7953c62fb357aebe6619c766f40a3e56113ec060b82286f715b6a7dc'; // RedeemRequested
+const claimKey = '0x0306482a50ea1a82bc2c1d79de5baf013f58ee2260881f6b6c60d31833ef220d' // RedeemClaimed
+const erc4626Event = '0x20c620f0d41f84d5dcefe97ae96fb9becabb508b15b411d8f34aded3a984986' // ERC4626Event
+
+function dnmmProcessor(_data: any[]) {
+    const key1 = standariseAddress(_data[0]);
+    const type = key1 == standariseAddress(withdrawKey) ? 'withdraw' : 'deposit';
+    const data = _data.slice(1);
     console.log(data, type)
     if (type == 'deposit') {
         return {
@@ -43,7 +52,37 @@ const VesuRebalanceStrategies = [{
     asset: TOKENS.USDT,
 }]
 
-function erc4626Processor(data: any[], type: 'deposit' | 'withdraw') {
+const EvergreenVaults = [
+  {
+    address: '0x7e6498cf6a1bfc7e6fc89f1831865e2dacb9756def4ec4b031a9138788a3b5e',
+    name: 'USDC Evergreen',
+    asset: '0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8'
+  },
+  {
+    address: '0x5a4c1651b913aa2ea7afd9024911603152a19058624c3e425405370d62bf80c',
+    name: 'WBTC Evergreen',
+    asset: '0x3fe2b97c1fd336e750087d68b9b867997fd64a2661ff3ca5a7c771641e8e7ac'
+  },
+  {
+    address: '0x446c22d4d3f5cb52b4950ba832ba1df99464c6673a37c092b1d9622650dbd8',
+    name: 'ETH Evergreen',
+    asset: '0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7'
+  },
+  {
+    address: '0x55d012f57e58c96e0a5c7ebbe55853989d01e6538b15a95e7178aca4af05c21',
+    name: 'STRK Evergreen',
+    asset: '0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d'
+  },
+  {
+    address: '0x1c4933d1880c6778585e597154eaca7b428579d72f3aae425ad2e4d26c6bb3',
+    name: 'USDT Evergreen',
+    asset: '0x68f5c6a61780768455de69077e07e89787839bf8166decfbf92b645209c0fb8'
+  }
+]
+
+function erc4626Processor(_data: any[]) {
+    const type = standariseAddress(_data[0]) == standariseAddress(depositKey) ? 'deposit' : 'withdraw';
+    const data = _data.slice(1);
     console.log(data, type)
     if (type == 'deposit') {
         return {
@@ -60,6 +99,81 @@ function erc4626Processor(data: any[], type: 'deposit' | 'withdraw') {
             owner: standariseAddress(data[2]),
             amount: toBigInt(data[3]).toString(),
             type: 'withdraw',
+        }
+    } else {
+        console.error(`Unknown type: ${type}`);
+        throw new Error('strkfarm:deposit_withdraw:erc4626: unknown action type');
+    }
+}
+
+function starknetVaultKitProcessor(_data: any[]) {
+    const key1 = standariseAddress(_data[0]);
+    let type = 'deposit';
+    let data = _data.slice(1);
+    if (key1 == erc4626Event) {
+        data = _data.slice(2); // first 2 keys are removed
+        const key2 = standariseAddress(_data[1]);
+        if (key2 == depositKey) {
+            type = 'deposit';
+        } else {
+            throw new Error('strkfarm:deposit_withdraw:starknet_vault_kit: unknown action type');
+        }
+    } else if (key1 == redeemKey) {
+        type = 'redeem';
+    } else if (key1 == claimKey) {
+        type = 'claim';
+    } else {
+        throw new Error('strkfarm:deposit_withdraw:starknet_vault_kit: unknown action type');
+    }
+    console.log(type);
+    if (type == 'deposit') {
+        return {
+            sender: standariseAddress(data[0]), 
+            receiver: standariseAddress(data[1]),
+            owner: standariseAddress(data[1]),
+            amount: toBigInt(data[2]).toString(),
+            request_id: "0", // not applicable for deposits
+            epoch: 0, // not applicable for deposits
+            type: 'deposit',
+        }
+    } else if (type == 'redeem') {    
+        /// Event emitted when a user requests a redemption
+        // #[derive(Drop, starknet::Event)]
+        // pub struct RedeemRequested {
+        //     pub owner: ContractAddress, // Share owner requesting redemption
+        //     pub receiver: ContractAddress, // Address to receive the redemption NFT
+        //     pub shares: u256, // Original shares requested for redemption
+        //     pub assets: u256, // Assets allocated after fees
+        //     pub id: u256, // NFT ID for the redemption request
+        //     pub epoch: u256 // Epoch when redemption was requested
+        // }    
+        return {
+            sender: standariseAddress(data[0]),
+            receiver: standariseAddress(data[1]),
+            owner: standariseAddress(data[0]),
+            amount: toBigInt(data[4]).toString(),
+            request_id: toBigInt(data[6]).toString(), // not applicable for deposits
+            epoch: toBigInt(data[8]).toString(),
+            type: 'redeem',
+        }
+    } else if (type == 'claim') {
+        // /// Event emitted when a redemption is claimed
+        // #[derive(Drop, starknet::Event)]
+        // pub struct RedeemClaimed {
+        //     pub receiver: ContractAddress, // Address receiving the assets
+        //     pub redeem_request_nominal: u256, // Original shares amount
+        //     pub assets: u256, // Actual assets received (may be less due to losses)
+        //     pub id: u256, // NFT ID that was burned
+        //     pub epoch: u256 // Epoch when redemption was originally requested
+        // }
+        return {
+            sender: standariseAddress(data[0]),
+            receiver: standariseAddress(data[0]), // just dummy
+            owner: standariseAddress(data[0]), // just dummy
+            amount: toBigInt(data[3]).toString(),
+            request_id: toBigInt(data[5]).toString(), // not applicable for deposits
+            epoch: toBigInt(data[7]).toString(),
+            type: 'claim',
         }
     } else {
         console.error(`Unknown type: ${type}`);
@@ -107,12 +221,23 @@ const CONTRACTS: any = {
             })
         ],
         processor: erc4626Processor
+    },
+    'starknetVaultKit': {
+        contracts: [
+            ...EvergreenVaults.map((s) => {
+                return {
+                    address: standariseAddress(s.address),
+                    asset: s.asset
+                }
+            })
+        ],
+        keys: [[erc4626Event, depositKey], [redeemKey], [claimKey]],
+        processor: starknetVaultKitProcessor
     }
 }
 // Initiate a filter builder
-const depositKey = "0x9149d2123147c5f43d258257fef0b7b969db78269369ebcf5ebb9eef8592f2" // "Deposit"
-const withdrawKey = "0x17f87ab38a7f75a63dc465e10aadacecfca64c44ca774040b039bfb004e3367" // "Withdraw"
-const KEYS = [depositKey, withdrawKey]
+const DEFAULT_KEYS = [depositKey, withdrawKey];
+const ALL_KEYS = [depositKey, withdrawKey, redeemKey, claimKey, erc4626Event];
 
 const filter: any = {
     events: [],
@@ -122,20 +247,31 @@ const filter: any = {
 Object.keys(CONTRACTS).map((key: string) => {
     const info = CONTRACTS[key];
     info.contracts.forEach((c: any) => {
-        KEYS.forEach(k => {
-            filter.events.push({
-                fromAddress: c.address,
-                keys: [k],
-                includeReceipt:false,
-                includeReverted: false,
+        if (info.keys) {
+            info.keys.forEach((k: string[]) => {
+                filter.events.push({
+                    fromAddress: c.address,
+                    keys: k, // omits start to keys to check
+                    includeReceipt:false,
+                    includeReverted: false,
+                })
             })
-        })
+        } else {
+            DEFAULT_KEYS.forEach(k => {
+                filter.events.push({
+                    fromAddress: c.address,
+                    keys: [k],
+                    includeReceipt:false,
+                    includeReverted: false,
+                })
+            })
+        }
     })
 })
 
 export const config = {
     streamUrl: "https://mainnet.starknet.a5a.ch",
-    startingBlock: 628762, // deployment block of first contract
+    startingBlock: Number(Deno.env.get("START_BLOCK")),
     network: "starknet",
     finality: "DATA_STATUS_ACCEPTED",
     filter: filter,
@@ -159,7 +295,7 @@ export default function transform({ header, events }: any) {
         if (!transaction || !transaction.meta) return null;
         if (!event || !event.data || !event.keys) return null;
         const key = standariseAddress(event.keys[0]);
-        if (!KEYS.includes(key)) {
+        if (!ALL_KEYS.includes(key)) {
             return null;
         }
         const transactionHash = transaction.meta.hash;
@@ -180,14 +316,11 @@ export default function transform({ header, events }: any) {
             throw new Error('strkfarm:deposit_withdraw:Unknown contract');
         }
 
-        const type = key == withdrawKey ? 'withdraw' : 'deposit';
         const asset = contractInfo.contracts.filter((c: any) => c.address == contract)[0].asset;
-        console.log(`Processing ${type} event for contract ${contract}`);
         const processor = contractInfo.processor;
 
-        console.log('txHash', transactionHash)
         const info = {
-            ...processor(event.keys.slice(1).concat(event.data), type),
+            ...processor(event.keys.concat(event.data)),
             asset,
             contract,
         }
@@ -197,7 +330,8 @@ export default function transform({ header, events }: any) {
             txHash: standariseAddress(transactionHash),
             txIndex: toNumber(transaction.meta?.transactionIndex),
             eventIndex: toNumber(event.index),
-
+            epoch: toNumber(0), // default
+            request_id: toNumber(0), // default
             ...info,
             timestamp: Math.round((new Date(timestamp)).getTime() / 1000),
         };

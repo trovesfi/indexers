@@ -1,7 +1,7 @@
 import { 
     Harvests,
   } from "@generated/type-graphql";
-import { Resolver, Query, Arg, ObjectType, Field } from 'type-graphql';
+import { Resolver, Query, Arg, ObjectType, Field, Float, Int } from 'type-graphql';
 import { PrismaClient } from '@prisma/client';
 import yahooFinance from 'yahoo-finance2';
 import { getClosePriceAtTimestamp } from "../utils.ts";
@@ -15,14 +15,14 @@ export type HarvestSummaryType = {
 
 @ObjectType()
 export class HarvestSummary {
-    @Field()
-    rawSTRKAmount: string = '';
+  @Field(() => String)
+  rawSTRKAmount!: string;
 
-    @Field()
-    STRKAmount: number = 0;
+  @Field(() => Float)
+  STRKAmount!: number;
 
-    @Field()
-    USDValue: number = 0;
+  @Field(() => Float)
+  USDValue!: number;
 }
 
 async function getHarvestsSummary(harvests: any[]) {
@@ -69,7 +69,7 @@ async function getHarvestsSummary(harvests: any[]) {
                 data: {
                   price: price
                 }
-              }).catch(err => {
+              }).catch((err: any) => {
                 console.error("Error saving price: ", err, harvest);
               });
               return {
@@ -102,41 +102,37 @@ async function getHarvestsSummary(harvests: any[]) {
       };
 }
 
-// Custom resolver to get harvest stats
 @Resolver(Harvests)
 export class CustomHarvestsResolver {
   // Custom resolver to get total harvests for a given contract
-  @Query((returns: any) => Number)
+  @Query(() => Int)
   async totalHarvestsByContract(
-    @Arg("contract") contract: string,
-  ): Promise<Number> {
+    @Arg("contract", () => String) contract: string,
+  ): Promise<number> {
     const total = await prisma.harvests.aggregate({
-      where: {
-        contract
-      },
+      where: { contract },
       _count: true,
     });
     console.log("Total harvests: ", total._count);
     return total._count;
   }
 
-  // Total STRK Harvested
-  @Query((returns: any) => HarvestSummary)
+  // Total STRK Harvested by contract
+  @Query(() => HarvestSummary)
   async totalStrkHarvestedByContract(
-    @Arg("contract") contract: string,
-  ): Promise<HarvestSummaryType> {
+    @Arg("contract", () => String) contract: string,
+  ): Promise<HarvestSummary> {
     const harvests = await prisma.harvests.findMany({
-      where: {
-        contract
-      }
+      where: { contract },
     });
 
-    return await getHarvestsSummary(harvests);
+    const result = await getHarvestsSummary(harvests);
+    return Object.assign(new HarvestSummary(), result);
   }
 
-  // Returns total harvests across strategies/contracts
-  @Query((returns: any) => Number)
-  async totalHarvests(): Promise<Number> {
+  // Returns total harvests across all strategies/contracts
+  @Query(() => Int)
+  async totalHarvests(): Promise<number> {
     const total = await prisma.harvests.aggregate({
       _count: true,
     });
@@ -145,10 +141,11 @@ export class CustomHarvestsResolver {
   }
 
   // Total STRK Harvested across all contracts
-    @Query((returns: any) => HarvestSummary)
-    async totalStrkHarvested(): Promise<HarvestSummaryType> {
-        const harvests = await prisma.harvests.findMany();
+  @Query(() => HarvestSummary)
+  async totalStrkHarvested(): Promise<HarvestSummary> {
+    const harvests = await prisma.harvests.findMany();
 
-        return await getHarvestsSummary(harvests);
-    }
+    const result = await getHarvestsSummary(harvests);
+    return Object.assign(new HarvestSummary(), result);
+  }
 }

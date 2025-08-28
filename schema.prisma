@@ -91,15 +91,17 @@ model investment_flows {
   eventIndex   Int    @default(0)
   txHash       String
 
-  sender    String // caller of tx
-  receiver  String // owner on deposit, could be anyone on withdraw
-  owner     String // the one who received or sent the asset
-  amount    String
-  asset     String
-  contract  String
-  type      String // deposit | withdraw
-  timestamp Int
-  cursor    BigInt? @map("_cursor")
+  sender     String // caller of tx
+  receiver   String // owner on deposit, could be anyone on withdraw
+  owner      String // the one who received or sent the asset
+  amount     String
+  asset      String
+  contract   String
+  epoch      Int     @default(0)
+  request_id Int     @default(0)
+  type       String // deposit | withdraw
+  timestamp  Int
+  cursor     BigInt? @map("_cursor")
 
   @@unique([block_number, txIndex, eventIndex], name: "event_id")
 }
