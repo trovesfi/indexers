@@ -24,6 +24,7 @@ export class CustomInvestmentFlowsResolver {
         FROM investment_flows c
         WHERE c.type = 'claim'
           AND c.request_id = r.request_id
+          AND c.contract = ${contract}
       )
     `;
 
