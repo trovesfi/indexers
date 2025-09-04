@@ -109,11 +109,31 @@ export async function commonTransform<T extends Record<string, any>>(
       } else if (matchedConfig.processor === "starknetVaultKit") {
         processedInfo = processStarknetVaultKit(event.keys.concat(event.data));
       } else if (matchedConfig.processor === "processPositionFeesCollected") {
-        processedInfo = processPositionFeesCollected(
-          event.keys.concat(event.data)
-        );
+        const data = event.keys.concat(event.data);
+
+        if (
+          toBigInt(data[6]).toString() !== "1269084" ||
+          standariseAddress(data[7]) !==
+            standariseAddress(
+              "0x2e0af29598b407c8716b17f6d2795eca1b471413fa03fb145a5e33722184067"
+            )
+        ) {
+          console.error(
+            `Not our salt value: ${toBigInt(data[6]).toString()}, skipping ${matchedConfig.eventName} event...`
+          );
+          continue;
+        }
+        processedInfo = processPositionFeesCollected(data);
       } else if (matchedConfig.processor === "processPositionUpdated") {
-        processedInfo = processPositionUpdated(event.keys.concat(event.data));
+        const data = event.keys.concat(event.data);
+
+        if (toBigInt(data[7]).toString() !== "1269084") {
+          console.error(
+            `Not our salt value: ${toBigInt(data[5]).toString()}, skipping ${matchedConfig.eventName} event...`
+          );
+          continue;
+        }
+        processedInfo = processPositionUpdated(data);
       } else {
         processedInfo = processGeneric(event, matchedConfig, contractInfo);
       }
@@ -391,10 +411,13 @@ function processPositionUpdated(data: any[]) {
       ? toBigInt(amount1Val).toString()
       : -toBigInt(amount1Val).toString();
 
-  const liquidityDelta = data[12]
-  const liquidityDeltaSign = standariseAddress(data[13])
+  const liquidityDelta = data[12];
+  const liquidityDeltaSign = standariseAddress(data[13]);
 
-  const liquidity_delta = liquidityDeltaSign == "0x0" ? toBigInt(liquidityDelta).toString() : -toBigInt(liquidityDelta).toString();
+  const liquidity_delta =
+    liquidityDeltaSign == "0x0"
+      ? toBigInt(liquidityDelta).toString()
+      : -toBigInt(liquidityDelta).toString();
 
   return {
     locker: standariseAddress(data[1]),
