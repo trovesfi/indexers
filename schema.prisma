@@ -11,6 +11,11 @@ datasource db {
   url      = env("POSTGRES_CONNECTION_STRING")
 }
 
+generator drizzle {
+  provider = "drizzle-prisma-generator"
+  output   = "./indexers/drizzle" // Where to put generated Drizle tables
+}
+
 model subscriptions {
   block_number Int
   txIndex      Int
