@@ -3,6 +3,7 @@ import "dotenv/config";
 import { standariseAddress } from "../../src/utils";
 import { TOKENS } from "../../src/strkfarm/constants";
 import { eventKey } from "./common_transform";
+import { hash } from "starknet";
 
 export interface EventField {
   name: string;
@@ -121,7 +122,7 @@ const EvergreenVaults = [
 export const CONFIG: Record<string, EventConfig> = {
   dnmm: {
     tableName: "investment_flows",
-    eventName: "DnmmEvent", 
+    eventName: "DnmmEvent",
     contracts: [
       {
         address: standariseAddress(
@@ -180,7 +181,7 @@ export const CONFIG: Record<string, EventConfig> = {
 
   erc4626: {
     tableName: "investment_flows",
-    eventName: "Erc4626Event", 
+    eventName: "Erc4626Event",
     contracts: [
       {
         address: standariseAddress(
@@ -251,7 +252,7 @@ export const CONFIG: Record<string, EventConfig> = {
 
   starknetVaultKit: {
     tableName: "investment_flows",
-    eventName: "StarknetVaultKitEvent", 
+    eventName: "StarknetVaultKitEvent",
     contracts: EvergreenVaults.map((s) => ({
       address: standariseAddress(s.address),
       asset: s.asset,
@@ -439,7 +440,7 @@ export const CONFIG: Record<string, EventConfig> = {
 
   ekubo: {
     tableName: "investment_flows",
-    eventName: "EkuboEvent", 
+    eventName: "EkuboEvent",
     contracts: [
       {
         address: standariseAddress(
@@ -518,5 +519,50 @@ export const CONFIG: Record<string, EventConfig> = {
       },
     ],
     processor: "ekubo",
+  },
+
+  positionFee: {
+    tableName: "position_fees_collected",
+    eventName: "PositionFeesCollected",
+    contracts: [
+      {
+        address: standariseAddress(
+          "0x00000005dd3d2f4429af886cd1a3b08289dbcea99a294197e9eb43b0e0325b4b"
+        ),
+        asset: "",
+      },
+    ],
+    defaultKeys: [eventKey('PositionFeesCollected')],
+    keyFields: [{ name: "event_type", type: "felt252", sqlType: "text" }],
+    dataFields: [
+      { name: "pool_key", type: "PoolKey", sqlType: "text" },
+      { name: "position_key", type: "PositionKey", sqlType: "text" },
+      { name: "delta", type: "Delta", sqlType: "text" },
+    ],
+    additionalFields: [],
+    processor: "processPositionFeesCollected",
+  },
+
+  positionUpdated: {
+    tableName: "position_updated",
+    eventName: "PositionUpdated",
+    contracts: [
+      {
+        address: standariseAddress(
+          "0x00000005dd3d2f4429af886cd1a3b08289dbcea99a294197e9eb43b0e0325b4b"
+        ),
+        asset: "",
+      },
+    ],
+    defaultKeys: [eventKey('PositionUpdated')],
+    keyFields: [{ name: "event_type", type: "felt252", sqlType: "text" }],
+    dataFields: [
+      { name: "locker", type: "ContractAddress", sqlType: "text" },
+      { name: "pool_key", type: "PoolKey", sqlType: "text" },
+      { name: "params", type: "UpdatePositionParameters", sqlType: "text" },
+      { name: "delta", type: "Delta", sqlType: "text" },
+    ],
+    additionalFields: [],
+    processor: "processPositionUpdated",
   },
 };

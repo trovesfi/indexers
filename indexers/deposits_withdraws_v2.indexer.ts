@@ -49,7 +49,6 @@ export function createIndexer<
           });
         }
       } else {
-        // handle default keys (deposit/withdraw)
         const defaultKeys = eventConfig.defaultKeys || [
           eventKey("Deposit"),
           eventKey("Withdraw"),

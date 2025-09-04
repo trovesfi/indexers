@@ -159,3 +159,36 @@ model transfers {
 
   @@unique([block_number, txIndex, eventIndex], name: "event_id")
 }
+
+model position_fees_collected {
+  block_number Int
+  txIndex      Int    @default(0)
+  eventIndex   Int    @default(0)
+  txHash       String
+
+  pool_key       String
+  position_key   String
+  delta          String
+
+  timestamp Int
+  cursor    BigInt? @map("_cursor")
+
+  @@unique([block_number, txIndex, eventIndex], name: "event_id")
+}
+
+model position_updated {
+  block_number Int
+  txIndex      Int    @default(0)
+  eventIndex   Int    @default(0)
+  txHash       String
+
+  locker       String
+  pool_key     String
+  params       String
+  delta        String
+
+  timestamp Int
+  cursor    BigInt? @map("_cursor")
+
+  @@unique([block_number, txIndex, eventIndex], name: "event_id")
+}

@@ -3,6 +3,8 @@ node_modules
 dist
 snapshots
 
+.apibara
+
 *.log
 run2.sh
 totalBridged.json

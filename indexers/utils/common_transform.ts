@@ -2,10 +2,18 @@ import { Block, FieldElement } from "@apibara/starknet";
 import { hash } from "starknet";
 import { PgDatabase } from "drizzle-orm/pg-core";
 import type { ConsolaInstance } from "@apibara/indexer/plugins";
-import * as schema from "../drizzle/schema";
 import { and, eq } from "drizzle-orm";
 
-import { AdditionalField, ContractConfig, EventConfig, EventField, CONFIG, withdrawKey } from "./config";
+import * as schema from "../drizzle/schema";
+
+import {
+  AdditionalField,
+  ContractConfig,
+  EventConfig,
+  EventField,
+  CONFIG,
+  withdrawKey,
+} from "./config";
 import { standariseAddress, toBigInt, toNumber } from "../../src/utils";
 
 const CONFIG_ARR = Object.keys(CONFIG).map((key) => CONFIG[key]);
@@ -35,13 +43,12 @@ export async function commonTransform<T extends Record<string, any>>(
     const eventKeyValue = event.keys[0];
     const contract = standariseAddress(event.address);
 
-    // find the config that matches this event
-    let matchedConfig: EventConfig |null = null;
-    let contractInfo: ContractConfig |null = null;
+    let matchedConfig: EventConfig | null = null;
+    let contractInfo: ContractConfig | null = null;
 
     for (const configKey of Object.keys(CONFIG)) {
       const config = CONFIG[configKey];
-      
+
       // check if contract matches
       const contractMatch = config.contracts.find(
         (c: any) => standariseAddress(c.address) === contract
@@ -50,9 +57,11 @@ export async function commonTransform<T extends Record<string, any>>(
       if (contractMatch) {
         // check if event key matches
         if (config.keys) {
-          // custom keys
-          const keyMatch = config.keys.some(keySet => 
-            keySet.some(key => standariseAddress(key) === standariseAddress(eventKeyValue))
+          const keyMatch = config.keys.some((keySet) =>
+            keySet.some(
+              (key) =>
+                standariseAddress(key) === standariseAddress(eventKeyValue)
+            )
           );
           if (keyMatch) {
             matchedConfig = config;
@@ -61,8 +70,8 @@ export async function commonTransform<T extends Record<string, any>>(
           }
         } else if (config.defaultKeys) {
           // default keys (deposit/withdraw)
-          const keyMatch = config.defaultKeys.some(key => 
-            standariseAddress(key) === standariseAddress(eventKeyValue)
+          const keyMatch = config.defaultKeys.some(
+            (key) => standariseAddress(key) === standariseAddress(eventKeyValue)
           );
           if (keyMatch) {
             matchedConfig = config;
@@ -77,7 +86,11 @@ export async function commonTransform<T extends Record<string, any>>(
       continue; // skip unknown events
     }
 
-    logger.info("Processing event:", matchedConfig.eventName, matchedConfig.processor);
+    logger.info(
+      "Processing event:",
+      matchedConfig.eventName,
+      matchedConfig.processor
+    );
 
     const transactionHash = event.transactionHash;
 
@@ -86,13 +99,8 @@ export async function commonTransform<T extends Record<string, any>>(
       throw new Error("strkfarm:deposit_withdraw:Expected event with data");
     }
 
-    // skip Ekubo events for now
-    if (matchedConfig.processor === "ekubo") {
-      continue;
-    }
-
     let processedInfo;
-    
+
     try {
       if (matchedConfig.processor === "dnmm") {
         processedInfo = processDnmm(event.keys.concat(event.data));
@@ -100,12 +108,20 @@ export async function commonTransform<T extends Record<string, any>>(
         processedInfo = processErc4626(event.keys.concat(event.data));
       } else if (matchedConfig.processor === "starknetVaultKit") {
         processedInfo = processStarknetVaultKit(event.keys.concat(event.data));
+      } else if (matchedConfig.processor === "processPositionFeesCollected") {
+        processedInfo = processPositionFeesCollected(
+          event.keys.concat(event.data)
+        );
+      } else if (matchedConfig.processor === "processPositionUpdated") {
+        processedInfo = processPositionUpdated(event.keys.concat(event.data));
       } else {
-        // default processing using config
         processedInfo = processGeneric(event, matchedConfig, contractInfo);
       }
     } catch (error) {
-      console.error(`Error processing event with ${matchedConfig.processor}:`, error);
+      console.error(
+        `Error processing event with ${matchedConfig.processor}:`,
+        error
+      );
       continue;
     }
 
@@ -123,14 +139,28 @@ export async function commonTransform<T extends Record<string, any>>(
     };
 
     try {
+      let tableSchema;
+      let tableName;
+
+      if (matchedConfig.tableName === "position_fees_collected") {
+        tableSchema = schema["position_fees_collected"];
+        tableName = "position_fees_collected";
+      } else if (matchedConfig.tableName === "position_updated") {
+        tableSchema = schema["position_updated"];
+        tableName = "position_updated";
+      } else {
+        tableSchema = schema["investment_flows"];
+        tableName = "investment_flows";
+      }
+
       const existing = await database
         .selectDistinct()
-        .from(schema["investment_flows"])
+        .from(tableSchema)
         .where(
           and(
-            eq(schema["investment_flows"].block_number, record.block_number),
-            eq(schema["investment_flows"].txHash, record.txHash),
-            eq(schema["investment_flows"].eventIndex, record.eventIndex)
+            eq(tableSchema.block_number, record.block_number),
+            eq(tableSchema.txHash, record.txHash),
+            eq(tableSchema.eventIndex, record.eventIndex)
           )
         )
         .limit(1);
@@ -138,22 +168,19 @@ export async function commonTransform<T extends Record<string, any>>(
       if (existing.length) {
         console.log(`Record already exists, updating...`);
         await database
-          .update(schema["investment_flows"])
+          .update(tableSchema)
           .set(record)
           .where(
             and(
-              eq(schema["investment_flows"].block_number, record.block_number),
-              eq(schema["investment_flows"].txHash, record.txHash),
-              eq(schema["investment_flows"].eventIndex, record.eventIndex)
+              eq(tableSchema.block_number, record.block_number),
+              eq(tableSchema.txHash, record.txHash),
+              eq(tableSchema.eventIndex, record.eventIndex)
             )
           )
           .execute();
         console.log(`Updated existing record`);
       } else {
-        await database
-          .insert(schema["investment_flows"])
-          .values(record)
-          .execute();
+        await database.insert(tableSchema).values(record).execute();
       }
     } catch (err) {
       console.log(`record`, record);
@@ -192,9 +219,12 @@ function processDnmm(_data: any[]) {
 function processErc4626(_data: any[]) {
   const depositKey = eventKey("Deposit");
   const withdrawKey = eventKey("Withdraw");
-  const type = standariseAddress(_data[0]) == standariseAddress(depositKey) ? "deposit" : "withdraw";
+  const type =
+    standariseAddress(_data[0]) == standariseAddress(depositKey)
+      ? "deposit"
+      : "withdraw";
   const data = _data.slice(1);
-  
+
   if (type == "deposit") {
     return {
       sender: standariseAddress(data[0]),
@@ -229,7 +259,7 @@ function processStarknetVaultKit(_data: any[]) {
   const key1 = standariseAddress(_data[0]);
   let type = "deposit";
   let data = _data.slice(1);
-  
+
   if (key1 == erc4626Event) {
     data = _data.slice(2); // first 2 keys are removed
     const key2 = standariseAddress(_data[1]);
@@ -249,7 +279,7 @@ function processStarknetVaultKit(_data: any[]) {
       "strkfarm:deposit_withdraw:starknet_vault_kit: unknown action type"
     );
   }
-  
+
   if (type == "deposit") {
     return {
       sender: standariseAddress(data[0]),
@@ -282,8 +312,33 @@ function processStarknetVaultKit(_data: any[]) {
     };
   } else {
     console.error(`Unknown type: ${type}`);
-    throw new Error("strkfarm:deposit_withdraw:starknet_vault_kit: unknown action type");
+    throw new Error(
+      "strkfarm:deposit_withdraw:starknet_vault_kit: unknown action type"
+    );
   }
+}
+
+function processPositionFeesCollected(_data: any[]) {
+  console.log("processPositionFeesCollected------");
+  const dataValues = _data.slice(1, 5).map((val) => standariseAddress(val));
+
+  return {
+    pool_key: standariseAddress(dataValues[0]) || "",
+    position_key: standariseAddress(dataValues[1]) || "",
+    delta: standariseAddress(dataValues[2]) || "",
+  };
+}
+
+function processPositionUpdated(_data: any[]) {
+  console.log("processPositionUpdated------");
+  const dataValues = _data.slice(1, 5).map((val) => standariseAddress(val));
+
+  return {
+    locker: standariseAddress(dataValues[0]) || "",
+    pool_key: standariseAddress(dataValues[1]) || "",
+    params: standariseAddress(dataValues[2]) || "",
+    delta: standariseAddress(dataValues[3]) || "",
+  };
 }
 
 function processGeneric(event: any, config: EventConfig, contractInfo: any) {

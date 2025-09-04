@@ -140,3 +140,34 @@ export const transfers = pgTable('transfers', {
 	'event_id': uniqueIndex('event_id')
 		.on(transfers.block_number, transfers.txIndex, transfers.eventIndex)
 }));
+
+export const position_fees_collected = pgTable('position_fees_collected', {
+	block_number: integer('block_number').notNull(),
+	txIndex: integer('txIndex').notNull(),
+	eventIndex: integer('eventIndex').notNull(),
+	txHash: text('txHash').notNull(),
+	pool_key: text('pool_key').notNull(),
+	position_key: text('position_key').notNull(),
+	delta: text('delta').notNull(),
+	timestamp: integer('timestamp').notNull(),
+	cursor: bigint('_cursor', { mode: 'bigint' })
+}, (position_fees_collected) => ({
+	'event_id': uniqueIndex('event_id')
+		.on(position_fees_collected.block_number, position_fees_collected.txIndex, position_fees_collected.eventIndex)
+}));
+
+export const position_updated = pgTable('position_updated', {
+	block_number: integer('block_number').notNull(),
+	txIndex: integer('txIndex').notNull(),
+	eventIndex: integer('eventIndex').notNull(),
+	txHash: text('txHash').notNull(),
+	locker: text('locker').notNull(),
+	pool_key: text('pool_key').notNull(),
+	params: text('params').notNull(),
+	delta: text('delta').notNull(),
+	timestamp: integer('timestamp').notNull(),
+	cursor: bigint('_cursor', { mode: 'bigint' })
+}, (position_updated) => ({
+	'event_id': uniqueIndex('event_id')
+		.on(position_updated.block_number, position_updated.txIndex, position_updated.eventIndex)
+}));
