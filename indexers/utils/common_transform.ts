@@ -318,26 +318,99 @@ function processStarknetVaultKit(_data: any[]) {
   }
 }
 
-function processPositionFeesCollected(_data: any[]) {
-  console.log("processPositionFeesCollected------");
-  const dataValues = _data.slice(1, 5).map((val) => standariseAddress(val));
+function processPositionFeesCollected(data: any[]) {
+  const lowerBoundVal = data[8];
+  const lowerBoundValSign = standariseAddress(data[9]);
+  const upperBoundVal = data[10];
+  const upperBoundValSign = standariseAddress(data[11]);
+
+  const lower_bound =
+    lowerBoundValSign == "0x0"
+      ? toBigInt(lowerBoundVal).toString()
+      : -toBigInt(lowerBoundVal).toString();
+  const upper_bound =
+    upperBoundValSign == "0x0"
+      ? toBigInt(upperBoundVal).toString()
+      : -toBigInt(upperBoundVal).toString();
+
+  const amount0Val = data[12];
+  const amount0ValSign = standariseAddress(data[13]);
+  const amount1Val = data[14];
+  const amount1ValSign = standariseAddress(data[15]);
+
+  const amount0 =
+    amount0ValSign == "0x0"
+      ? toBigInt(amount0Val).toString
+      : -toBigInt(amount0Val).toString();
+  const amount1 =
+    amount1ValSign == "0x0"
+      ? toBigInt(amount1Val).toString
+      : -toBigInt(amount1Val).toString();
 
   return {
-    pool_key: standariseAddress(dataValues[0]) || "",
-    position_key: standariseAddress(dataValues[1]) || "",
-    delta: standariseAddress(dataValues[2]) || "",
+    token0: standariseAddress(data[1]),
+    token1: standariseAddress(data[2]),
+    fee: toBigInt(data[3]).toString(),
+    tick_spacing: toBigInt(data[4]).toString(),
+    extension: standariseAddress(data[5]),
+    salt: toBigInt(data[6]).toString(),
+    owner: standariseAddress(data[7]),
+    lower_bound,
+    upper_bound,
+    amount0,
+    amount1,
   };
 }
 
-function processPositionUpdated(_data: any[]) {
-  console.log("processPositionUpdated------");
-  const dataValues = _data.slice(1, 5).map((val) => standariseAddress(val));
+function processPositionUpdated(data: any[]) {
+  const lowerBoundVal = data[8];
+  const lowerBoundValSign = standariseAddress(data[9]);
+  const upperBoundVal = data[10];
+  const upperBoundValSign = standariseAddress(data[11]);
+
+  const lower_bound =
+    lowerBoundValSign == "0x0"
+      ? toBigInt(lowerBoundVal).toString()
+      : -toBigInt(lowerBoundVal).toString();
+  const upper_bound =
+    upperBoundValSign == "0x0"
+      ? toBigInt(upperBoundVal).toString()
+      : -toBigInt(upperBoundVal).toString();
+
+  const amount0Val = data[14];
+  const amount0ValSign = standariseAddress(data[15]);
+  const amount1Val = data[16];
+  const amount1ValSign = standariseAddress(data[17]);
+
+  console.log(toBigInt('0').toString(), 'huehue', -toBigInt('0').toString())
+
+  const amount0 =
+    amount0ValSign == "0x0"
+      ? toBigInt(amount0Val).toString()
+      : -toBigInt(amount0Val).toString();
+  const amount1 =
+    amount1ValSign == "0x0"
+      ? toBigInt(amount1Val).toString()
+      : -toBigInt(amount1Val).toString();
+
+  const liquidityDelta = data[12]
+  const liquidityDeltaSign = standariseAddress(data[13])
+
+  const liquidity_delta = liquidityDeltaSign == "0x0" ? toBigInt(liquidityDelta).toString() : -toBigInt(liquidityDelta).toString();
 
   return {
-    locker: standariseAddress(dataValues[0]) || "",
-    pool_key: standariseAddress(dataValues[1]) || "",
-    params: standariseAddress(dataValues[2]) || "",
-    delta: standariseAddress(dataValues[3]) || "",
+    locker: standariseAddress(data[1]),
+    token0: standariseAddress(data[2]),
+    token1: standariseAddress(data[3]),
+    fee: toBigInt(data[4]).toString(),
+    tick_spacing: toBigInt(data[5]).toString(),
+    extension: standariseAddress(data[6]),
+    salt: toBigInt(data[7]).toString(),
+    lower_bound,
+    upper_bound,
+    liquidity_delta,
+    amount0,
+    amount1,
   };
 }
 

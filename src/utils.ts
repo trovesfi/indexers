@@ -10,7 +10,7 @@ export function toHex(el: string | null | undefined) {
 export function toBigInt(
   el: number | { toString: () => string } | null | undefined
 ) {
-  if (!el) return BigInt(0);
+  if (!el || el === 0) return BigInt(0);
   return BigInt(el.toString());
 }
 
