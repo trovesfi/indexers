@@ -382,8 +382,6 @@ function processPositionUpdated(data: any[]) {
   const amount1Val = data[16];
   const amount1ValSign = standariseAddress(data[17]);
 
-  console.log(toBigInt('0').toString(), 'huehue', -toBigInt('0').toString())
-
   const amount0 =
     amount0ValSign == "0x0"
       ? toBigInt(amount0Val).toString()
