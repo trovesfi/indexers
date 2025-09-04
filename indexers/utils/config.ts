@@ -448,12 +448,6 @@ export const CONFIG: Record<string, EventConfig> = {
         ),
         asset: "",
       },
-      {
-        address: standariseAddress(
-          "0x00000005dd3d2f4429af886cd1a3b08289dbcea99a294197e9eb43b0e0325b4b"
-        ),
-        asset: "",
-      },
     ],
     defaultKeys: [depositKey, withdrawKey],
     keyFields: [{ name: "event_type", type: "felt252", sqlType: "text" }],
