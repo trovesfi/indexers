@@ -5,13 +5,19 @@ if ! command -v grpcurl >/dev/null 2>&1; then
 fi
 
 echo "Running indexers"
-/usr/bin/supervisord -c /app/supervisord.conf
+# /usr/bin/supervisord -c /app/supervisord.conf
 
-echo "Sleeping 10s"
-sleep 10
-cat dep-withdraw.log
-echo "==================================================="
-cat harvests.log
+echo "Starting common indexer with PM2..."
+
+pm2 start "npx apibara build && npx apibara start --indexer common_v2" --name "common_v2.indexer"
+
+echo "Common indexer has been started with PM2."
+
+# echo "Sleeping 10s"
+# sleep 10
+# cat dep-withdraw.log
+# echo "==================================================="
+# cat harvests.log
 
 echo "Starting server"
 node index.js
