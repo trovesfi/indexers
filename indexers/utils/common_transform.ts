@@ -364,11 +364,11 @@ function processPositionFeesCollected(data: any[]) {
 
   const amount0 =
     amount0ValSign == "0x0"
-      ? toBigInt(amount0Val).toString
+      ? toBigInt(amount0Val).toString()
       : -toBigInt(amount0Val).toString();
   const amount1 =
     amount1ValSign == "0x0"
-      ? toBigInt(amount1Val).toString
+      ? toBigInt(amount1Val).toString()
       : -toBigInt(amount1Val).toString();
 
   return {
