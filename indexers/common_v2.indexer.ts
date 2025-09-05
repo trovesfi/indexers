@@ -74,7 +74,7 @@ export function createIndexer<
         db: database,
         idColumn: "event_id",
         persistState: true,
-        indexerName: "investment_flows_v3",
+        indexerName: "common_v2",
       }),
     ],
     finality: "accepted",

@@ -3,6 +3,7 @@ RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
 WORKDIR /app
 ADD src /app/src
+COPY indexers /app/indexers/
 COPY .env package.json schema.prisma apibara.config.ts /app/
 COPY apibara_install.sh /app
 COPY deployment/* /app
