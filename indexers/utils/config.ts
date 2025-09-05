@@ -250,193 +250,187 @@ export const CONFIG: Record<string, EventConfig> = {
     processor: "erc4626",
   },
 
-  starknetVaultKit: {
-    tableName: "investment_flows",
-    eventName: "StarknetVaultKitEvent",
-    contracts: EvergreenVaults.map((s) => ({
-      address: standariseAddress(s.address),
-      asset: s.asset,
-      name: s.name,
-    })),
-    keys: [
-      [erc4626Event, depositKey],
-      [redeemKey],
-      [claimKey as `0x${string}`],
-    ],
-    keyFields: [
-      { name: "event_type", type: "felt252", sqlType: "text" },
-      { name: "sub_event_type", type: "felt252", sqlType: "text" },
-    ],
-    dataFields: [
-      { name: "field1", type: "ContractAddress", sqlType: "text" },
-      { name: "field2", type: "ContractAddress", sqlType: "text" },
-      { name: "field3", type: "u256", sqlType: "numeric(78,0)" },
-      { name: "field4", type: "u256", sqlType: "numeric(78,0)" },
-      { name: "field5", type: "u256", sqlType: "numeric(78,0)" },
-      { name: "field6", type: "u256", sqlType: "numeric(78,0)" },
-      { name: "field7", type: "u256", sqlType: "numeric(78,0)" },
-      { name: "field8", type: "u256", sqlType: "numeric(78,0)" },
-      { name: "field9", type: "u256", sqlType: "numeric(78,0)" },
-    ],
-    additionalFields: [
-      {
-        name: "sender",
-        source: "custom",
-        sqlType: "text",
-        customLogic: (event) => {
-          const key1 = standariseAddress(event.keys[0]);
-          let data = event.data;
-          let dataOffset = 0;
+  // starknetVaultKit: {
+  //   tableName: "investment_flows",
+  //   eventName: "StarknetVaultKitEvent",
+  //   contracts: EvergreenVaults.map((s) => ({
+  //     address: standariseAddress(s.address),
+  //     asset: s.asset,
+  //     name: s.name,
+  //   })),
+  //   keys: [
+  //     [erc4626Event, depositKey],
+  //     [redeemKey],
+  //     [claimKey as `0x${string}`],
+  //   ],
+  //   keyFields: [
+  //     { name: "event_type", type: "felt252", sqlType: "text" },
+  //     { name: "sub_event_type", type: "felt252", sqlType: "text" },
+  //   ],
+  //   dataFields: [
+  //     { name: "field1", type: "ContractAddress", sqlType: "text" },
+  //     { name: "field2", type: "ContractAddress", sqlType: "text" },
+  //     { name: "field3", type: "u256", sqlType: "numeric(78,0)" },
+  //   ],
+  //   additionalFields: [
+  //     {
+  //       name: "sender",
+  //       source: "custom",
+  //       sqlType: "text",
+  //       customLogic: (event) => {
+  //         const key1 = standariseAddress(event.keys[0]);
+  //         let data = event.data;
+  //         let dataOffset = 0;
 
-          if (key1 == erc4626Event) {
-            dataOffset = 0; // ERC4626Event with deposit
-            return standariseAddress(data[dataOffset]);
-          } else if (key1 == redeemKey) {
-            return standariseAddress(data[0]);
-          } else if (key1 == claimKey) {
-            return standariseAddress(data[0]);
-          }
-          return "";
-        },
-      },
-      {
-        name: "receiver",
-        source: "custom",
-        sqlType: "text",
-        customLogic: (event) => {
-          const key1 = standariseAddress(event.keys[0]);
-          let data = event.data;
+  //         if (key1 == erc4626Event) {
+  //           dataOffset = 0; // ERC4626Event with deposit
+  //           return standariseAddress(data[dataOffset]);
+  //         } else if (key1 == redeemKey) {
+  //           return standariseAddress(data[0]);
+  //         } else if (key1 == claimKey) {
+  //           return standariseAddress(data[0]);
+  //         }
+  //         return "";
+  //       },
+  //     },
+  //     {
+  //       name: "receiver",
+  //       source: "custom",
+  //       sqlType: "text",
+  //       customLogic: (event) => {
+  //         const key1 = standariseAddress(event.keys[0]);
+  //         let data = event.data;
 
-          if (key1 == erc4626Event) {
-            return standariseAddress(data[1]);
-          } else if (key1 == redeemKey) {
-            return standariseAddress(data[1]);
-          } else if (key1 == claimKey) {
-            return standariseAddress(data[0]); // dummy
-          }
-          return "";
-        },
-      },
-      {
-        name: "owner",
-        source: "custom",
-        sqlType: "text",
-        customLogic: (event) => {
-          const key1 = standariseAddress(event.keys[0]);
-          let data = event.data;
+  //         if (key1 == erc4626Event) {
+  //           return standariseAddress(data[1]);
+  //         } else if (key1 == redeemKey) {
+  //           return standariseAddress(data[1]);
+  //         } else if (key1 == claimKey) {
+  //           return standariseAddress(data[0]); // dummy
+  //         }
+  //         return "";
+  //       },
+  //     },
+  //     {
+  //       name: "owner",
+  //       source: "custom",
+  //       sqlType: "text",
+  //       customLogic: (event) => {
+  //         const key1 = standariseAddress(event.keys[0]);
+  //         let data = event.data;
 
-          if (key1 == erc4626Event) {
-            return standariseAddress(data[1]);
-          } else if (key1 == redeemKey) {
-            return standariseAddress(data[0]);
-          } else if (key1 == claimKey) {
-            return standariseAddress(data[0]); // dummy
-          }
-          return "";
-        },
-      },
-      {
-        name: "amount",
-        source: "custom",
-        sqlType: "numeric(78,0)",
-        customLogic: (event) => {
-          const key1 = standariseAddress(event.keys[0]);
-          let data = event.data;
+  //         if (key1 == erc4626Event) {
+  //           return standariseAddress(data[1]);
+  //         } else if (key1 == redeemKey) {
+  //           return standariseAddress(data[0]);
+  //         } else if (key1 == claimKey) {
+  //           return standariseAddress(data[0]); // dummy
+  //         }
+  //         return "";
+  //       },
+  //     },
+  //     {
+  //       name: "amount",
+  //       source: "custom",
+  //       sqlType: "numeric(78,0)",
+  //       customLogic: (event) => {
+  //         const key1 = standariseAddress(event.keys[0]);
+  //         let data = event.data;
 
-          if (key1 == erc4626Event) {
-            return BigInt(data[2]).toString();
-          } else if (key1 == redeemKey) {
-            return BigInt(data[4]).toString();
-          } else if (key1 == claimKey) {
-            return BigInt(data[3]).toString();
-          }
-          return "0";
-        },
-      },
-      {
-        name: "request_id",
-        source: "custom",
-        sqlType: "numeric(20,0)",
-        customLogic: (event) => {
-          const key1 = standariseAddress(event.keys[0]);
-          let data = event.data;
+  //         if (key1 == erc4626Event) {
+  //           return BigInt(data[2]).toString();
+  //         } else if (key1 == redeemKey) {
+  //           return BigInt(data[4]).toString();
+  //         } else if (key1 == claimKey) {
+  //           return BigInt(data[3]).toString();
+  //         }
+  //         return "0";
+  //       },
+  //     },
+  //     {
+  //       name: "request_id",
+  //       source: "custom",
+  //       sqlType: "numeric(20,0)",
+  //       customLogic: (event) => {
+  //         const key1 = standariseAddress(event.keys[0]);
+  //         let data = event.data;
 
-          if (key1 == erc4626Event) {
-            return "0"; // not applicable for deposits
-          } else if (key1 == redeemKey) {
-            return BigInt(data[6]).toString();
-          } else if (key1 == claimKey) {
-            return BigInt(data[5]).toString();
-          }
-          return "0";
-        },
-      },
-      {
-        name: "epoch",
-        source: "custom",
-        sqlType: "numeric(20,0)",
-        customLogic: (event) => {
-          const key1 = standariseAddress(event.keys[0]);
-          let data = event.data;
+  //         if (key1 == erc4626Event) {
+  //           return "0"; // not applicable for deposits
+  //         } else if (key1 == redeemKey) {
+  //           return BigInt(data[6]).toString();
+  //         } else if (key1 == claimKey) {
+  //           return BigInt(data[5]).toString();
+  //         }
+  //         return "0";
+  //       },
+  //     },
+  //     {
+  //       name: "epoch",
+  //       source: "custom",
+  //       sqlType: "numeric(20,0)",
+  //       customLogic: (event) => {
+  //         const key1 = standariseAddress(event.keys[0]);
+  //         let data = event.data;
 
-          if (key1 == erc4626Event) {
-            return "0"; // not applicable for deposits
-          } else if (key1 == redeemKey) {
-            return BigInt(data[8]).toString();
-          } else if (key1 == claimKey) {
-            return BigInt(data[7]).toString();
-          }
-          return "0";
-        },
-      },
-      {
-        name: "type",
-        source: "custom",
-        sqlType: "text",
-        customLogic: (event) => {
-          const key1 = standariseAddress(event.keys[0]);
+  //         if (key1 == erc4626Event) {
+  //           return "0"; // not applicable for deposits
+  //         } else if (key1 == redeemKey) {
+  //           return BigInt(data[8]).toString();
+  //         } else if (key1 == claimKey) {
+  //           return BigInt(data[7]).toString();
+  //         }
+  //         return "0";
+  //       },
+  //     },
+  //     {
+  //       name: "type",
+  //       source: "custom",
+  //       sqlType: "text",
+  //       customLogic: (event) => {
+  //         const key1 = standariseAddress(event.keys[0]);
 
-          if (key1 == erc4626Event) {
-            const key2 = standariseAddress(event.keys[1]);
-            if (key2 == depositKey) {
-              return "deposit";
-            } else {
-              throw new Error(
-                "strkfarm:deposit_withdraw:starknet_vault_kit: unknown action type"
-              );
-            }
-          } else if (key1 == redeemKey) {
-            return "redeem";
-          } else if (key1 == claimKey) {
-            return "claim";
-          } else {
-            throw new Error(
-              "strkfarm:deposit_withdraw:starknet_vault_kit: unknown action type"
-            );
-          }
-        },
-      },
-      {
-        name: "asset",
-        source: "custom",
-        sqlType: "text",
-        customLogic: (event, transaction, header, contractInfo) => {
-          const contract = standariseAddress(event.address);
-          const contractConfig = contractInfo.contracts.find(
-            (c: any) => c.address == contract
-          );
-          return contractConfig?.asset || "";
-        },
-      },
-      {
-        name: "contract",
-        source: "event",
-        path: "address",
-        sqlType: "text",
-      },
-    ],
-    processor: "starknetVaultKit",
-  },
+  //         if (key1 == erc4626Event) {
+  //           const key2 = standariseAddress(event.keys[1]);
+  //           if (key2 == depositKey) {
+  //             return "deposit";
+  //           } else {
+  //             throw new Error(
+  //               "strkfarm:deposit_withdraw:starknet_vault_kit: unknown action type"
+  //             );
+  //           }
+  //         } else if (key1 == redeemKey) {
+  //           return "redeem";
+  //         } else if (key1 == claimKey) {
+  //           return "claim";
+  //         } else {
+  //           throw new Error(
+  //             "strkfarm:deposit_withdraw:starknet_vault_kit: unknown action type"
+  //           );
+  //         }
+  //       },
+  //     },
+  //     {
+  //       name: "asset",
+  //       source: "custom",
+  //       sqlType: "text",
+  //       customLogic: (event, transaction, header, contractInfo) => {
+  //         const contract = standariseAddress(event.address);
+  //         const contractConfig = contractInfo.contracts.find(
+  //           (c: any) => c.address == contract
+  //         );
+  //         return contractConfig?.asset || "";
+  //       },
+  //     },
+  //     {
+  //       name: "contract",
+  //       source: "event",
+  //       path: "address",
+  //       sqlType: "text",
+  //     },
+  //   ],
+  //   processor: "starknetVaultKit",
+  // },
 
   ekubo: {
     tableName: "investment_flows",
