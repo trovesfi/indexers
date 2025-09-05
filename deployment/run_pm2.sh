@@ -7,4 +7,5 @@ pm2 start "npx apibara build && npx apibara start --indexer common_v2" --name "c
 
 echo "Common indexer has been started with PM2."
 
-node status-server.js
+echo "Starting server"
+node index.js
