@@ -14,7 +14,12 @@ import {
   CONFIG,
   withdrawKey,
 } from "./config";
-import { standariseAddress, toBigInt, toNumber } from "../../src/utils";
+import {
+  standariseAddress,
+  toBigInt,
+  toNumber,
+  isSaltForContract,
+} from "./index";
 
 const CONFIG_ARR = Object.keys(CONFIG).map((key) => CONFIG[key]);
 
@@ -112,14 +117,13 @@ export async function commonTransform<T extends Record<string, any>>(
         const data = event.keys.concat(event.data);
 
         if (
-          toBigInt(data[6]).toString() !== "1269084" ||
-          standariseAddress(data[7]) !==
-            standariseAddress(
-              "0x2e0af29598b407c8716b17f6d2795eca1b471413fa03fb145a5e33722184067"
-            )
+          !isSaltForContract(
+            standariseAddress(data[7]),
+            toBigInt(data[6]).toString()
+          )
         ) {
-          console.error(
-            `Not our salt value: ${toBigInt(data[6]).toString()}, skipping ${matchedConfig.eventName} event...`
+          console.log(
+            `Not our salt and owner: ${toBigInt(data[6]).toString()}, skipping ${matchedConfig.eventName} event...`
           );
           continue;
         }
@@ -128,8 +132,8 @@ export async function commonTransform<T extends Record<string, any>>(
         const data = event.keys.concat(event.data);
 
         if (toBigInt(data[7]).toString() !== "1269084") {
-          console.error(
-            `Not our salt value: ${toBigInt(data[5]).toString()}, skipping ${matchedConfig.eventName} event...`
+          console.log(
+            `Not our salt: ${toBigInt(data[5]).toString()}, skipping ${matchedConfig.eventName} event...`
           );
           continue;
         }

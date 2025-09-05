@@ -12,12 +12,12 @@ export function getDB(connectionString: string) {
 }
 
 export function standardise(address: string | bigint) {
-    let _a = address;
-    if (!address) {
-        _a = "0";
-    }
-    const a = num.getHexString(num.getDecimalString(_a.toString()));
-    return a;
+  let _a = address;
+  if (!address) {
+    _a = "0";
+  }
+  const a = num.getHexString(num.getDecimalString(_a.toString()));
+  return a;
 }
 
 export function toHex(el: string | null | undefined) {
@@ -58,4 +58,31 @@ export function validateEnv() {
   for (const env of requiredEnvs) {
     if (!process.env[env]) throw new Error(`Env variable requird: ${env}`);
   }
+}
+
+export interface ContractSaltMapping {
+  [contractAddress: string]: string[];
+}
+
+export const CONTRACT_SALT_MAPPING: ContractSaltMapping = {
+  "0x2e0af29598b407c8716b17f6d2795eca1b471413fa03fb145a5e33722184067": [
+    "1269084",
+  ],
+};
+
+export function isSaltForContract(contract: string, salt: string): boolean {
+  const standardizedContract = standariseAddress(contract);
+  const salts = CONTRACT_SALT_MAPPING[standardizedContract];
+  return salts ? salts.includes(salt) : false;
+}
+
+export function getSaltsForContract(contract: string): string[] {
+  const standardizedContract = standariseAddress(contract);
+  return CONTRACT_SALT_MAPPING[standardizedContract] || [];
+}
+
+export function getContractsForSalt(salt: string): string[] {
+  return Object.entries(CONTRACT_SALT_MAPPING)
+    .filter(([_, salts]) => salts.includes(salt))
+    .map(([contract]) => contract);
 }

@@ -10,8 +10,10 @@ import {
 } from "@generated/type-graphql";
 import { buildSchema, Resolver, Query, Arg } from 'type-graphql';
 import { startStandaloneServer } from "@apollo/server/standalone";
+
 import { CustomHarvestsResolver } from "./customResolvers/harvestResolvers.ts";
 import { CustomInvestmentFlowsResolver } from './customResolvers/customInvestmentsResolver.ts';
+import { CustomPositionFeesResolver } from './customResolvers/last_24hr_fee_earned.ts';
 
 const prisma = new PrismaClient();
 
@@ -41,7 +43,8 @@ async function main() {
       CountInvestment_flowsResolver,
       FindManyHarvestsResolver,
       CustomHarvestsResolver,
-      CustomInvestmentFlowsResolver
+      CustomInvestmentFlowsResolver,
+      CustomPositionFeesResolver
     ],
     validate: false,
   });
