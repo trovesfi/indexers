@@ -11,8 +11,8 @@
     "start-liquidations": "apibara run --allow-env=.env src/zklend/liquidations.ts --sink-id=100",
     "start-liquidations2": "apibara run --allow-env=.env src/zklend/liquidations.ts --sink-id=105",
     "start-dnmm-actions": "apibara run --allow-env=.env src/strkfarm/dnmm/user_actions.ts --sink-id=120",
-    "start-dep-withdraw": "apibara run --allow-env=.env src/strkfarm/deposits-withdraws.ts --sink-id=130 --status-server-address=0.0.0.0:4130",
-    "start-harvests": "apibara run --allow-env=.env src/strkfarm/harvests.ts --sink-id=160 --status-server-address=0.0.0.0:4140",
+    "start-dep-withdraw": "npx apibara run --allow-env=.env src/strkfarm/deposits-withdraws.ts --sink-id=130 --status-server-address=0.0.0.0:4130",
+    "start-harvests": "run --allow-env=.env src/strkfarm/harvests.ts --sink-id=160 --status-server-address=0.0.0.0:4140",
     "postinstall": "npx prisma generate"
   },
   "author": "akiraonstarknet",
@@ -29,6 +29,7 @@
     "graphql-fields": "2.0.3",
     "graphql-scalars": "1.23.0",
     "parquets": "0.10.10",
+    "pg": "^8.16.3",
     "prisma": "5.18.0",
     "reflect-metadata": "0.2.2",
     "starknet": "6.7.0",
