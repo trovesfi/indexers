@@ -1,7 +1,10 @@
-import { standariseAddress, toBigInt, toHex, toNumber } from "../utils.ts";
+import { eventKey, standariseAddress, toBigInt, toNumber } from "../utils.ts";
 import { isTLS } from "./constants.ts";
 
-const positionUpdatedKey = standariseAddress("0x02d7d9a5e2e7c2d7d9a5e2e7c2d7d9a5e2e7c2d7d9a5e2e7c2d7d9a5e2e7c2d7d9a5e2e7c2"); // "PositionUpdated"
+// const positionUpdatedKey = standariseAddress("0x02d7d9a5e2e7c2d7d9a5e2e7c2d7d9a5e2e7c2d7d9a5e2e7c2d7d9a5e2e7c2d7d9a5e2e7c2");
+const positionUpdatedKey = eventKey("PositionUpdated"); // "PositionUpdated"
+// 0x00000005dd3d2f4429af886cd1a3b08289dbcea99a294197e9eb43b0e0325b4b
+//
 
 function processPositionUpdated(data: any[]) {
   const lowerBoundVal = data[8];
@@ -66,15 +69,14 @@ const CONTRACTS: any = {
         asset: "",
       },
     ],
-    processor: processPositionUpdated
-  }
-}
+    processor: processPositionUpdated,
+  },
+};
 
-// Initiate a filter builder
 const filter: any = {
   events: [],
-  header: {weak: false}
-}
+  header: { weak: false },
+};
 
 Object.keys(CONTRACTS).map((key: string) => {
   const info = CONTRACTS[key];
@@ -84,9 +86,9 @@ Object.keys(CONTRACTS).map((key: string) => {
       keys: [positionUpdatedKey],
       includeReceipt: false,
       includeReverted: false,
-    })
-  })
-})
+    });
+  });
+});
 
 export const config = {
   streamUrl: "https://mainnet.starknet.a5a.ch",
@@ -106,49 +108,53 @@ export default function transform({ header, events }: any) {
   if (!header || !events) return [];
 
   const { blockNumber, timestamp } = header;
-  
-  return events.map(({ event, transaction }: any) => {
-    if (!transaction || !transaction.meta) return null;
-    if (!event || !event.data || !event.keys) return null;
-    
-    const key = standariseAddress(event.keys[0]);
-    if (key !== positionUpdatedKey) {
-      return null;
-    }
-    
-    const transactionHash = transaction.meta.hash;
-    const contract = standariseAddress(event.fromAddress);
-    
-    // Check if this is a contract we're interested in
-    const contractInfo = CONTRACTS.positionUpdated.contracts.find(
-      (c: any) => c.address === contract
-    );
-    
-    if (!contractInfo) {
-      return null;
-    }
 
-    const processor = CONTRACTS.positionUpdated.processor;
-    const positionData = processor(event.data);
+  return events
+    .map(({ event, transaction }: any) => {
+      if (!transaction || !transaction.meta) return null;
+      if (!event || !event.data || !event.keys) return null;
 
-    return {
-      block_number: toNumber(toBigInt(blockNumber)),
-      txIndex: toNumber(transaction.meta?.transactionIndex),
-      eventIndex: toNumber(event.index),
-      txHash: standariseAddress(transactionHash),
-      locker: positionData.locker,
-      token0: positionData.token0,
-      token1: positionData.token1,
-      fee: positionData.fee,
-      tick_spacing: positionData.tick_spacing,
-      extension: positionData.extension,
-      salt: positionData.salt,
-      lower_bound: positionData.lower_bound,
-      upper_bound: positionData.upper_bound,
-      liquidity_delta: positionData.liquidity_delta,
-      amount0: positionData.amount0,
-      amount1: positionData.amount1,
-      timestamp: Math.round((new Date(timestamp)).getTime() / 1000),
-    };
-  }).filter(e => e !== null);
+      const key = standariseAddress(event.keys[0]);
+      if (key !== positionUpdatedKey) {
+        return null;
+      }
+
+      const transactionHash = transaction.meta.hash;
+      const contract = standariseAddress(event.fromAddress);
+
+      // Check if this is a contract we're interested in
+      const contractInfo = CONTRACTS.positionUpdated.contracts.find(
+        (c: any) => c.address === contract
+      );
+
+      if (!contractInfo) {
+        return null;
+      }
+
+      const processor = CONTRACTS.positionUpdated.processor;
+      const positionData = processor(event.data);
+
+      console.log("key:", key);
+
+      return {
+        block_number: toNumber(toBigInt(blockNumber)),
+        txIndex: toNumber(transaction.meta?.transactionIndex),
+        eventIndex: toNumber(event.index),
+        txHash: standariseAddress(transactionHash),
+        locker: positionData.locker,
+        token0: positionData.token0,
+        token1: positionData.token1,
+        fee: positionData.fee,
+        tick_spacing: positionData.tick_spacing,
+        extension: positionData.extension,
+        salt: positionData.salt,
+        lower_bound: positionData.lower_bound,
+        upper_bound: positionData.upper_bound,
+        liquidity_delta: positionData.liquidity_delta,
+        amount0: positionData.amount0,
+        amount1: positionData.amount1,
+        timestamp: Math.round(new Date(timestamp).getTime() / 1000),
+      };
+    })
+    .filter((e) => e !== null);
 }
