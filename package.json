@@ -12,6 +12,7 @@
     "start-liquidations2": "apibara run --allow-env=.env src/zklend/liquidations.ts --sink-id=105",
     "start-dnmm-actions": "apibara run --allow-env=.env src/strkfarm/dnmm/user_actions.ts --sink-id=120",
     "start-dep-withdraw": "npx apibara run --allow-env=.env src/strkfarm/deposits-withdraws.ts --sink-id=130 --status-server-address=0.0.0.0:4130",
+    "start-pos-updated": "npx apibara run --allow-env=.env src/ekubo/position-updated.ts --sink-id=140",
     "start-harvests": "run --allow-env=.env src/strkfarm/harvests.ts --sink-id=160 --status-server-address=0.0.0.0:4140",
     "postinstall": "npx prisma generate"
   },
