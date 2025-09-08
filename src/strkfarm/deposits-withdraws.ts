@@ -200,7 +200,11 @@ const CONTRACTS: any = {
             {
                 address: standariseAddress("0x7023a5cadc8a5db80e4f0fde6b330cbd3c17bbbf9cb145cbabd7bd5e6fb7b0b"),
                 asset: TOKENS.STRK
-            }
+            },
+            {
+                address: standariseAddress("0x01f083b98674bc21effee29ef443a00c7b9a500fd92cf30341a3da12c73f2324"),
+                asset: ''
+            },
         ],
         processor: dnmmProcessor
     },
