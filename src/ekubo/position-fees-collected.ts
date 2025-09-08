@@ -123,7 +123,7 @@ export default function transform({ header, events }: any) {
       const saltValue = toBigInt(data[6]).toString();
       const ownerValue = standariseAddress(data[7]);
 
-      if (!isSaltForContract(contract, saltValue)) {
+      if (!isSaltForContract(standariseAddress(data[7]), saltValue)) {
         console.log(
           `Not our salt: ${saltValue}, skipping PositionFeesCollected event...`
         );
