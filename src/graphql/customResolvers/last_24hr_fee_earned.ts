@@ -7,6 +7,23 @@ import { getSaltsForContract } from "../../ekubo/constants";
 
 const prisma = new PrismaClient();
 
+function toBigIntSafe(value: any): bigint {
+  if (typeof value === "bigint") return value;
+  if (typeof value === "string") {
+    if (/e/i.test(value)) {
+      const num = Number(value);
+      if (Number.isFinite(num)) return BigInt(Math.trunc(num));
+      throw new Error(`Invalid numeric string: ${value}`);
+    }
+    return BigInt(value);
+  }
+  if (typeof value === "number") {
+    if (!Number.isFinite(value)) throw new Error("Non-finite number");
+    return BigInt(Math.trunc(value));
+  }
+  throw new Error(`Unsupported type for BigInt conversion: ${typeof value}`);
+}
+
 @ObjectType()
 export class DailyFeeEarnings {
   @Field(() => String)
@@ -54,7 +71,10 @@ export class CustomPositionFeesResolver {
 
     const salts = CONTRACT_SALT_MAPPING[contract] || [];
 
+    console.log(salts, 'salts-')
+
     if (salts.length === 0) {
+      console.log('empty--')
       return {
         contract: standardizedContract,
         dailyEarnings: [],
@@ -92,6 +112,8 @@ export class CustomPositionFeesResolver {
       },
     });
 
+    console.log(feeCollections, 'feeColl---')
+
     // grp by day and token
     const dailyEarningsMap = new Map<string, Map<string, bigint>>();
     let totalCollections = 0;
@@ -102,8 +124,10 @@ export class CustomPositionFeesResolver {
       const date = new Date(collection.timestamp * 1000)
         .toISOString()
         .split("T")[0];
-      const amount0 = BigInt(collection.amount0);
-      const amount1 = BigInt(collection.amount1);
+      const amount0Raw = toBigIntSafe(collection.amount0);
+      const amount1Raw = toBigIntSafe(collection.amount1);
+      const amount0 = amount0Raw >= 0n ? amount0Raw : -amount0Raw;
+      const amount1 = amount1Raw >= 0n ? amount1Raw : -amount1Raw;
 
       if (!dailyEarningsMap.has(date)) {
         dailyEarningsMap.set(date, new Map<string, bigint>());
@@ -111,13 +135,13 @@ export class CustomPositionFeesResolver {
 
       const dayMap = dailyEarningsMap.get(date)!;
 
-      if (amount0 > 0) {
-        const current = dayMap.get(collection.token0) || BigInt(0);
+      if (amount0 > 0n) {
+        const current = dayMap.get(collection.token0) || 0n;
         dayMap.set(collection.token0, current + amount0);
       }
 
-      if (amount1 > 0) {
-        const current = dayMap.get(collection.token1) || BigInt(0);
+      if (amount1 > 0n) {
+        const current = dayMap.get(collection.token1) || 0n;
         dayMap.set(collection.token1, current + amount1);
       }
     }
