@@ -1,11 +1,11 @@
 import { eventKey, standariseAddress, toBigInt, toNumber } from "../utils.ts";
-import { isTLS } from "./constants.ts";
+import { isTLS, isSaltForContract } from "./constants.ts";
 
-const positionUpdatedKey = standariseAddress(eventKey("PositionUpdated"));
+const positionFeesCollectedKey = standariseAddress(
+  eventKey("PositionFeesCollected")
+);
 
-function processPositionUpdated(_data: any[]) {
-  const data = _data; // already contains both keys and data
-
+function processPositionFeesCollected(data: any[]) {
   const lowerBoundVal = data[8];
   const lowerBoundValSign = standariseAddress(data[9]);
   const upperBoundVal = data[10];
@@ -14,64 +14,52 @@ function processPositionUpdated(_data: any[]) {
   const lower_bound =
     lowerBoundValSign == "0x0"
       ? toBigInt(lowerBoundVal).toString()
-      : (-toBigInt(lowerBoundVal)).toString();
+      : -toBigInt(lowerBoundVal).toString();
   const upper_bound =
     upperBoundValSign == "0x0"
       ? toBigInt(upperBoundVal).toString()
-      : (-toBigInt(upperBoundVal)).toString();
+      : -toBigInt(upperBoundVal).toString();
 
-  const amount0Val = data[14];
-  const amount0ValSign = standariseAddress(data[15]);
-  const amount1Val = data[16];
-  const amount1ValSign = standariseAddress(data[17]);
+  const amount0Val = data[12];
+  const amount0ValSign = standariseAddress(data[13]);
+  const amount1Val = data[14];
+  const amount1ValSign = standariseAddress(data[15]);
 
   const amount0 =
     amount0ValSign == "0x0"
       ? toBigInt(amount0Val).toString()
-      : (-toBigInt(amount0Val)).toString();
+      : -toBigInt(amount0Val).toString();
   const amount1 =
     amount1ValSign == "0x0"
       ? toBigInt(amount1Val).toString()
-      : (-toBigInt(amount1Val)).toString();
-
-  const liquidityDelta = data[12];
-  const liquidityDeltaSign = standariseAddress(data[13]);
-
-  const liquidity_delta =
-    liquidityDeltaSign == "0x0"
-      ? toBigInt(liquidityDelta).toString()
-      : (-toBigInt(liquidityDelta)).toString();
-
-  console.log("heree");
+      : -toBigInt(amount1Val).toString();
 
   return {
-    locker: standariseAddress(data[1]),
-    token0: standariseAddress(data[2]),
-    token1: standariseAddress(data[3]),
-    fee: toBigInt(data[4]).toString(),
-    tick_spacing: toBigInt(data[5]).toString(),
-    extension: standariseAddress(data[6]),
-    salt: toBigInt(data[7]).toString(),
+    token0: standariseAddress(data[1]),
+    token1: standariseAddress(data[2]),
+    fee: toBigInt(data[3]).toString(),
+    tick_spacing: toBigInt(data[4]).toString(),
+    extension: standariseAddress(data[5]),
+    salt: toBigInt(data[6]).toString(),
+    owner: standariseAddress(data[7]),
     lower_bound,
     upper_bound,
-    liquidity_delta,
     amount0,
     amount1,
   };
 }
 
 const CONTRACTS: any = {
-  positionUpdated: {
+  positionFeesCollected: {
     contracts: [
       {
         address: standariseAddress(
           "0x00000005dd3d2f4429af886cd1a3b08289dbcea99a294197e9eb43b0e0325b4b"
-          // "0x01f083b98674bc21effee29ef443a00c7b9a500fd92cf30341a3da12c73f2324"
         ),
         asset: "",
       },
     ],
-    processor: processPositionUpdated,
+    processor: processPositionFeesCollected,
   },
 };
 
@@ -85,7 +73,7 @@ Object.keys(CONTRACTS).forEach((key: string) => {
   info.contracts.forEach((c: any) => {
     filter.events.push({
       fromAddress: c.address,
-      keys: [positionUpdatedKey],
+      keys: [positionFeesCollectedKey],
       includeReceipt: false,
       includeReverted: false,
     });
@@ -101,7 +89,7 @@ export const config = {
   sinkType: "postgres",
   sinkOptions: {
     noTls: isTLS,
-    tableName: "position_updated",
+    tableName: "position_fees_collected",
   },
 };
 
@@ -118,29 +106,31 @@ export default function transform({ header, events }: any) {
       if (!event || !event.data || !event.keys) return null;
 
       const key = standariseAddress(event.keys[0]);
-      if (key !== positionUpdatedKey) {
+      if (key !== positionFeesCollectedKey) {
         return null;
       }
 
       const transactionHash = transaction.meta.hash;
 
       if (!event || !event.data || !event.keys) {
-        console.error("position_updated: Expected event with data");
+        console.error("position_fees_collected: Expected event with data");
         return null;
       }
 
       const data = event.keys.concat(event.data);
+      const contract = standariseAddress(event.fromAddress);
 
-      if (toBigInt(data[7]).toString() !== "1269084") {
+      const saltValue = toBigInt(data[6]).toString();
+      const ownerValue = standariseAddress(data[7]);
+
+      if (!isSaltForContract(contract, saltValue)) {
         console.log(
-          `Not our salt: ${toBigInt(data[5]).toString()}, skipping event...`
+          `Not our salt: ${saltValue}, skipping PositionFeesCollected event...`
         );
         return null;
       }
 
-      const contract = standariseAddress(event.fromAddress);
-
-      const contractInfo = CONTRACTS.positionUpdated.contracts.find(
+      const contractInfo = CONTRACTS.positionFeesCollected.contracts.find(
         (c: any) => c.address === contract
       );
 
@@ -150,15 +140,14 @@ export default function transform({ header, events }: any) {
       }
 
       try {
-        const processor = CONTRACTS.positionUpdated.processor;
+        const processor = CONTRACTS.positionFeesCollected.processor;
+        const feesData = processor(data);
 
-        const positionData = processor(data);
-
-        console.log("Processing PositionUpdated event:", {
+        console.log("Processing PositionFeesCollected event:", {
           blockNumber,
           transactionHash,
           contract,
-          positionData,
+          feesData,
         });
 
         return {
@@ -166,22 +155,21 @@ export default function transform({ header, events }: any) {
           txHash: standariseAddress(transactionHash),
           txIndex: toNumber(transaction.meta?.transactionIndex || 0),
           eventIndex: toNumber(event.index || 0),
-          locker: positionData.locker,
-          token0: positionData.token0,
-          token1: positionData.token1,
-          fee: positionData.fee,
-          tick_spacing: positionData.tick_spacing,
-          extension: positionData.extension,
-          salt: positionData.salt,
-          lower_bound: positionData.lower_bound,
-          upper_bound: positionData.upper_bound,
-          liquidity_delta: positionData.liquidity_delta,
-          amount0: positionData.amount0,
-          amount1: positionData.amount1,
+          token0: feesData.token0,
+          token1: feesData.token1,
+          fee: feesData.fee,
+          tick_spacing: feesData.tick_spacing,
+          extension: feesData.extension,
+          salt: feesData.salt,
+          owner: feesData.owner,
+          lower_bound: feesData.lower_bound,
+          upper_bound: feesData.upper_bound,
+          amount0: feesData.amount0,
+          amount1: feesData.amount1,
           timestamp: Math.round(new Date(timestamp).getTime() / 1000),
         };
       } catch (error) {
-        console.error("Error processing PositionUpdated event:", error, {
+        console.error("Error processing PositionFeesCollected event:", error, {
           blockNumber,
           transactionHash,
           contract,
