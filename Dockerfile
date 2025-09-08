@@ -29,7 +29,7 @@ RUN node -v && npm -v
 # yarn install
 RUN npm install -g yarn
 RUN yarn install
-RUN npx prisma db push
+# RUN npx prisma db push
 
 #home/teja9999/.nvm/versions/node/v18.20.1/bin/node
 
