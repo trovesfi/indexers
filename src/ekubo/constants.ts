@@ -1,5 +1,3 @@
-import { standariseAddress } from "../utils.ts";
-
 // export const CONTRACTS_INFO = {
 //     loanguard: {
 //         address: '0x534475ec241a43cf5da17420ef9b20409ca74563971332355ee2706d9ebafb2',
@@ -14,31 +12,18 @@ import { standariseAddress } from "../utils.ts";
 //     USDT: standariseAddress('0x68f5c6a61780768455de69077e07e89787839bf8166decfbf92b645209c0fb8')
 // };
 
-export const isTLS = Deno.env.get("IS_TLS") === "true";
+export const isTLS =
+  typeof (globalThis as any).Deno !== "undefined" &&
+  (globalThis as any).Deno.env.get("IS_TLS") === "true";
 
-export interface ContractSaltMapping {
-  [contractAddress: string]: string[];
+export interface ContractInfo {
+  salt: string; // store as string to match DB types
+  owner: string;
 }
 
-export const CONTRACT_SALT_MAPPING: ContractSaltMapping = {
-  "0x2e0af29598b407c8716b17f6d2795eca1b471413fa03fb145a5e33722184067": [
-    "1269084",
-  ],
+export const CONTRACT_MAP: Record<string, ContractInfo> = {
+  "0x01f083b98674bc21effee29ef443a00c7b9a500fd92cf30341a3da12c73f2324": {
+    salt: "1269084",
+    owner: "0x2e0af29598b407c8716b17f6d2795eca1b471413fa03fb145a5e33722184067",
+  },
 };
-
-export function isSaltForContract(contract: string, salt: string): boolean {
-  const standardizedContract = standariseAddress(contract);
-  const salts = CONTRACT_SALT_MAPPING[standardizedContract];
-  return salts ? salts.includes(salt) : false;
-}
-
-export function getSaltsForContract(contract: string): string[] {
-  const standardizedContract = standariseAddress(contract);
-  return CONTRACT_SALT_MAPPING[standardizedContract] || [];
-}
-
-export function getContractsForSalt(salt: string): string[] {
-  return Object.entries(CONTRACT_SALT_MAPPING)
-    .filter(([_, salts]) => salts.includes(salt))
-    .map(([contract]) => contract);
-}

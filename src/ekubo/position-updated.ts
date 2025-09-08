@@ -1,5 +1,5 @@
 import { eventKey, standariseAddress, toBigInt, toNumber } from "../utils.ts";
-import { isTLS } from "./constants.ts";
+import { isTLS, CONTRACT_MAP } from "./constants.ts";
 
 const positionUpdatedKey = standariseAddress(eventKey("PositionUpdated"));
 
@@ -42,8 +42,6 @@ function processPositionUpdated(_data: any[]) {
       ? toBigInt(liquidityDelta).toString()
       : (-toBigInt(liquidityDelta)).toString();
 
-  console.log("heree");
-
   return {
     locker: standariseAddress(data[1]),
     token0: standariseAddress(data[2]),
@@ -66,7 +64,12 @@ const CONTRACTS: any = {
       {
         address: standariseAddress(
           "0x00000005dd3d2f4429af886cd1a3b08289dbcea99a294197e9eb43b0e0325b4b"
-          // "0x01f083b98674bc21effee29ef443a00c7b9a500fd92cf30341a3da12c73f2324"
+        ),
+        asset: "",
+      },
+      {
+        address: standariseAddress(
+          "0x01f083b98674bc21effee29ef443a00c7b9a500fd92cf30341a3da12c73f2324"
         ),
         asset: "",
       },
@@ -94,7 +97,10 @@ Object.keys(CONTRACTS).forEach((key: string) => {
 
 export const config = {
   streamUrl: "https://mainnet.starknet.a5a.ch",
-  startingBlock: Number(Deno.env.get("START_BLOCK") || 0),
+  startingBlock:
+    typeof (globalThis as any).Deno !== "undefined"
+      ? Number((globalThis as any).Deno.env.get("START_BLOCK") || 0)
+      : 0,
   network: "starknet",
   finality: "DATA_STATUS_ACCEPTED",
   filter: filter,
@@ -130,13 +136,7 @@ export default function transform({ header, events }: any) {
       }
 
       const data = event.keys.concat(event.data);
-
-      if (toBigInt(data[7]).toString() !== "1269084") {
-        console.log(
-          `Not our salt: ${toBigInt(data[5]).toString()}, skipping event...`
-        );
-        return null;
-      }
+      const saltValue = toBigInt(data[7]).toString();
 
       const contract = standariseAddress(event.fromAddress);
 
@@ -146,6 +146,13 @@ export default function transform({ header, events }: any) {
 
       if (!contractInfo) {
         console.error(`Unknown contract: ${contract}`);
+        return null;
+      }
+
+      const allowedSalts = Object.values(CONTRACT_MAP).map((i: any) => i.salt);
+      console.log(allowedSalts, 'allowedSalts')
+      if (!allowedSalts.includes(saltValue)) {
+        console.log(`Not our salt: ${saltValue}, skipping this event...`);
         return null;
       }
 
@@ -191,5 +198,5 @@ export default function transform({ header, events }: any) {
         return null;
       }
     })
-    .filter((e) => e !== null);
+    .filter((e: any) => e !== null);
 }

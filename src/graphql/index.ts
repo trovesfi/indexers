@@ -13,6 +13,7 @@ import { startStandaloneServer } from "@apollo/server/standalone";
 import { CustomHarvestsResolver } from "./customResolvers/harvestResolvers.ts";
 import { CustomInvestmentFlowsResolver } from './customResolvers/customInvestmentsResolver.ts';
 import { CustomPositionFeesResolver } from './customResolvers/last_24hr_fee_earned.ts';
+import { EkuboVaultFlowsResolver } from './customResolvers/ekuboVaultFlows.ts';
 
 const prisma = new PrismaClient();
 
@@ -43,7 +44,8 @@ async function main() {
       FindManyHarvestsResolver,
       CustomHarvestsResolver,
       CustomInvestmentFlowsResolver,
-      CustomPositionFeesResolver
+      CustomPositionFeesResolver,
+      EkuboVaultFlowsResolver
     ],
     validate: false,
   });

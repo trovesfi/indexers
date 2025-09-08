@@ -1,5 +1,5 @@
 import { eventKey, standariseAddress, toBigInt, toNumber } from "../utils.ts";
-import { isTLS, isSaltForContract } from "./constants.ts";
+import { isTLS, CONTRACT_MAP } from "./constants.ts";
 
 const positionFeesCollectedKey = standariseAddress(
   eventKey("PositionFeesCollected")
@@ -58,6 +58,12 @@ const CONTRACTS: any = {
         ),
         asset: "",
       },
+      {
+        address: standariseAddress(
+          "0x01f083b98674bc21effee29ef443a00c7b9a500fd92cf30341a3da12c73f2324"
+        ),
+        asset: "",
+      },
     ],
     processor: processPositionFeesCollected,
   },
@@ -82,7 +88,10 @@ Object.keys(CONTRACTS).forEach((key: string) => {
 
 export const config = {
   streamUrl: "https://mainnet.starknet.a5a.ch",
-  startingBlock: Number(Deno.env.get("START_BLOCK") || 0),
+  startingBlock:
+    typeof (globalThis as any).Deno !== "undefined"
+      ? Number((globalThis as any).Deno.env.get("START_BLOCK") || 0)
+      : 0,
   network: "starknet",
   finality: "DATA_STATUS_ACCEPTED",
   filter: filter,
@@ -123,19 +132,23 @@ export default function transform({ header, events }: any) {
       const saltValue = toBigInt(data[6]).toString();
       const ownerValue = standariseAddress(data[7]);
 
-      if (!isSaltForContract(standariseAddress(data[7]), saltValue)) {
-        console.log(
-          `Not our salt: ${saltValue}, skipping PositionFeesCollected event...`
-        );
-        return null;
-      }
-
       const contractInfo = CONTRACTS.positionFeesCollected.contracts.find(
         (c: any) => c.address === contract
       );
 
       if (!contractInfo) {
         console.error(`Unknown contract: ${contract}`);
+        return null;
+      }
+
+      const allowedOwnerSalt = Object.values(CONTRACT_MAP).map(
+        (i: any) => `${standariseAddress(i.owner)}:${i.salt}`
+      );
+      const currentOwnerSalt = `${ownerValue}:${saltValue}`;
+      if (!allowedOwnerSalt.includes(currentOwnerSalt)) {
+        console.log(
+          `Not our owner/salt: ${currentOwnerSalt}, skipping this event...`
+        );
         return null;
       }
 
@@ -179,5 +192,5 @@ export default function transform({ header, events }: any) {
         return null;
       }
     })
-    .filter((e) => e !== null);
+    .filter((e: any) => e !== null);
 }
