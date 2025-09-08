@@ -1,12 +1,11 @@
 import { eventKey, standariseAddress, toBigInt, toNumber } from "../utils.ts";
 import { isTLS } from "./constants.ts";
 
-// const positionUpdatedKey = standariseAddress("0x02d7d9a5e2e7c2d7d9a5e2e7c2d7d9a5e2e7c2d7d9a5e2e7c2d7d9a5e2e7c2d7d9a5e2e7c2");
-const positionUpdatedKey = eventKey("PositionUpdated"); // "PositionUpdated"
-// 0x00000005dd3d2f4429af886cd1a3b08289dbcea99a294197e9eb43b0e0325b4b
-//
+const positionUpdatedKey = eventKey("PositionUpdated");
 
-function processPositionUpdated(data: any[]) {
+function processPositionUpdated(_data: any[]) {
+  const data = _data; // already contains both keys and data
+  
   const lowerBoundVal = data[8];
   const lowerBoundValSign = standariseAddress(data[9]);
   const upperBoundVal = data[10];
@@ -15,11 +14,11 @@ function processPositionUpdated(data: any[]) {
   const lower_bound =
     lowerBoundValSign == "0x0"
       ? toBigInt(lowerBoundVal).toString()
-      : -toBigInt(lowerBoundVal).toString();
+      : (-toBigInt(lowerBoundVal)).toString();
   const upper_bound =
     upperBoundValSign == "0x0"
       ? toBigInt(upperBoundVal).toString()
-      : -toBigInt(upperBoundVal).toString();
+      : (-toBigInt(upperBoundVal)).toString();
 
   const amount0Val = data[14];
   const amount0ValSign = standariseAddress(data[15]);
@@ -29,11 +28,11 @@ function processPositionUpdated(data: any[]) {
   const amount0 =
     amount0ValSign == "0x0"
       ? toBigInt(amount0Val).toString()
-      : -toBigInt(amount0Val).toString();
+      : (-toBigInt(amount0Val)).toString();
   const amount1 =
     amount1ValSign == "0x0"
       ? toBigInt(amount1Val).toString()
-      : -toBigInt(amount1Val).toString();
+      : (-toBigInt(amount1Val)).toString();
 
   const liquidityDelta = data[12];
   const liquidityDeltaSign = standariseAddress(data[13]);
@@ -41,7 +40,7 @@ function processPositionUpdated(data: any[]) {
   const liquidity_delta =
     liquidityDeltaSign == "0x0"
       ? toBigInt(liquidityDelta).toString()
-      : -toBigInt(liquidityDelta).toString();
+      : (-toBigInt(liquidityDelta)).toString();
 
   return {
     locker: standariseAddress(data[1]),
@@ -63,22 +62,21 @@ const CONTRACTS: any = {
   positionUpdated: {
     contracts: [
       {
-        address: standariseAddress(
-          "0x00000005dd3d2f4429af886cd1a3b08289dbcea99a294197e9eb43b0e0325b4b"
-        ),
+        address: standariseAddress("0x00000005dd3d2f4429af886cd1a3b08289dbcea99a294197e9eb43b0e0325b4b"),
         asset: "",
       },
     ],
-    processor: processPositionUpdated,
-  },
-};
+    processor: processPositionUpdated
+  }
+}
 
+// Initiate a filter builder
 const filter: any = {
   events: [],
-  header: { weak: false },
-};
+  header: {weak: false}
+}
 
-Object.keys(CONTRACTS).map((key: string) => {
+Object.keys(CONTRACTS).forEach((key: string) => {
   const info = CONTRACTS[key];
   info.contracts.forEach((c: any) => {
     filter.events.push({
@@ -103,44 +101,58 @@ export const config = {
   },
 };
 
-// Event processor function to store in db
+// Event processor function to store in db - match the working pattern
 export default function transform({ header, events }: any) {
   if (!header || !events) return [];
 
   const { blockNumber, timestamp } = header;
 
-  return events
-    .map(({ event, transaction }: any) => {
-      if (!transaction || !transaction.meta) return null;
-      if (!event || !event.data || !event.keys) return null;
+  console.log(`Processing block ${blockNumber} with ${events.length} events`);
+  
+  return events.map(({ event, transaction }: any) => {
+    if (!transaction || !transaction.meta) return null;
+    if (!event || !event.data || !event.keys) return null;
+    
+    const key = standariseAddress(event.keys[0]);
+    if (key !== positionUpdatedKey) {
+      return null;
+    }
+    
+    const transactionHash = transaction.meta.hash;
 
-      const key = standariseAddress(event.keys[0]);
-      if (key !== positionUpdatedKey) {
-        return null;
-      }
+    if (!event || !event.data || !event.keys) {
+      console.error('position_updated: Expected event with data');
+      return null;
+    }
 
-      const transactionHash = transaction.meta.hash;
-      const contract = standariseAddress(event.fromAddress);
+    const contract = standariseAddress(event.fromAddress);
+    
+    const contractInfo = CONTRACTS.positionUpdated.contracts.find(
+      (c: any) => c.address === contract
+    );
+    
+    if (!contractInfo) {
+      console.error(`Unknown contract: ${contract}`);
+      return null;
+    }
 
-      // Check if this is a contract we're interested in
-      const contractInfo = CONTRACTS.positionUpdated.contracts.find(
-        (c: any) => c.address === contract
-      );
-
-      if (!contractInfo) {
-        return null;
-      }
-
+    try {
       const processor = CONTRACTS.positionUpdated.processor;
-      const positionData = processor(event.data);
+      
+      const positionData = processor(event.keys.concat(event.data));
 
-      console.log("key:", key);
+      console.log("Processing PositionUpdated event:", {
+        blockNumber,
+        transactionHash,
+        contract,
+        positionData
+      });
 
       return {
         block_number: toNumber(toBigInt(blockNumber)),
-        txIndex: toNumber(transaction.meta?.transactionIndex),
-        eventIndex: toNumber(event.index),
         txHash: standariseAddress(transactionHash),
+        txIndex: toNumber(transaction.meta?.transactionIndex || 0),
+        eventIndex: toNumber(event.index || 0),
         locker: positionData.locker,
         token0: positionData.token0,
         token1: positionData.token1,
@@ -153,8 +165,17 @@ export default function transform({ header, events }: any) {
         liquidity_delta: positionData.liquidity_delta,
         amount0: positionData.amount0,
         amount1: positionData.amount1,
-        timestamp: Math.round(new Date(timestamp).getTime() / 1000),
+        timestamp: Math.round((new Date(timestamp)).getTime() / 1000),
       };
-    })
-    .filter((e) => e !== null);
+    } catch (error) {
+      console.error("Error processing PositionUpdated event:", error, {
+        blockNumber,
+        transactionHash,
+        contract,
+        keys: event.keys,
+        data: event.data
+      });
+      return null;
+    }
+  }).filter(e => e !== null);
 }
