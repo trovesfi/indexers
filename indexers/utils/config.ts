@@ -59,7 +59,64 @@ const EKUBO_VAULT_CONTRACTS: ContractConfig[] = [
       "0x01f083b98674bc21effee29ef443a00c7b9a500fd92cf30341a3da12c73f2324"
     ),
     asset: "",
-  }
+    name: 'xSTRK/STRK'
+  },
+  {
+    address: standariseAddress(
+      "0x3a4f8debaf12af97bb911099bc011d63d6c208d4c5ba8e15d7f437785b0aaa2"
+    ),
+    asset: "",
+    name: 'USDC/USDT'
+  },
+  {
+    address: standariseAddress(
+      "0x160d8fa4569ef6a12e6bf47cb943d7b5ebba8a41a69a14c1d943050ba5ff947"
+    ),
+    asset: "",
+    name: 'ETH/USDC'
+  },
+  {
+    address: standariseAddress(
+      "0x351b36d0d9d8b40010658825adeeddb1397436cd41acd0ff6c6e23aaa8b5b30"
+    ),
+    asset: "",
+    name: 'STRK/USDC'
+  },
+  {
+    address: standariseAddress(
+      "0x4ce3024b0ee879009112d7b0e073f8a87153dd35b029347d4247ffe48d28f51"
+    ),
+    asset: "",
+    name: 'STRK/ETH'
+  },
+  {
+    address: standariseAddress(
+      "0x2bcaef2eb7706875a5fdc6853dd961a0590f850bc3a031c59887189b5e84ba1"
+    ),
+    asset: "",
+    name: 'WBTC/USDC'
+  },
+  {
+    address: standariseAddress(
+      "0x4aad891a2d4432fba06b6558631bb13f6bbd7f6f33ab8c3111e344889ea4456"
+    ),
+    asset: "",
+    name: 'tBTC/USDC'
+  },
+  {
+    address: standariseAddress(
+      "0x1c9232b8186d9317652f05055615f18a120c2ad9e5ee96c39e031c257fb945b"
+    ),
+    asset: "",
+    name: 'ETH/WBTC'
+  },
+  {
+    address: standariseAddress(
+      "0x1248e385c23a929a015ec298a26560fa7745bbd6e41a886550e337b02714b1b"
+    ),
+    asset: "",
+    name: 'WBTC/STRK'
+  },
 ]
 
 export const CONFIG: EventConfig[] = [
