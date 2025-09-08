@@ -6,12 +6,12 @@ import type {
   TablesRelationalConfig,
 } from "drizzle-orm";
 import { StarknetStream } from "@apibara/starknet";
-import { drizzleStorage } from "@apibara/plugin-drizzle";
+import { drizzleStorage, useDrizzleStorage } from "@apibara/plugin-drizzle";
 import type { PgDatabase, PgQueryResultHKT } from "drizzle-orm/pg-core";
 import type { ApibaraRuntimeConfig } from "apibara/types";
 import { useLogger } from "@apibara/indexer/plugins";
 
-import { getDB } from "./utils/index";
+import { getDB } from "./utils";
 import { commonTransform, eventKey } from "./utils/common_transform";
 import { CONFIG } from "./utils/config";
 
@@ -36,48 +36,33 @@ export function createIndexer<
 }) {
   const events: any = [];
   
-  for (const configKey of Object.keys(CONFIG)) {
-    const eventConfig = CONFIG[configKey];
+  for (const config of CONFIG) {
+    const eventConfig = config;
     
     for (const contract of eventConfig.contracts) {
-      if (eventConfig.keys) {
-        for (const keySet of eventConfig.keys) {
-          events.push({
-            address: contract.address as `0x${string}`,
-            keys: keySet,
-            includeReceipt: false,
-          });
-        }
-      } else {
-        const defaultKeys = eventConfig.defaultKeys || [
-          eventKey("Deposit"),
-          eventKey("Withdraw"),
-        ];
-        
-        for (const key of defaultKeys) {
-          events.push({
-            address: contract.address as `0x${string}`,
-            keys: [key],
-            includeReceipt: false,
-          });
-        }
+      for (const keySet of eventConfig.defaultKeys) {
+        events.push({
+          address: contract.address as `0x${string}`,
+          keys: keySet,
+          includeSiblings: eventConfig.includeReceipt || false,
+        });
       }
     }
   }
 
   return defineIndexer(StarknetStream)({
     streamUrl: process.env.STREAM_URL!,
-    startingBlock: BigInt(process.env.START_BLOCK!),
+    startingBlock: BigInt(process.env.STARTING_BLOCK!),
     plugins: [
       // @ts-ignore
       drizzleStorage({
         db: database,
-        idColumn: "event_id",
+        idColumn: "id",
         persistState: true,
-        indexerName: "common_v2",
+        indexerName: "endur_relayer",
       }),
     ],
-    finality: "accepted",
+    finality: "pending",
     filter: {
       header: "on_data",
       events,
@@ -85,11 +70,11 @@ export function createIndexer<
     // @ts-ignore
     async transform({ block, finality, endCursor, context }) {
       const logger = useLogger();
-
+      const { db } = useDrizzleStorage();
       await commonTransform(
         block,
         finality,
-        database,
+        db,
         logger,
         endCursor,
         context

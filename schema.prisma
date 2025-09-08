@@ -1,105 +1,41 @@
+// standard path for graphql (Node)
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
+  schemas  = ["public", "airfoil"]
 }
 
+// standard path for graphql (Node)
 generator typegraphql {
   provider = "typegraphql-prisma"
+  previewFeatures = ["multiSchema"]
+  schemas  = ["public", "airfoil"]
+}
+
+generator drizzle {
+  provider = "drizzle-prisma-generator"
+  previewFeatures = ["multiSchema"]
+  output   = "./indexers/drizzle" // Where to put generated Drizle tables
+  schemas  = ["public", "airfoil"]
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("POSTGRES_CONNECTION_STRING")
-}
-
-generator drizzle {
-  provider = "drizzle-prisma-generator"
-  output   = "./indexers/drizzle" // Where to put generated Drizle tables
-}
-
-model subscriptions {
-  block_number Int
-  txIndex      Int
-  eventIndex   Int
-  txHash       String
-
-  user                 String
-  is_active            Boolean
-  min_health_factor    Int
-  max_health_factor    Int
-  target_health_factor Int
-  protocol             String
-  timestamp            Int
-  cursor               BigInt? @map("_cursor")
-
-  @@unique([block_number, txIndex, eventIndex], name: "event_id")
-}
-
-model rebalances {
-  block_number Int
-  txIndex      Int
-  eventIndex   Int
-  txHash       String
-
-  user                   String
-  strategy               String
-  token                  String
-  amount                 BigInt
-  protocol               String
-  is_outflow             Boolean
-  previous_health_factor Int
-  new_health_factor      Int
-
-  cursor BigInt? @map("_cursor")
-
-  @@unique([block_number, txIndex, eventIndex], name: "event_id")
-}
-
-model zklend_liquidations {
-  block_number Int
-  txIndex      Int    @default(0)
-  eventIndex   Int    @default(0)
-  txHash       String
-
-  user             String
-  debt_token       String
-  debt_face_amount BigInt
-  cursor           BigInt? @map("_cursor")
-
-  @@unique([block_number, txIndex, eventIndex], name: "event_id")
-}
-
-model dnmm_user_actions {
-  block_number Int
-  txIndex      Int    @default(0)
-  eventIndex   Int    @default(0)
-  txHash       String
-
-  sender                      String
-  receiver                    String
-  owner                       String
-  type                        String // deposit | withdraw
-  assets                      String
-  position_acc1_supply_shares String
-  position_acc1_borrow_shares String
-  position_acc2_supply_shares String
-  position_acc2_borrow_shares String
-  contract                    String
-  timestamp                   Int
-  cursor                      BigInt? @map("_cursor")
-
-  @@unique([block_number, txIndex, eventIndex], name: "event_id")
+  schemas  = ["public", "airfoil"]
 }
 
 model investment_flows {
   block_number Int
-  txIndex      Int    @default(0)
-  eventIndex   Int    @default(0)
-  txHash       String
+  tx_index      Int    @default(0)
+  event_index   Int    @default(0)
+  tx_hash       String
 
   sender     String // caller of tx
   receiver   String // owner on deposit, could be anyone on withdraw
   owner      String // the one who received or sent the asset
   amount     String
+  shares     String
   asset      String
   contract   String
   epoch      Int     @default(0)
@@ -108,7 +44,9 @@ model investment_flows {
   timestamp  Int
   cursor     BigInt? @map("_cursor")
 
-  @@unique([block_number, txIndex, eventIndex], name: "event_id")
+  @@unique([block_number, tx_index, event_index], name: "event_id")
+
+  @@schema("public")
 }
 
 model harvests {
@@ -125,22 +63,8 @@ model harvests {
   cursor    BigInt? @map("_cursor")
 
   @@unique([block_number, txIndex, eventIndex], name: "event_id")
-}
 
-model framethispeter {
-  block_number Int
-  txIndex      Int    @default(0)
-  eventIndex   Int    @default(0)
-  txHash       String
-
-  token_id String
-  receiver String
-  tweet_id String
-
-  timestamp Int
-  cursor    BigInt? @map("_cursor")
-
-  @@unique([block_number, txIndex, eventIndex], name: "event_id")
+  @@schema("public")
 }
 
 model transfers {
@@ -158,30 +82,29 @@ model transfers {
   cursor    BigInt? @map("_cursor")
 
   @@unique([block_number, txIndex, eventIndex], name: "event_id")
+
+  @@schema("public")
 }
 
 model position_fees_collected {
   block_number Int
-  txIndex      Int    @default(0)
-  eventIndex   Int    @default(0)
-  txHash       String
+  tx_index      Int    @default(0)
+  event_index   Int    @default(0)
+  tx_hash       String
 
   token0       String
   token1       String
-  fee          String
-  tick_spacing String
-  extension    String
-  salt         String
-  owner        String
-  lower_bound  String
-  upper_bound  String
   amount0      String
   amount1      String
+  
+  vault_address String
 
   timestamp Int
   cursor    BigInt? @map("_cursor")
 
-  @@unique([block_number, txIndex, eventIndex], name: "event_id")
+  @@unique([block_number, tx_index, event_index], name: "event_id")
+
+  @@schema("public")
 }
 
 model position_updated {
@@ -203,8 +126,13 @@ model position_updated {
   amount0         String
   amount1         String
 
+  vault_address   String
+  user_address    String
+
   timestamp Int
   cursor    BigInt? @map("_cursor")
 
   @@unique([block_number, txIndex, eventIndex], name: "event_id")
+
+  @@schema("public")
 }

@@ -3,9 +3,24 @@ import { PrismaClient } from "@prisma/client";
 import { Position_fees_collected } from "@generated/type-graphql";
 import { standariseAddress } from "@/utils";
 
-import { getSaltsForContract } from "../../../indexers/utils";
-
 const prisma = new PrismaClient();
+
+function toBigIntSafe(value: any): bigint {
+  if (typeof value === "bigint") return value;
+  if (typeof value === "string") {
+    if (/e/i.test(value)) {
+      const num = Number(value);
+      if (Number.isFinite(num)) return BigInt(Math.trunc(num));
+      throw new Error(`Invalid numeric string: ${value}`);
+    }
+    return BigInt(value);
+  }
+  if (typeof value === "number") {
+    if (!Number.isFinite(value)) throw new Error("Non-finite number");
+    return BigInt(Math.trunc(value));
+  }
+  throw new Error(`Unsupported type for BigInt conversion: ${typeof value}`);
+}
 
 @ObjectType()
 export class DailyFeeEarnings {
@@ -42,15 +57,6 @@ export class CustomPositionFeesResolver {
     @Arg("timeframe", () => String) timeframe: string
   ): Promise<FeeSummary> {
     const standardizedContract = standariseAddress(contract);
-    const salts = getSaltsForContract(standardizedContract);
-
-    if (salts.length === 0) {
-      return {
-        contract: standardizedContract,
-        dailyEarnings: [],
-        totalCollections: 0,
-      };
-    }
 
     let hoursAgo: number;
     switch (timeframe) {
@@ -71,8 +77,7 @@ export class CustomPositionFeesResolver {
 
     const feeCollections = await prisma.position_fees_collected.findMany({
       where: {
-        owner: standardizedContract,
-        salt: { in: salts },
+        vault_address: standardizedContract,
         timestamp: {
           gte: startTimestamp,
         },
@@ -92,8 +97,10 @@ export class CustomPositionFeesResolver {
       const date = new Date(collection.timestamp * 1000)
         .toISOString()
         .split("T")[0];
-      const amount0 = BigInt(collection.amount0);
-      const amount1 = BigInt(collection.amount1);
+      const amount0Raw = toBigIntSafe(collection.amount0);
+      const amount1Raw = toBigIntSafe(collection.amount1);
+      const amount0 = amount0Raw >= 0n ? amount0Raw : -amount0Raw;
+      const amount1 = amount1Raw >= 0n ? amount1Raw : -amount1Raw;
 
       if (!dailyEarningsMap.has(date)) {
         dailyEarningsMap.set(date, new Map<string, bigint>());
@@ -101,13 +108,13 @@ export class CustomPositionFeesResolver {
 
       const dayMap = dailyEarningsMap.get(date)!;
 
-      if (amount0 > 0) {
-        const current = dayMap.get(collection.token0) || BigInt(0);
+      if (amount0 > 0n) {
+        const current = dayMap.get(collection.token0) || 0n;
         dayMap.set(collection.token0, current + amount0);
       }
 
-      if (amount1 > 0) {
-        const current = dayMap.get(collection.token1) || BigInt(0);
+      if (amount1 > 0n) {
+        const current = dayMap.get(collection.token1) || 0n;
         dayMap.set(collection.token1, current + amount1);
       }
     }
