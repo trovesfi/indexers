@@ -7,6 +7,7 @@ import * as schema from "../drizzle/schema";
 export function getDB(connectionString: string) {
   const pool = new pg.Pool({
     connectionString: connectionString,
+    ssl: process.env.IS_TLS === "false" ? { rejectUnauthorized: false } : undefined,
   });
   return drizzle(pool, { schema });
 }

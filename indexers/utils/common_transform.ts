@@ -253,7 +253,7 @@ function convertToSqlFormat(value: FieldElement, field: EventField): string {
     const bigIntValue = BigInt(value);
     switch (field.sqlType) {
       case "text":
-        return `0x${bigIntValue.toString(16).padStart(64, "0")}`;
+        return standariseAddress(`0x${bigIntValue.toString(16).padStart(64, "0")}`);
       case `numeric(5,2)`:
         return (bigIntValue / 100n).toString();
       case "numeric(78,0)":
