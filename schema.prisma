@@ -136,3 +136,28 @@ model position_updated {
 
   @@schema("public")
 }
+
+model dnmm_user_actions {
+  block_number Int
+  txIndex      Int    @default(0)
+  eventIndex   Int    @default(0)
+  txHash       String
+
+  sender                         String
+  receiver                       String
+  owner                          String
+  assets                         String
+  position_acc1_supply_shares    String
+  position_acc1_borrow_shares    String
+  position_acc2_supply_shares    String
+  position_acc2_borrow_shares    String
+  contract                       String
+  type                           String
+
+  timestamp Int
+  cursor    BigInt? @map("_cursor")
+
+  @@unique([block_number, txIndex, eventIndex], name: "event_id")
+
+  @@schema("public")
+}

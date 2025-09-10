@@ -96,3 +96,25 @@ export const position_updated = pgTable('position_updated', {
 	'event_id': uniqueIndex('event_id')
 		.on(position_updated.block_number, position_updated.txIndex, position_updated.eventIndex)
 }));
+
+export const dnmm_user_actions = pgTable('dnmm_user_actions', {
+	block_number: integer('block_number').notNull(),
+	txIndex: integer('txIndex').notNull(),
+	eventIndex: integer('eventIndex').notNull(),
+	txHash: text('txHash').notNull(),
+	sender: text('sender').notNull(),
+	receiver: text('receiver').notNull(),
+	owner: text('owner').notNull(),
+	assets: text('assets').notNull(),
+	position_acc1_supply_shares: text('position_acc1_supply_shares').notNull(),
+	position_acc1_borrow_shares: text('position_acc1_borrow_shares').notNull(),
+	position_acc2_supply_shares: text('position_acc2_supply_shares').notNull(),
+	position_acc2_borrow_shares: text('position_acc2_borrow_shares').notNull(),
+	contract: text('contract').notNull(),
+	type: text('type').notNull(),
+	timestamp: integer('timestamp').notNull(),
+	cursor: bigint('_cursor', { mode: 'bigint' })
+}, (dnmm_user_actions) => ({
+	'event_id': uniqueIndex('event_id')
+		.on(dnmm_user_actions.block_number, dnmm_user_actions.txIndex, dnmm_user_actions.eventIndex)
+}));

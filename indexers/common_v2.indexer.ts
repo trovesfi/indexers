@@ -59,7 +59,7 @@ export function createIndexer<
         db: database,
         idColumn: "id",
         persistState: true,
-        indexerName: "endur_relayer",
+        indexerName: "troves_indexers",
       }),
     ],
     finality: "pending",
