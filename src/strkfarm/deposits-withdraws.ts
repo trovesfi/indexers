@@ -270,7 +270,7 @@ Object.keys(CONTRACTS).map((key: string) => {
 })
 
 export const config = {
-    streamUrl: "https://mainnet.starknet.a5a.ch",
+    streamUrl: "https://endur-mainnet.starknet.a5a.ch",
     startingBlock: Number(Deno.env.get("START_BLOCK")),
     network: "starknet",
     finality: "DATA_STATUS_ACCEPTED",
