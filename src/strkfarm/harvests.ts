@@ -113,7 +113,7 @@ CONTRACTS.erc4626.contracts.forEach((c) => {
 })
 
 export const config = {
-    streamUrl: "https://mainnet.starknet.a5a.ch",
+    streamUrl: "https://endur-mainnet.starknet.a5a.ch",
     startingBlock: 1078316, // deployment block of first contract
     network: "starknet",
     finality: "DATA_STATUS_ACCEPTED",
