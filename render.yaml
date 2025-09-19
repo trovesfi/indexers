@@ -9,6 +9,7 @@ services:
   plan: starter
   envVars:
   - fromGroup: troves-indexers
+  - fromGroup: RPC_URL_PROD
   region: oregon
   buildCommand: pnpm install --frozen-lockfile; npm install --global pm2; npx apibara
     build
