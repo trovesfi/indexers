@@ -1,101 +1,218 @@
+const dotenv = require('dotenv');
+dotenv.config();
 const express = require('express');
-const { spawn } = require('child_process');
-const fs = require('fs');
-const path = require('path');
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4010;
+const { RpcProvider } = require('starknet');
+const { MonitoringSDK } = require('@hemantwasthere/monitoring-sdk');
+const PrismaClient = require('@prisma/client');
+const prisma = new PrismaClient.PrismaClient();
 
-// Function to execute grpcurl command and get the status
-function getGrpcStatus(grpcPort) {
-  return new Promise((resolve, reject) => {
-    const grpcurl = spawn('grpcurl', [
-      '-plaintext', 
-      `0.0.0.0:${grpcPort}`, 
-      'apibara.sink.v1.Status.GetStatus'
-    ]);
-
-    let output = '';
-
-    // Capture stdout data
-    grpcurl.stdout.on('data', (data) => {
-      output += data.toString();
-    });
-
-    // Capture stderr data
-    grpcurl.stderr.on('data', (data) => {
-      console.error(`stderr: ${data}`);
-    });
-
-    // Handle the process exit
-    grpcurl.on('close', (code) => {
-      if (code === 0) {
-        try {
-          const parsedOutput = JSON.parse(output); // Parse the output as JSON
-          resolve(parsedOutput);
-        } catch (error) {
-          reject(new Error('Failed to parse grpcurl response'));
-        }
-      } else {
-        reject(new Error(`grpcurl process exited with code ${code}`));
-      }
-    });
-  });
+if (!process.env.RPC_URL) {
+  console.error("RPC_URL environment variable is not set.");
+  process.exit(1);
 }
 
-function logFileContents(filePath) {
-  const absolutePath = path.resolve(filePath);
+// Initialize MonitoringSDK
+const monitoring = MonitoringSDK.initialize({
+  projectName: "troves",
+  serviceName: "indexers",
+  technology: "express",
+  prefixAllMetrics: true,
+  enableDefaultMetrics: true,
+  environment: process.env.NODE_ENV || 'production',
+  customLabels: {
+    network: process.env.NETWORK || 'unknown',
+    version: process.env.VERSION || 'unknown'
+  }
+});
 
-  fs.readFile(absolutePath, 'utf8', (err, data) => {
-    if (err) {
-      console.error(`Error reading file: ${err.message}`);
-      return;
+const logger = monitoring.getLogger();
+const metricsService = monitoring.getMetrics();
+
+// Create custom metrics using the SDK
+const indexerSyncStatus = metricsService.createGauge(
+  'indexer_sync_status',
+  'Status of indexer sync (1 = isActive, 0 = not active)',
+  ['file']
+);
+
+const indexerCurrentBlock = metricsService.createGauge(
+  'indexer_current_block',
+  'Current block number for indexer',
+  ['file']
+);
+
+const indexerCursorOrderKey = metricsService.createGauge(
+  'indexer_cursor_order_key',
+  'Current cursor order key for indexer',
+  ['file']
+);
+
+const allSyncedStatus = metricsService.createGauge(
+  'indexer_all_synced',
+  'Whether all indexers are synced (1 = true, 0 = false)',
+  []
+);
+
+const indexerBlockLag = metricsService.createGauge(
+  'indexer_block_lag',
+  'Number of blocks behind current block',
+  ['file']
+);
+
+const indexerErrors = metricsService.createCounter(
+  'indexer_errors_total',
+  'Total number of indexer errors',
+  ['file', 'error_type']
+);
+
+async function getMinIndexerHeadFromDB() {
+  try {
+    const result = await prisma.$queryRaw`
+      SELECT order_key as min_order_key 
+      FROM airfoil.checkpoints 
+      WHERE order_key IS NOT NULL
+    `;
+
+    if (!result.length || result[0].min_order_key === null) {
+      throw new Error('No valid cursor found in the checkpoints table.');
     }
 
-    const lines = data.split('\n'); // Split file contents into lines
-    const last20Lines = lines.slice(-20); // Get the last 20 lines
-    console.log(last20Lines.join('\n')); // Join them back into a string and log
+    const minOrderKey = Number(result[0].min_order_key);
+    logger.info(`DB::Minimum indexer head orderKey: ${minOrderKey}`);
+    return minOrderKey;
+
+  } catch (error) {
+    logger.error('Error fetching min orderKey from database:', error);
+    throw new Error('Failed to retrieve minimum orderKey from checkpoints table');
+  }
+}
+
+// Function to get summary data and update metrics
+async function getSummaryData() {
+  const results = [];
+  const provider = new RpcProvider({
+    nodeUrl: process.env.RPC_URL
+  });
+
+  let currentBlock = 0;
+  try {
+    currentBlock = (await provider.getBlockLatestAccepted()).block_number;
+  } catch (error) {
+    throw new Error(`Error fetching latest block: ${error.message}`);
+  }
+
+  const minIndexerHead = await getMinIndexerHeadFromDB();
+  const blockLag = Math.abs(currentBlock - Number(minIndexerHead));
+  const isSynced = blockLag <= 10;
+      
+  results.push({
+    file: 'indexer_head',
+    status: {
+      currentBlock,
+      cursor: { orderKey: minIndexerHead }
+    },
+    isSynced: isSynced ? "isActive" : "isSyncing",
+    blockLag
+  });
+
+  const isAllSynced = isSynced;
+
+  return {
+    isAllSynced,
+    results,
+    currentBlock
+  };
+}
+
+// Function to update SDK metrics
+function updateSDKMetrics(summaryData) {
+  // Update all synced status
+  allSyncedStatus.set({}, summaryData.isAllSynced ? 1 : 0);
+
+  // Update individual indexer metrics
+  summaryData.results.forEach(result => {
+    const fileLabels = { file: result.file };
+
+    if (result.error) {
+      // Increment error counter
+      indexerErrors.inc({ file: result.file, error_type: 'redis_fetch_error' });
+      
+      // Set sync status to 0 for errors
+      indexerSyncStatus.set(fileLabels, 0);
+    } else {
+      const isActive = result.isSynced === 'isActive' ? 1 : 0;
+      
+      indexerSyncStatus.set(fileLabels, isActive);
+      
+      if (result.status.currentBlock) {
+        indexerCurrentBlock.set(fileLabels, result.status.currentBlock);
+      }
+      
+      if (result.status.cursor && result.status.cursor.orderKey) {
+        indexerCursorOrderKey.set(fileLabels, result.status.cursor.orderKey);
+      }
+      
+      if (result.blockLag !== undefined) {
+        indexerBlockLag.set(fileLabels, result.blockLag);
+      }
+    }
   });
 }
 
-// Express GET endpoint `/status`
-app.get('/status', async (req, res) => {
-  const grpcPort = req.query.port;
-
-  if (!grpcPort) {
-    return res.status(400).json({ error: 'port parameter is required' });
-  }
-  
+app.get('/summary', async (_req, res) => {
   try {
-    logFileContents('/var/log/supervisor/harvests.log');
-    logFileContents('/var/log/supervisor/harvests_err.log');
-    console.log('=====================');
-    logFileContents('/var/log/supervisor/dep-withdraw.log');
-    logFileContents('/var/log/supervisor/dep-withdraw_err.log');
-
-    // Call the getGrpcStatus function with the provided port
-    const status = await getGrpcStatus(grpcPort);
-    console.log(`status: ${grpcPort}`, status)
-    // Extract currentBlock and headBlock from the response
-    const currentBlock = parseInt(status.currentBlock, 10);
-    const headBlock = parseInt(status.headBlock, 10);
-
-    // Check if the difference between currentBlock and headBlock is more than 10
-    const isActive = Math.abs(headBlock - currentBlock) <= 10;
-    const statusCode = isActive ? 200 : 500;
-
-    // Return the status and block information
-    return res.status(statusCode).json({
-      isActive,
-      currentBlock,
-      headBlock
+    const summaryData = await getSummaryData();
+    
+    // Update SDK metrics
+    updateSDKMetrics(summaryData);
+    
+    // Log the summary
+    logger.info('Indexer summary generated', { 
+      isAllSynced: summaryData.isAllSynced,
+      indexerCount: summaryData.results.length,
+      currentBlock: summaryData.currentBlock
     });
+    
+    return res.status(200).json(summaryData);
   } catch (error) {
+    // Increment error counter for API errors
+    indexerErrors.inc({ file: 'api', error_type: 'api_error' });
+    
+    logger.error('Error generating summary', { error: error.message });
+    
     return res.status(500).json({ error: error.message });
   }
 });
 
-// Start the Express server
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+app.get('/metrics', async (_req, res) => {
+  try {
+    // Get fresh data and update metrics
+    const summaryData = await getSummaryData();
+    updateSDKMetrics(summaryData);
+    
+    // Return SDK metrics
+    res.set('Content-Type', metricsService.getRegistry().contentType);
+    const metrics = await metricsService.getMetrics();
+    res.send(metrics);
+  } catch (error) {
+    logger.error('Error generating metrics', { error: error.message });
+    res.status(500).send('Error generating metrics');
+  }
 });
 
+app.get('/', (_req, res) => {
+  return res.status(200).json({
+    status: "OK"
+  });
+});
+
+// Start the Express server
+app.listen(port, () => {
+  logger.info(`Indexer service running on port ${port}`, { 
+    port,
+    network: process.env.NETWORK,
+    version: process.env.VERSION
+  });
+});

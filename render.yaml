@@ -1,0 +1,29 @@
+# Exported from Render on 2025-09-19T21:30:29Z
+version: "1"
+services:
+- type: web
+  name: troves-indexers-v2
+  runtime: node
+  repo: https://github.com/trovesfi/indexers
+  branch: hemant/indexer
+  plan: starter
+  envVars:
+  - fromGroup: troves-indexers
+  region: oregon
+  buildCommand: pnpm install --frozen-lockfile; npm install --global pm2; npx apibara
+    build
+  startCommand: pm2 start "npx apibara start --indexer common_v2" --name indexers
+    && cp deployment/index.js . && node index.js
+  autoDeployTrigger: off
+- type: web
+  name: troves-indexers-graph-api
+  runtime: node
+  repo: https://github.com/trovesfi/indexers
+  branch: hemant/indexer
+  plan: starter
+  envVars:
+  - fromGroup: troves-indexers
+  region: oregon
+  buildCommand: yarn; npx prisma generate
+  startCommand: npx tsx src/graphql
+  autoDeployTrigger: off
