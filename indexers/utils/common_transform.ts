@@ -1,13 +1,12 @@
 import { Block, BlockHeader, FieldElement } from "@apibara/starknet";
-import { Contract, hash, RpcProvider } from "starknet";
+import { hash, uint256 } from "starknet";
 import { PgDatabase } from "drizzle-orm/pg-core";
-import { AnyPgTable } from "drizzle-orm/pg-core";
 import type { ConsolaInstance } from "@apibara/indexer/plugins";
+import { Event } from "@apibara/starknet";
+
 import * as schema from "../drizzle/schema";
-import { and, eq } from "drizzle-orm";
 import { AdditionalField, EventConfig, EventField } from "./config.ts";
 import { CONFIG } from "./config.ts";
-import { Event } from "@apibara/starknet";
 import { standariseAddress } from "./index.ts";
 
 function getConfigArr(blockNumber: number) {
@@ -30,7 +29,7 @@ async function performAtomicBatchInsert<T extends Record<string, any>>(
 
   // Group records by table name for efficient batch inserts
   const recordsByTable = new Map<string, T[]>();
-  
+
   for (const { record, tableName } of recordsToInsert) {
     if (!recordsByTable.has(tableName)) {
       recordsByTable.set(tableName, []);
@@ -38,7 +37,9 @@ async function performAtomicBatchInsert<T extends Record<string, any>>(
     recordsByTable.get(tableName)!.push(record);
   }
 
-  logger.info(`Starting atomic batch insert of ${recordsToInsert.length} records across ${recordsByTable.size} tables`);
+  logger.info(
+    `Starting atomic batch insert of ${recordsToInsert.length} records across ${recordsByTable.size} tables`
+  );
 
   // Use database transaction to ensure atomicity
   await database.transaction(async (tx) => {
@@ -46,48 +47,50 @@ async function performAtomicBatchInsert<T extends Record<string, any>>(
       // Insert records for each table
       for (const [tableName, records] of recordsByTable) {
         if (records.length === 0) continue;
-        
+
         logger.info(`Inserting ${records.length} records into ${tableName}`);
-        
+
         await tx
           .insert(schema[tableName])
           .values(records)
+          .onConflictDoNothing()
           .execute();
       }
-      
-      logger.info(`Successfully inserted ${recordsToInsert.length} records across ${recordsByTable.size} tables`);
+
+      logger.info(
+        `Successfully inserted ${recordsToInsert.length} records across ${recordsByTable.size} tables`
+      );
     } catch (err) {
-      
       // Handle specific error cases that might be recoverable
-      if (err.message.includes('Validator not found')) {
+      if (err.message.includes("Validator not found")) {
         logger.warn("Validator not found error, but continuing with batch");
         // Don't throw - allow partial success for validator errors
         return;
       }
-      
+
       logger.error("Batch insert failed, rolling back transaction:", err);
-      
+
       // Handle duplicate key errors - these might be acceptable in some cases
       // if (err.code === '23505' || err.message.includes('duplicate key')) {
       //   logger.warn("Duplicate key error detected, but continuing with batch");
       //   return;
       // }
-      
+
       // Log failed records for debugging
       logger.error("Failed records summary:", {
         totalRecords: recordsToInsert.length,
         tablesAffected: Array.from(recordsByTable.keys()),
         errorMessage: err.message,
-        errorCode: err.code
+        errorCode: err.code,
       });
-      
+
       // Log first few failed records for debugging (avoid logging too much)
-      const sampleRecords = recordsToInsert.slice(0, 3).map(r => ({
+      const sampleRecords = recordsToInsert.slice(0, 3).map((r) => ({
         table: r.tableName,
-        recordKeys: Object.keys(r.record)
+        recordKeys: Object.keys(r.record),
       }));
       logger.error("Sample failed records:", sampleRecords);
-      
+
       throw err; // This will trigger rollback
     }
   });
@@ -95,14 +98,14 @@ async function performAtomicBatchInsert<T extends Record<string, any>>(
 
 /**
  * Transforms blockchain events into database records with atomic batch processing
- * 
+ *
  * Key improvements for atomic operations:
  * 1. Collects all records first before any database operations
  * 2. Groups records by table for efficient batch inserts
  * 3. Uses database transaction to ensure atomicity - either all records succeed or all fail
  * 4. Provides comprehensive error handling and logging
  * 5. Handles specific error cases gracefully (validator not found, duplicate keys)
- * 
+ *
  * @param block - The blockchain block containing events
  * @param finality - Block finality status
  * @param database - Database connection instance
@@ -131,12 +134,18 @@ export async function commonTransform<T extends Record<string, any>>(
   const CONFIG_ARR = getConfigArr(Number(header.blockNumber));
 
   // Collect all records first before any database operations
-  const recordsToInsert: Array<{ record: T; config: any; tableName: string }> = [];
+  const recordsToInsert: Array<{ record: T; config: any; tableName: string }> =
+    [];
   for (let myEventIndex = 0; myEventIndex < events.length; myEventIndex++) {
     const event = events[myEventIndex];
     const eventKeyValue = events[myEventIndex].keys[0];
     const configIndex = CONFIG_ARR.findIndex(
-      (c) => eventKey(c.eventName) == eventKeyValue && c.contracts.some(c => standariseAddress(c.address) == standariseAddress(event.address))
+      (c) =>
+        eventKey(c.eventName) == eventKeyValue &&
+        c.contracts.some(
+          (c) =>
+            standariseAddress(c.address) == standariseAddress(event.address)
+        )
     );
     const config = CONFIG_ARR[configIndex];
 
@@ -147,7 +156,11 @@ export async function commonTransform<T extends Record<string, any>>(
         logger.error("Unknown event key:", event.transactionHash, event.keys);
         throw new Error(`Unknown event key: ${eventKeyValue}`);
       } else {
-        console.log("Sibling event found, skipping", event.transactionHash, event.keys);
+        console.log(
+          "Sibling event found, skipping",
+          event.transactionHash,
+          event.keys
+        );
         continue;
       }
     }
@@ -156,8 +169,21 @@ export async function commonTransform<T extends Record<string, any>>(
     if (!event || !event.data || !event.keys) {
       throw new Error(`${config.eventName}: Expected event with data`);
     }
-  
-    const record = await processEvent(config, event, header, timestamp, events, block) as T;
+
+    console.log(
+      event.keys,
+      event.data,
+      event.transactionHash,
+      event.eventIndex
+    );
+    const record = (await processEvent(
+      config,
+      event,
+      header,
+      timestamp,
+      events,
+      block
+    )) as T;
     recordsToInsert.push({ record, config, tableName: config.tableName });
   }
 
@@ -175,10 +201,9 @@ export async function processEvent(
   events: readonly Event[],
   block: Block
 ) {
-  
   const result: Record<string, any> = {};
   const timestampISO = header.timestamp.toISOString();
-  
+
   // Parse keys
   config.keyFields.forEach((key, index) => {
     result[key.name] = convertToSqlFormat(event.keys[index + 1], key);
@@ -187,24 +212,26 @@ export async function processEvent(
   // Parse data
   let indexAdjustment = 0;
   for (let index = 0; index < event.data.length; index++) {
-    const dataField = event.data[index];
+    let dataField: any = event.data[index];
     const field = config.dataFields[index - indexAdjustment];
 
-    if (config.dataFields[index - indexAdjustment].type == 'u256') {
+    if (config.dataFields[index - indexAdjustment].type == "u256") {
       // if next event data is not 0, throw an error
-      if (convertToSqlFormat(event.data[index + 1], field) != '0') {
-        throw new Error(`Expected 0 for ${field.name}`);
-      }
+      dataField = uint256
+        .uint256ToBN({
+          low: event.data[index],
+          high: event.data[index + 1],
+        })
+        .toString();
       // allows u to skip this index for the data type
       indexAdjustment++;
       index++;
     }
 
-    if (field.sqlType == 'skip') {
+    if (field.sqlType == "skip") {
       continue;
     }
     result[field.name] = convertToSqlFormat(dataField, field);
-
   }
 
   // Add additional fields
@@ -219,7 +246,7 @@ export async function processEvent(
   });
 
   // Standard fields that match new indexer structure
-  result.tx_index = event.transactionIndex;;
+  result.tx_index = event.transactionIndex;
   result.block_number = Number(header.blockNumber);
   result.event_index = event.eventIndex !== undefined ? event.eventIndex : 0;
   result.tx_hash = event.transactionHash;

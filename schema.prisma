@@ -1,22 +1,22 @@
 // standard path for graphql (Node)
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["multiSchema"]
-  schemas  = ["public", "airfoil"]
+  schemas         = ["public", "airfoil"]
 }
 
 // standard path for graphql (Node)
 generator typegraphql {
-  provider = "typegraphql-prisma"
+  provider        = "typegraphql-prisma"
   previewFeatures = ["multiSchema"]
-  schemas  = ["public", "airfoil"]
+  schemas         = ["public", "airfoil"]
 }
 
 generator drizzle {
-  provider = "drizzle-prisma-generator"
+  provider        = "drizzle-prisma-generator"
   previewFeatures = ["multiSchema"]
-  output   = "./indexers/drizzle" // Where to put generated Drizle tables
-  schemas  = ["public", "airfoil"]
+  output          = "./indexers/drizzle" // Where to put generated Drizle tables
+  schemas         = ["public", "airfoil"]
 }
 
 datasource db {
@@ -26,10 +26,11 @@ datasource db {
 }
 
 model investment_flows {
+  id           String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   block_number Int
-  tx_index      Int    @default(0)
-  event_index   Int    @default(0)
-  tx_hash       String
+  tx_index     Int    @default(0)
+  event_index  Int    @default(0)
+  tx_hash      String
 
   sender     String // caller of tx
   receiver   String // owner on deposit, could be anyone on withdraw
@@ -45,15 +46,15 @@ model investment_flows {
   cursor     BigInt? @map("_cursor")
 
   @@unique([block_number, tx_index, event_index], name: "event_id")
-
   @@schema("public")
 }
 
 model harvests {
+  id           String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   block_number Int
-  txIndex      Int    @default(0)
-  eventIndex   Int    @default(0)
-  txHash       String
+  tx_index     Int    @default(0)
+  event_index  Int    @default(0)
+  tx_hash      String
 
   user      String
   contract  String
@@ -62,56 +63,36 @@ model harvests {
   timestamp Int
   cursor    BigInt? @map("_cursor")
 
-  @@unique([block_number, txIndex, eventIndex], name: "event_id")
-
+  @@unique([block_number, tx_index, event_index], name: "event_id")
   @@schema("public")
 }
-
-model transfers {
-  block_number Int
-  txIndex      Int    @default(0)
-  eventIndex   Int    @default(0)
-  txHash       String
-
-  contract String
-  from     String
-  receiver String
-  amount   String
-
-  timestamp Int
-  cursor    BigInt? @map("_cursor")
-
-  @@unique([block_number, txIndex, eventIndex], name: "event_id")
-
-  @@schema("public")
-}
-
 model position_fees_collected {
+  id           String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   block_number Int
-  tx_index      Int    @default(0)
-  event_index   Int    @default(0)
-  tx_hash       String
+  tx_index     Int    @default(0)
+  event_index  Int    @default(0)
+  tx_hash      String
 
-  token0       String
-  token1       String
-  amount0      String
-  amount1      String
-  
+  token0  String
+  token1  String
+  amount0 String
+  amount1 String
+
   vault_address String
 
   timestamp Int
   cursor    BigInt? @map("_cursor")
 
   @@unique([block_number, tx_index, event_index], name: "event_id")
-
   @@schema("public")
 }
 
 model position_updated {
+  id           String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   block_number Int
-  txIndex      Int    @default(0)
-  eventIndex   Int    @default(0)
-  txHash       String
+  tx_index     Int    @default(0)
+  event_index  Int    @default(0)
+  tx_hash      String
 
   locker          String
   token0          String
@@ -126,38 +107,12 @@ model position_updated {
   amount0         String
   amount1         String
 
-  vault_address   String
-  user_address    String
+  vault_address String
+  user_address  String
 
   timestamp Int
   cursor    BigInt? @map("_cursor")
 
-  @@unique([block_number, txIndex, eventIndex], name: "event_id")
-
-  @@schema("public")
-}
-
-model dnmm_user_actions {
-  block_number Int
-  txIndex      Int    @default(0)
-  eventIndex   Int    @default(0)
-  txHash       String
-
-  sender                         String
-  receiver                       String
-  owner                          String
-  assets                         String
-  position_acc1_supply_shares    String
-  position_acc1_borrow_shares    String
-  position_acc2_supply_shares    String
-  position_acc2_borrow_shares    String
-  contract                       String
-  type                           String
-
-  timestamp Int
-  cursor    BigInt? @map("_cursor")
-
-  @@unique([block_number, txIndex, eventIndex], name: "event_id")
-
+  @@unique([block_number, tx_index, event_index], name: "event_id")
   @@schema("public")
 }

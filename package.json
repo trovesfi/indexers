@@ -44,7 +44,7 @@
     "postgres": "^3.4.5",
     "prisma": "5.18.0",
     "reflect-metadata": "0.2.2",
-    "starknet": "6.7.0",
+    "starknet": "8.5.4",
     "tslib": "2.6.3",
     "type-graphql": "2.0.0-rc.2",
     "typegraphql-prisma": "0.28.0",
