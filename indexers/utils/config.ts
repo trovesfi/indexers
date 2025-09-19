@@ -1,11 +1,13 @@
 import "dotenv/config";
 
+import { Block, Event } from "@apibara/starknet";
+import { VesuRebalanceStrategies, EkuboCLVaultStrategies } from "@strkfarm/sdk";
+
 import { standariseAddress } from "../../src/utils";
 import { TOKENS } from "../../src/strkfarm/constants";
 import { eventKey } from "./common_transform";
-import { hash } from "starknet";
-import { Block, Event, TransactionReceipt } from "@apibara/starknet";
 import { onEventEkuboVault } from "./ekubo_vault";
+import { onEventHarvestsVault } from "./harvests_vault";
 
 export interface EventField {
   name: string;
@@ -32,7 +34,13 @@ export interface ContractConfig {
   name?: string;
 }
 
-export type OnEvent = (event: Event, processedRecord: Record<string, any>, allEvents: readonly Event[], block: Block) => Promise<void>;
+export type OnEvent = (
+  event: Event,
+  processedRecord: Record<string, any>,
+  allEvents: readonly Event[],
+  block: Block
+) => Promise<void>;
+
 export interface EventConfig {
   tableName: string;
   eventName: string;
@@ -54,70 +62,20 @@ export interface EventConfig {
 // );
 
 const EKUBO_VAULT_CONTRACTS: ContractConfig[] = [
-  {
-    address: standariseAddress(
-      "0x01f083b98674bc21effee29ef443a00c7b9a500fd92cf30341a3da12c73f2324"
-    ),
-    asset: "",
-    name: 'xSTRK/STRK'
-  },
-  {
-    address: standariseAddress(
-      "0x3a4f8debaf12af97bb911099bc011d63d6c208d4c5ba8e15d7f437785b0aaa2"
-    ),
-    asset: "",
-    name: 'USDC/USDT'
-  },
-  {
-    address: standariseAddress(
-      "0x160d8fa4569ef6a12e6bf47cb943d7b5ebba8a41a69a14c1d943050ba5ff947"
-    ),
-    asset: "",
-    name: 'ETH/USDC'
-  },
-  {
-    address: standariseAddress(
-      "0x351b36d0d9d8b40010658825adeeddb1397436cd41acd0ff6c6e23aaa8b5b30"
-    ),
-    asset: "",
-    name: 'STRK/USDC'
-  },
-  {
-    address: standariseAddress(
-      "0x4ce3024b0ee879009112d7b0e073f8a87153dd35b029347d4247ffe48d28f51"
-    ),
-    asset: "",
-    name: 'STRK/ETH'
-  },
-  {
-    address: standariseAddress(
-      "0x2bcaef2eb7706875a5fdc6853dd961a0590f850bc3a031c59887189b5e84ba1"
-    ),
-    asset: "",
-    name: 'WBTC/USDC'
-  },
-  {
-    address: standariseAddress(
-      "0x4aad891a2d4432fba06b6558631bb13f6bbd7f6f33ab8c3111e344889ea4456"
-    ),
-    asset: "",
-    name: 'tBTC/USDC'
-  },
-  {
-    address: standariseAddress(
-      "0x1c9232b8186d9317652f05055615f18a120c2ad9e5ee96c39e031c257fb945b"
-    ),
-    asset: "",
-    name: 'ETH/WBTC'
-  },
-  {
-    address: standariseAddress(
-      "0x1248e385c23a929a015ec298a26560fa7745bbd6e41a886550e337b02714b1b"
-    ),
-    asset: "",
-    name: 'WBTC/STRK'
-  },
-]
+  ...EkuboCLVaultStrategies.map((ekuboStrat) => ({
+    address: standariseAddress(ekuboStrat.address.address),
+    asset: ekuboStrat.depositTokens[0].address.address,
+    name: ekuboStrat.name,
+  })),
+];
+
+const HARVEST_CONTRACTS: ContractConfig[] = [
+  ...VesuRebalanceStrategies.map((vesuStrat) => ({
+    address: standariseAddress(vesuStrat.address.address),
+    asset: vesuStrat.depositTokens[0].address.address,
+    name: vesuStrat.name,
+  })),
+];
 
 export const CONFIG: EventConfig[] = [
   {
@@ -150,7 +108,7 @@ export const CONFIG: EventConfig[] = [
         sqlType: "text",
         customLogic: (event) => {
           // not applicable for this vault
-          return ""
+          return "";
         },
       },
       {
@@ -172,7 +130,7 @@ export const CONFIG: EventConfig[] = [
         source: "custom",
         sqlType: "numeric(20,0)",
         customLogic: (event) => {
-          return 0
+          return 0;
         },
       },
       {
@@ -206,7 +164,7 @@ export const CONFIG: EventConfig[] = [
         sqlType: "text",
         customLogic: (event) => {
           // not applicable for this vault
-          return ""
+          return "";
         },
       },
       {
@@ -228,7 +186,7 @@ export const CONFIG: EventConfig[] = [
         source: "custom",
         sqlType: "numeric(20,0)",
         customLogic: (event) => {
-          return 0
+          return 0;
         },
       },
       {
@@ -243,7 +201,7 @@ export const CONFIG: EventConfig[] = [
     tableName: "position_fees_collected",
     eventName: "HandleFees",
     contracts: EKUBO_VAULT_CONTRACTS,
-    defaultKeys: [[eventKey('HandleFees')]],
+    defaultKeys: [[eventKey("HandleFees")]],
     keyFields: [],
     dataFields: [
       { name: "token0", type: "ContractAddress", sqlType: "text" },
@@ -261,7 +219,85 @@ export const CONFIG: EventConfig[] = [
         customLogic: (event) => {
           return standariseAddress(event.address);
         },
-      }
+      },
     ],
   },
+  {
+    tableName: "harvests",
+    eventName: "Harvest",
+    contracts: HARVEST_CONTRACTS,
+    onEvent: onEventHarvestsVault,
+    defaultKeys: [
+      ["0x7bfb812ef65292405e9c4e05f2befe48dae3e62d7ed27bada75d2384e733d3"],
+    ], // Harvest key
+    keyFields: [
+      { name: "rewardToken", type: "ContractAddress", sqlType: "text" },
+      { name: "baseToken", type: "ContractAddress", sqlType: "text" },
+    ],
+    dataFields: [
+      { name: "rewardAmount", type: "u256", sqlType: "numeric(78,0)" },
+      { name: "baseAmount", type: "u256", sqlType: "numeric(78,0)" },
+      { name: "token0Amount", type: "u256", sqlType: "numeric(78,0)" },
+      { name: "token1Amount", type: "u256", sqlType: "numeric(78,0)" },
+    ],
+    additionalFields: [
+      {
+        name: "user",
+        source: "custom",
+        sqlType: "text",
+        customLogic: () => "", // Will be set in onEvent
+      },
+      {
+        name: "contract",
+        source: "custom",
+        sqlType: "text",
+        customLogic: (event) => {
+          return standariseAddress(event.address);
+        },
+      },
+      {
+        name: "price",
+        source: "custom",
+        sqlType: "numeric(5,2)",
+        customLogic: () => 0,
+      },
+    ],
+  },
+  // {
+  //   tableName: "harvests",
+  //   eventName: "Claimed",
+  //   includeReceipt: true,
+  //   contracts: HARVEST_CONTRACTS,
+  //   onEvent: onEventHarvestsVault,
+  //   defaultKeys: [
+  //     ["0x35cc0235f835cc84da50813dc84eb10a75e24a21d74d6d86278c0f037cb7429"],
+  //   ], // Claimed key
+  //   keyFields: [],
+  //   dataFields: [
+  //     { name: "claimee", type: "ContractAddress", sqlType: "text" },
+  //     { name: "amount", type: "u128", sqlType: "numeric(78,0)" },
+  //   ],
+  //   additionalFields: [
+  //     {
+  //       name: "user",
+  //       source: "custom",
+  //       sqlType: "text",
+  //       customLogic: () => "", // Will be set in onEvent
+  //     },
+  //     {
+  //       name: "contract",
+  //       source: "custom",
+  //       sqlType: "text",
+  //       customLogic: (event) => {
+  //         return standariseAddress(event.keys[1]); // claimee
+  //       },
+  //     },
+  //     {
+  //       name: "price",
+  //       source: "custom",
+  //       sqlType: "numeric(5,2)",
+  //       customLogic: () => 0,
+  //     },
+  //   ],
+  // },
 ];

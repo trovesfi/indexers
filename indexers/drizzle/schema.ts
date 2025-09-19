@@ -1,6 +1,8 @@
+import { sql } from 'drizzle-orm'
 import { bigint, doublePrecision, integer, pgTable, text, uniqueIndex } from 'drizzle-orm/pg-core'
 
 export const investment_flows = pgTable('investment_flows', {
+	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
 	block_number: integer('block_number').notNull(),
 	tx_index: integer('tx_index').notNull(),
 	event_index: integer('event_index').notNull(),
@@ -23,10 +25,11 @@ export const investment_flows = pgTable('investment_flows', {
 }));
 
 export const harvests = pgTable('harvests', {
+	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
 	block_number: integer('block_number').notNull(),
-	txIndex: integer('txIndex').notNull(),
-	eventIndex: integer('eventIndex').notNull(),
-	txHash: text('txHash').notNull(),
+	tx_index: integer('tx_index').notNull(),
+	event_index: integer('event_index').notNull(),
+	tx_hash: text('tx_hash').notNull(),
 	user: text('user').notNull(),
 	contract: text('contract').notNull(),
 	amount: text('amount').notNull(),
@@ -35,26 +38,11 @@ export const harvests = pgTable('harvests', {
 	cursor: bigint('_cursor', { mode: 'bigint' })
 }, (harvests) => ({
 	'event_id': uniqueIndex('event_id')
-		.on(harvests.block_number, harvests.txIndex, harvests.eventIndex)
-}));
-
-export const transfers = pgTable('transfers', {
-	block_number: integer('block_number').notNull(),
-	txIndex: integer('txIndex').notNull(),
-	eventIndex: integer('eventIndex').notNull(),
-	txHash: text('txHash').notNull(),
-	contract: text('contract').notNull(),
-	from: text('from').notNull(),
-	receiver: text('receiver').notNull(),
-	amount: text('amount').notNull(),
-	timestamp: integer('timestamp').notNull(),
-	cursor: bigint('_cursor', { mode: 'bigint' })
-}, (transfers) => ({
-	'event_id': uniqueIndex('event_id')
-		.on(transfers.block_number, transfers.txIndex, transfers.eventIndex)
+		.on(harvests.block_number, harvests.tx_index, harvests.event_index)
 }));
 
 export const position_fees_collected = pgTable('position_fees_collected', {
+	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
 	block_number: integer('block_number').notNull(),
 	tx_index: integer('tx_index').notNull(),
 	event_index: integer('event_index').notNull(),
@@ -72,10 +60,11 @@ export const position_fees_collected = pgTable('position_fees_collected', {
 }));
 
 export const position_updated = pgTable('position_updated', {
+	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
 	block_number: integer('block_number').notNull(),
-	txIndex: integer('txIndex').notNull(),
-	eventIndex: integer('eventIndex').notNull(),
-	txHash: text('txHash').notNull(),
+	tx_index: integer('tx_index').notNull(),
+	event_index: integer('event_index').notNull(),
+	tx_hash: text('tx_hash').notNull(),
 	locker: text('locker').notNull(),
 	token0: text('token0').notNull(),
 	token1: text('token1').notNull(),
@@ -94,5 +83,5 @@ export const position_updated = pgTable('position_updated', {
 	cursor: bigint('_cursor', { mode: 'bigint' })
 }, (position_updated) => ({
 	'event_id': uniqueIndex('event_id')
-		.on(position_updated.block_number, position_updated.txIndex, position_updated.eventIndex)
+		.on(position_updated.block_number, position_updated.tx_index, position_updated.event_index)
 }));
