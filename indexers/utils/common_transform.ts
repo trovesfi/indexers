@@ -53,7 +53,6 @@ async function performAtomicBatchInsert<T extends Record<string, any>>(
         await tx
           .insert(schema[tableName])
           .values(records)
-          .onConflictDoNothing()
           .execute();
       }
 
@@ -141,7 +140,9 @@ export async function commonTransform<T extends Record<string, any>>(
     const eventKeyValue = events[myEventIndex].keys[0];
     const configIndex = CONFIG_ARR.findIndex(
       (c) =>
-        eventKey(c.eventName) == eventKeyValue &&
+        c.defaultKeys.some(
+          (k) => standariseAddress(k[0]) == standariseAddress(eventKeyValue)
+        ) &&
         c.contracts.some(
           (c) =>
             standariseAddress(c.address) == standariseAddress(event.address)
@@ -156,26 +157,15 @@ export async function commonTransform<T extends Record<string, any>>(
         logger.error("Unknown event key:", event.transactionHash, event.keys);
         throw new Error(`Unknown event key: ${eventKeyValue}`);
       } else {
-        console.log(
-          "Sibling event found, skipping",
-          event.transactionHash,
-          event.keys
-        );
         continue;
       }
     }
-    logger.info("Processing block:", header.blockNumber, config.eventName);
+    logger.info("Processing block:", header.blockNumber, config.tableName);
 
     if (!event || !event.data || !event.keys) {
-      throw new Error(`${config.eventName}: Expected event with data`);
+      throw new Error(`${config.tableName}: Expected event with data`);
     }
 
-    console.log(
-      event.keys,
-      event.data,
-      event.transactionHash,
-      event.eventIndex
-    );
     const record = (await processEvent(
       config,
       event,
@@ -214,7 +204,6 @@ export async function processEvent(
   for (let index = 0; index < event.data.length; index++) {
     let dataField: any = event.data[index];
     const field = config.dataFields[index - indexAdjustment];
-
     if (config.dataFields[index - indexAdjustment].type == "u256") {
       // if next event data is not 0, throw an error
       dataField = uint256
@@ -253,8 +242,6 @@ export async function processEvent(
 
   result.timestamp = timestamp;
   result.cursor = BigInt(header.blockNumber);
-
-  console.log("result", result);
 
   // process any custom logic
   if (config.onEvent) {

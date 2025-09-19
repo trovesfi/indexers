@@ -10,16 +10,16 @@ export class EkuboVaultFlow {
   type!: string; // deposit | withdraw
 
   @Field(() => String)
-  txHash!: string;
+  tx_hash!: string;
 
   @Field(() => Number)
   block_number!: number;
 
   @Field(() => Number)
-  txIndex!: number;
+  tx_index!: number;
 
   @Field(() => Number)
-  eventIndex!: number;
+  event_index!: number;
 
   @Field(() => String)
   token0!: string;
@@ -58,8 +58,8 @@ export class EkuboVaultFlowsResolver {
       },
       orderBy: [
         { block_number: "desc" },
-        { txIndex: "asc" },
-        { eventIndex: "asc" },
+        { tx_index: "asc" },
+        { event_index: "asc" },
       ],
     });
 
@@ -70,10 +70,10 @@ export class EkuboVaultFlowsResolver {
     for (const f of flows) {
       results.push({
         type: BigInt(f.amount0) > 0n ? "deposit" : "withdraw",
-        txHash: f.txHash,
+        tx_hash: f.tx_hash,
         block_number: f.block_number,
-        txIndex: f.txIndex,
-        eventIndex: f.eventIndex,
+        tx_index: f.tx_index,
+        event_index: f.event_index,
         token0: f.token0,
         token1: f.token1,
         amount0: f.amount0,

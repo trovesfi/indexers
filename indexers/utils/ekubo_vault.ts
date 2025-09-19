@@ -6,6 +6,7 @@ import { EventConfig, OnEvent } from "./config";
 import { eventKey, processEvent } from "./common_transform";
 import { standariseAddress } from ".";
 import * as schema from "../drizzle/schema";
+import { EkuboCLVaultStrategies } from "@strkfarm/sdk";
 
 export const onEventEkuboVault: OnEvent = async (
   event: Event,
@@ -16,6 +17,11 @@ export const onEventEkuboVault: OnEvent = async (
   const { db } = useDrizzleStorage();
   if (!allEvents.length) {
     throw new Error("Expected allEvents for ekubo_vault");
+  }
+
+  // if event is not from Ekubo pools, return
+  if (!EkuboCLVaultStrategies.some((strat) => strat.address.eqString(event.address))) {
+    return;
   }
 
   // Select events before the current event
