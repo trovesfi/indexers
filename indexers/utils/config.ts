@@ -4,11 +4,11 @@ import { Block, Event } from "@apibara/starknet";
 import { VesuRebalanceStrategies, EkuboCLVaultStrategies, UniversalStrategies, ContractAddr } from "@strkfarm/sdk";
 
 import { standariseAddress } from "../../src/utils";
-import { TOKENS } from "../../src/strkfarm/constants";
 import { eventKey } from "./common_transform";
 import { onEventEkuboVault } from "./ekubo_vault";
 import { CONFIG_INVESTMENT_FLOWS_ERC4626 } from "./configs/investment_flows_erc4626";
 import { CONFIG_INVESTMENT_FLOWS_STARKNET_VAULT_KIT } from "./configs/investment_flows_starknet_vault_kit";
+import { CONFIG_PRAGMA_PRICE } from "./configs/pragma_price";
 
 export interface EventField {
   name: string;
@@ -71,7 +71,9 @@ const HARVEST_CONTRACTS: ContractConfig[] = [
   ...EKUBO_VAULT_CONTRACTS,
 ];
 
+
 export const CONFIG: EventConfig[] = [
+  ...CONFIG_PRAGMA_PRICE,
   ...CONFIG_INVESTMENT_FLOWS_ERC4626,
   ...CONFIG_INVESTMENT_FLOWS_STARKNET_VAULT_KIT,
   {

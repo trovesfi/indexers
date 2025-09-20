@@ -8,6 +8,7 @@ import * as schema from "../drizzle/schema";
 import { AdditionalField, EventConfig, EventField } from "./config.ts";
 import { CONFIG } from "./config.ts";
 import { standariseAddress } from "./index.ts";
+import { shortString } from "starknet";
 
 function getConfigArr(blockNumber: number) {
   return CONFIG;
@@ -27,37 +28,26 @@ async function performAtomicBatchInsert<T extends Record<string, any>>(
     return;
   }
 
-  // Group records by table name for efficient batch inserts
-  const recordsByTable = new Map<string, T[]>();
-
-  for (const { record, tableName } of recordsToInsert) {
-    if (!recordsByTable.has(tableName)) {
-      recordsByTable.set(tableName, []);
-    }
-    recordsByTable.get(tableName)!.push(record);
-  }
-
   logger.info(
-    `Starting atomic batch insert of ${recordsToInsert.length} records across ${recordsByTable.size} tables`
+    `Starting atomic batch insert of ${recordsToInsert.length} records across ${recordsToInsert.length} tables`
   );
 
   // Use database transaction to ensure atomicity
   await database.transaction(async (tx) => {
+    const uniqueTables = new Set(recordsToInsert.map((r) => r.tableName));
     try {
+      logger.info(`Inserting ${recordsToInsert.length}, ${Array.from(uniqueTables)} tables`);
       // Insert records for each table
-      for (const [tableName, records] of recordsByTable) {
-        if (records.length === 0) continue;
-
-        logger.info(`Inserting ${records.length} records into ${tableName}`);
-
+      for (const { record, tableName } of recordsToInsert) {
+        logger.info(`Inserting record into ${tableName}`);
         await tx
           .insert(schema[tableName])
-          .values(records)
+          .values(record)
           .execute();
       }
 
       logger.info(
-        `Successfully inserted ${recordsToInsert.length} records across ${recordsByTable.size} tables`
+        `Successfully inserted ${recordsToInsert.length} records across ${recordsToInsert.length} tables`
       );
     } catch (err) {
       // Handle specific error cases that might be recoverable
@@ -78,7 +68,7 @@ async function performAtomicBatchInsert<T extends Record<string, any>>(
       // Log failed records for debugging
       logger.error("Failed records summary:", {
         totalRecords: recordsToInsert.length,
-        tablesAffected: Array.from(recordsByTable.keys()),
+        tablesAffected: Array.from(uniqueTables),
         errorMessage: err.message,
         errorCode: err.code,
       });
@@ -267,7 +257,10 @@ function convertToSqlFormat(value: FieldElement, field: EventField): string {
     const bigIntValue = BigInt(value);
     switch (field.sqlType) {
       case "text":
-        return standariseAddress(`0x${bigIntValue.toString(16).padStart(64, "0")}`);
+        const _hash = `0x${bigIntValue.toString(16).padStart(64, "0")}`;
+        if (field.type == 'decoded_text')
+          return shortString.decodeShortString(_hash).replaceAll(/\u0000/g, '').trim();
+        return standariseAddress(_hash);
       case `numeric(5,2)`:
         return (bigIntValue / 100n).toString();
       case "numeric(78,0)":

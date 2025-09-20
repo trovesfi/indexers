@@ -1,5 +1,5 @@
 import { sql } from 'drizzle-orm'
-import { bigint, doublePrecision, integer, pgTable, text, uniqueIndex } from 'drizzle-orm/pg-core'
+import { bigint, decimal, doublePrecision, integer, pgSchema, pgTable, text, uniqueIndex } from 'drizzle-orm/pg-core'
 
 export const investment_flows = pgTable('investment_flows', {
 	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
@@ -84,4 +84,42 @@ export const position_updated = pgTable('position_updated', {
 }, (position_updated) => ({
 	'event_id': uniqueIndex('event_id')
 		.on(position_updated.block_number, position_updated.tx_index, position_updated.event_index)
+}));
+
+/**
+ * Shared schemas
+ */
+// Schema doesnt work by default in drizzle generator
+// This is manual workaround
+const sharedSchema = pgSchema('shared');
+
+export const raw_price_events = sharedSchema.table('raw_price_events', {
+	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
+	block_number: integer('block_number').notNull(),
+	tx_index: integer('tx_index').notNull(),
+	event_index: integer('event_index').notNull(),
+	tx_hash: text('tx_hash').notNull(),
+	timestamp: integer('timestamp').notNull(),
+	source: text('source').notNull(),
+	publisher: text('publisher').notNull(),
+	price: decimal('price', { precision: 65, scale: 30 }).notNull(),
+	pair_id: text('pair_id').notNull(),
+	volume: decimal('volume', { precision: 65, scale: 30 }).notNull()
+}, (raw_price_events) => ({
+	'event_id': uniqueIndex('event_id')
+		.on(raw_price_events.block_number, raw_price_events.tx_index, raw_price_events.event_index)
+}));
+
+export const prices = sharedSchema.table('prices', {
+	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
+	asset: text('asset').notNull(),
+	price: doublePrecision('price').notNull(),
+	price_sum: doublePrecision('price_sum').notNull(),
+	sources_count: integer('sources_count').notNull(),
+	timestamp: integer('timestamp').notNull(),
+	block_number: integer('block_number').notNull(),
+	cursor: bigint('_cursor', { mode: 'bigint' })
+}, (prices) => ({
+	'price_id': uniqueIndex('price_id')
+		.on(prices.asset, prices.timestamp)
 }));

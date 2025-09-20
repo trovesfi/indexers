@@ -2,27 +2,27 @@
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["multiSchema"]
-  schemas         = ["public", "airfoil"]
+  schemas         = ["public", "shared"]
 }
 
 // standard path for graphql (Node)
 generator typegraphql {
   provider        = "typegraphql-prisma"
   previewFeatures = ["multiSchema"]
-  schemas         = ["public", "airfoil"]
+  schemas         = ["public", "shared"]
 }
 
 generator drizzle {
   provider        = "drizzle-prisma-generator"
   previewFeatures = ["multiSchema"]
-  output          = "./indexers/drizzle" // Where to put generated Drizle tables
-  schemas         = ["public", "airfoil"]
+  output          = "./drizzle" // Where to put generated Drizle tables
+  schemas         = ["public", "shared"]
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("POSTGRES_CONNECTION_STRING")
-  schemas  = ["public", "airfoil"]
+  schemas  = ["public", "shared"]
 }
 
 model investment_flows {
@@ -66,6 +66,7 @@ model harvests {
   @@unique([block_number, tx_index, event_index], name: "event_id")
   @@schema("public")
 }
+
 model position_fees_collected {
   id           String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   block_number Int
@@ -115,4 +116,56 @@ model position_updated {
 
   @@unique([block_number, tx_index, event_index], name: "event_id")
   @@schema("public")
+}
+
+//
+// Shared schemas
+// 
+
+model raw_price_events {
+  id           String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  block_number Int
+  tx_index     Int    @default(0)
+  event_index  Int    @default(0)
+  tx_hash      String
+
+  timestamp Int
+  source    String
+  publisher String
+  price     Decimal
+  pair_id   String
+  volume    Decimal
+
+  @@unique([block_number, tx_index, event_index], name: "event_id")
+  @@schema("shared")
+
+  @@index([pair_id, timestamp])
+  @@index([timestamp, pair_id])
+}
+
+model prices {
+  id            String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  asset         String
+  price         Float  @default(0)
+  timestamp     Int
+  block_number  Int
+
+  cursor BigInt? @map("_cursor")
+
+  @@unique([asset, timestamp], name: "price_id")
+  @@schema("shared")
+}
+
+model token_metadata {
+  id       String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  address  String
+  name     String
+  symbol   String
+  decimals Int
+
+  pragma_pair_id String
+  pragma_decimals Int
+
+  @@unique([address], name: "token_metadata_id")
+  @@schema("shared")
 }

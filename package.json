@@ -71,5 +71,8 @@
     "typegraphql-prisma": "0.28.0",
     "typescript": "^5.9.2",
     "typescript-eslint": "7.6.0"
+  },
+  "prisma": {
+    "seed": "npx tsx ./prisma/seed.ts"
   }
 }

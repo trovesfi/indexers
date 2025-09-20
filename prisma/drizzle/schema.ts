@@ -107,12 +107,23 @@ export const prices = pgTable('prices', {
 	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
 	asset: text('asset').notNull(),
 	price: doublePrecision('price').notNull(),
-	price_sum: doublePrecision('price_sum').notNull(),
-	sources_count: integer('sources_count').notNull(),
 	timestamp: integer('timestamp').notNull(),
 	block_number: integer('block_number').notNull(),
 	cursor: bigint('_cursor', { mode: 'bigint' })
 }, (prices) => ({
 	'price_id': uniqueIndex('price_id')
 		.on(prices.asset, prices.timestamp)
+}));
+
+export const token_metadata = pgTable('token_metadata', {
+	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
+	address: text('address').notNull().unique(),
+	name: text('name').notNull(),
+	symbol: text('symbol').notNull(),
+	decimals: integer('decimals').notNull(),
+	pragma_pair_id: text('pragma_pair_id').notNull(),
+	pragma_decimals: integer('pragma_decimals').notNull()
+}, (token_metadata) => ({
+	'token_metadata_id': uniqueIndex('token_metadata_id')
+		.on(token_metadata.address)
 }));
