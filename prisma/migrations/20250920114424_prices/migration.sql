@@ -1,8 +1,8 @@
 -- CreateSchema
-CREATE SCHEMA IF NOT EXISTS "shared";
+CREATE SCHEMA IF NOT EXISTS "public";
 
 -- CreateTable
-CREATE TABLE "shared"."raw_price_events" (
+CREATE TABLE "public"."raw_price_events" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "block_number" INTEGER NOT NULL,
     "tx_index" INTEGER NOT NULL DEFAULT 0,
@@ -19,7 +19,7 @@ CREATE TABLE "shared"."raw_price_events" (
 );
 
 -- CreateTable
-CREATE TABLE "shared"."prices" (
+CREATE TABLE "public"."prices" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "asset" TEXT NOT NULL,
     "price" DOUBLE PRECISION NOT NULL DEFAULT 0,
@@ -33,7 +33,7 @@ CREATE TABLE "shared"."prices" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "raw_price_events_block_number_tx_index_event_index_key" ON "shared"."raw_price_events"("block_number", "tx_index", "event_index");
+CREATE UNIQUE INDEX "raw_price_events_block_number_tx_index_event_index_key" ON "public"."raw_price_events"("block_number", "tx_index", "event_index");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "prices_asset_timestamp_key" ON "shared"."prices"("asset", "timestamp");
+CREATE UNIQUE INDEX "prices_asset_timestamp_key" ON "public"."prices"("asset", "timestamp");

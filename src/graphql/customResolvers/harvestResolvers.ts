@@ -62,8 +62,8 @@ async function getHarvestsSummary(harvests: any[]) {
                 where: {
                     event_id: {
                         block_number: harvest.block_number,
-                        txIndex: harvest.txIndex,
-                        eventIndex: harvest.eventIndex
+                        tx_index: harvest.tx_index,
+                        event_index: harvest.event_index
                     }
                 },
                 data: {

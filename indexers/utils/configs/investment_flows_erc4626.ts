@@ -43,7 +43,7 @@ const commonInvestmentFlowAdditionalFields = (type: "deposit" | "withdraw"): Add
         if (!contractInfo) {
           throw new Error(`Unknown contract: ${standariseAddress(event.address)}`);
         }
-        return standariseAddress(contractInfo.asset);
+        return contractInfo.asset ? standariseAddress(contractInfo.asset) : '';
       },
     }, {
       name: "contract",

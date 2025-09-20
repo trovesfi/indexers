@@ -18,7 +18,8 @@ export const investment_flows = pgTable('investment_flows', {
 	request_id: integer('request_id').notNull(),
 	type: text('type').notNull(),
 	timestamp: integer('timestamp').notNull(),
-	cursor: bigint('_cursor', { mode: 'bigint' })
+	cursor: bigint('_cursor', { mode: 'bigint' }),
+	quote_amount: decimal('quote_amount', { precision: 65, scale: 30 }).notNull()
 }, (investment_flows) => ({
 	'event_id': uniqueIndex('event_id')
 		.on(investment_flows.block_number, investment_flows.tx_index, investment_flows.event_index)
@@ -80,11 +81,19 @@ export const position_updated = pgTable('position_updated', {
 	vault_address: text('vault_address').notNull(),
 	user_address: text('user_address').notNull(),
 	timestamp: integer('timestamp').notNull(),
-	cursor: bigint('_cursor', { mode: 'bigint' })
+	cursor: bigint('_cursor', { mode: 'bigint' }),
+	quote_amount: decimal('quote_amount', { precision: 65, scale: 30 }).notNull()
 }, (position_updated) => ({
 	'event_id': uniqueIndex('event_id')
 		.on(position_updated.block_number, position_updated.tx_index, position_updated.event_index)
 }));
+
+export const strategy_metadata = pgTable('strategy_metadata', {
+	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
+	strategy_address: text('strategy_address').notNull(),
+	strategy_name: text('strategy_name').notNull(),
+	quote_asset: text('quote_asset').notNull()
+});
 
 export const raw_price_events = pgTable('raw_price_events', {
 	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),

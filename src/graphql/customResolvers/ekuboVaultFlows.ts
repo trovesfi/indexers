@@ -38,6 +38,9 @@ export class EkuboVaultFlow {
 
   @Field(() => Number)
   timestamp!: number;
+
+  @Field(() => String)
+  quote_amount!: number; // from position_updated.quote_amount
 }
 
 @Resolver()
@@ -80,6 +83,7 @@ export class EkuboVaultFlowsResolver {
         amount1: f.amount1,
         liquidity_delta: f.liquidity_delta,
         timestamp: f.timestamp,
+        quote_amount: f.quote_amount.toNumber() || 0,
       });
     }
 

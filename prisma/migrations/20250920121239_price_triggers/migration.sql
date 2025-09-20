@@ -21,7 +21,7 @@ DECLARE
 BEGIN
     -- Get the count of price events in the time range
     SELECT COUNT(*) INTO total_count
-    FROM "shared"."raw_price_events"
+    FROM "public"."raw_price_events"
     WHERE pair_id = given_pair_id
       AND timestamp >= min_timestamp
       AND timestamp < max_timestamp;
@@ -35,14 +35,14 @@ BEGIN
     -- This uses a more efficient algorithm than sorting all values
     SELECT PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY price::DOUBLE PRECISION)
     INTO median_price
-    FROM "shared"."raw_price_events"
+    FROM "public"."raw_price_events"
     WHERE pair_id = given_pair_id
       AND timestamp >= min_timestamp
       AND timestamp < max_timestamp;
     
     -- use pragma_decimals to convert to the correct decimals
     SELECT pragma_decimals INTO _pragma_decimals
-    FROM "shared"."token_metadata"
+    FROM "public"."token_metadata"
     WHERE pragma_pair_id = given_pair_id;
 
     RETURN median_price / 10 ^ _pragma_decimals;
@@ -57,19 +57,13 @@ RETURNS TRIGGER AS $$
 DECLARE
     token_address TEXT;
 BEGIN
-
-    -- delete raw data older than 7days to save space
-    DELETE FROM "shared"."raw_price_events"
-    WHERE timestamp < NEW.timestamp - 7 * 24 * 60 * 60;
-
     -- Check if pair_id exists in token_metadata and get the address
     SELECT address INTO token_address
-    FROM "shared"."token_metadata"
+    FROM "public"."token_metadata"
     WHERE pragma_pair_id = NEW.pair_id;
     
     -- If no matching token found, skip the insert
     IF token_address IS NULL THEN
-        RAISE LOG 'Pair ID % does not exist in token_metadata', NEW.pair_id;
         RETURN NULL; -- This skips the insert
     END IF;
     
@@ -88,7 +82,7 @@ DECLARE
 BEGIN
     -- Get the token address from token_metadata
     SELECT address INTO token_address
-    FROM "shared"."token_metadata"
+    FROM "public"."token_metadata"
     WHERE pragma_pair_id = NEW.pair_id;
     
     -- Round timestamp to 15-minute interval
@@ -98,13 +92,13 @@ BEGIN
     SELECT get_median_price(NEW.pair_id, NEW.timestamp) INTO median_price;
     
     -- Upsert into prices table using token address as asset
-    INSERT INTO "shared"."prices" (asset, price, timestamp, block_number, _cursor)
+    INSERT INTO "public"."prices" (asset, price, timestamp, block_number, _cursor)
     VALUES (token_address, median_price, rounded_timestamp, NEW.block_number, NEW.block_number)
     ON CONFLICT (asset, timestamp)
     DO UPDATE SET
         price = median_price,
-        block_number = GREATEST("shared"."prices".block_number, NEW.block_number),
-        _cursor = GREATEST("shared"."prices"._cursor, NEW.block_number);
+        block_number = GREATEST("public"."prices".block_number, NEW.block_number),
+        _cursor = GREATEST("public"."prices"._cursor, NEW.block_number);
     
     RETURN NEW;
 END;
@@ -123,11 +117,11 @@ DECLARE
 BEGIN
     -- Get token addresses for old and new records
     SELECT address INTO old_token_address
-    FROM "shared"."token_metadata"
+    FROM "public"."token_metadata"
     WHERE pragma_pair_id = OLD.pair_id;
     
     SELECT address INTO new_token_address
-    FROM "shared"."token_metadata"
+    FROM "public"."token_metadata"
     WHERE pragma_pair_id = NEW.pair_id;
     
     -- If either token address is not found, skip the update
@@ -144,7 +138,7 @@ BEGIN
         SELECT get_median_price(OLD.pair_id, OLD.timestamp) INTO old_median_price;
         
         -- Update old time period
-        UPDATE "shared"."prices"
+        UPDATE "public"."prices"
         SET 
             price = old_median_price,
             block_number = GREATEST(block_number, OLD.block_number),
@@ -155,18 +149,18 @@ BEGIN
         SELECT get_median_price(NEW.pair_id, NEW.timestamp) INTO new_median_price;
         
         -- Update new time period
-        INSERT INTO "shared"."prices" (asset, price, timestamp, block_number, _cursor)
+        INSERT INTO "public"."prices" (asset, price, timestamp, block_number, _cursor)
         VALUES (new_token_address, new_median_price, new_rounded_timestamp, NEW.block_number, NEW.block_number)
         ON CONFLICT (asset, timestamp)
         DO UPDATE SET
             price = new_median_price,
-            block_number = GREATEST("shared"."prices".block_number, NEW.block_number),
-            _cursor = GREATEST("shared"."prices"._cursor, NEW.block_number);
+            block_number = GREATEST("public"."prices".block_number, NEW.block_number),
+            _cursor = GREATEST("public"."prices"._cursor, NEW.block_number);
     ELSE
         -- Same time period, recalculate median price
         SELECT get_median_price(NEW.pair_id, NEW.timestamp) INTO new_median_price;
-        
-        UPDATE "shared"."prices"
+
+        UPDATE "public"."prices"
         SET 
             price = new_median_price,
             block_number = GREATEST(block_number, NEW.block_number),
@@ -188,7 +182,7 @@ DECLARE
 BEGIN
     -- Get token address for the deleted record
     SELECT address INTO token_address
-    FROM "shared"."token_metadata"
+    FROM "public"."token_metadata"
     WHERE pragma_pair_id = OLD.pair_id;
     
     -- If token address not found, skip the delete operation
@@ -202,7 +196,7 @@ BEGIN
     SELECT get_median_price(OLD.pair_id, OLD.timestamp) INTO median_price;
     
     -- Update the prices table with new median price
-    UPDATE "shared"."prices"
+    UPDATE "public"."prices"
     SET 
         price = median_price,
         block_number = GREATEST(block_number, OLD.block_number),
@@ -218,21 +212,21 @@ $$ LANGUAGE plpgsql;
 
 -- Create triggers
 CREATE TRIGGER raw_price_events_validate_trigger
-    BEFORE INSERT ON "shared"."raw_price_events"
+    BEFORE INSERT ON "public"."raw_price_events"
     FOR EACH ROW
     EXECUTE FUNCTION validate_pair_id_exists();
 
 CREATE TRIGGER raw_price_events_insert_trigger
-    AFTER INSERT ON "shared"."raw_price_events"
+    AFTER INSERT ON "public"."raw_price_events"
     FOR EACH ROW
     EXECUTE FUNCTION handle_raw_price_events_insert();
 
 CREATE TRIGGER raw_price_events_update_trigger
-    AFTER UPDATE ON "shared"."raw_price_events"
+    AFTER UPDATE ON "public"."raw_price_events"
     FOR EACH ROW
     EXECUTE FUNCTION handle_raw_price_events_update();
 
 CREATE TRIGGER raw_price_events_delete_trigger
-    AFTER DELETE ON "shared"."raw_price_events"
+    AFTER DELETE ON "public"."raw_price_events"
     FOR EACH ROW
     EXECUTE FUNCTION handle_raw_price_events_delete();

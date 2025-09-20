@@ -2,27 +2,27 @@
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["multiSchema"]
-  schemas         = ["public", "shared"]
+  schemas         = ["public"]
 }
 
 // standard path for graphql (Node)
 generator typegraphql {
   provider        = "typegraphql-prisma"
   previewFeatures = ["multiSchema"]
-  schemas         = ["public", "shared"]
+  schemas         = ["public"]
 }
 
 generator drizzle {
   provider        = "drizzle-prisma-generator"
   previewFeatures = ["multiSchema"]
   output          = "./drizzle" // Where to put generated Drizle tables
-  schemas         = ["public", "shared"]
+  schemas         = ["public"]
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("POSTGRES_CONNECTION_STRING")
-  schemas  = ["public", "shared"]
+  schemas  = ["public", "airfoil"]
 }
 
 model investment_flows {
@@ -44,6 +44,11 @@ model investment_flows {
   type       String // deposit | withdraw
   timestamp  Int
   cursor     BigInt? @map("_cursor")
+
+  // The represent the value of investment in the quote asset (from strategy_metadata)
+  // updated by trigger on this table using the prices table as info
+  // if asset is not empty
+  quote_amount Decimal @default(0)
 
   @@unique([block_number, tx_index, event_index], name: "event_id")
   @@schema("public")
@@ -114,7 +119,20 @@ model position_updated {
   timestamp Int
   cursor    BigInt? @map("_cursor")
 
+  // The represent the value of investment in the quote asset (from strategy_metadata)
+  // updated by trigger on this table using the prices table as info
+  // if asset is not empty
+  quote_amount Decimal @default(0)
+
   @@unique([block_number, tx_index, event_index], name: "event_id")
+  @@schema("public")
+}
+
+model strategy_metadata {
+  id           String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  strategy_address String
+  strategy_name String
+  quote_asset String
   @@schema("public")
 }
 
@@ -137,7 +155,7 @@ model raw_price_events {
   volume    Decimal
 
   @@unique([block_number, tx_index, event_index], name: "event_id")
-  @@schema("shared")
+  @@schema("public")
 
   @@index([pair_id, timestamp])
   @@index([timestamp, pair_id])
@@ -153,7 +171,7 @@ model prices {
   cursor BigInt? @map("_cursor")
 
   @@unique([asset, timestamp], name: "price_id")
-  @@schema("shared")
+  @@schema("public")
 }
 
 model token_metadata {
@@ -167,5 +185,5 @@ model token_metadata {
   pragma_decimals Int
 
   @@unique([address], name: "token_metadata_id")
-  @@schema("shared")
+  @@schema("public")
 }

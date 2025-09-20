@@ -1,5 +1,5 @@
 import { sql } from 'drizzle-orm'
-import { bigint, decimal, doublePrecision, integer, pgSchema, pgTable, text, uniqueIndex } from 'drizzle-orm/pg-core'
+import { bigint, decimal, doublePrecision, integer, pgTable, text, uniqueIndex } from 'drizzle-orm/pg-core'
 
 export const investment_flows = pgTable('investment_flows', {
 	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
@@ -18,7 +18,8 @@ export const investment_flows = pgTable('investment_flows', {
 	request_id: integer('request_id').notNull(),
 	type: text('type').notNull(),
 	timestamp: integer('timestamp').notNull(),
-	cursor: bigint('_cursor', { mode: 'bigint' })
+	cursor: bigint('_cursor', { mode: 'bigint' }),
+	quote_amount: decimal('quote_amount', { precision: 65, scale: 30 }).notNull()
 }, (investment_flows) => ({
 	'event_id': uniqueIndex('event_id')
 		.on(investment_flows.block_number, investment_flows.tx_index, investment_flows.event_index)
@@ -80,20 +81,21 @@ export const position_updated = pgTable('position_updated', {
 	vault_address: text('vault_address').notNull(),
 	user_address: text('user_address').notNull(),
 	timestamp: integer('timestamp').notNull(),
-	cursor: bigint('_cursor', { mode: 'bigint' })
+	cursor: bigint('_cursor', { mode: 'bigint' }),
+	quote_amount: decimal('quote_amount', { precision: 65, scale: 30 }).notNull()
 }, (position_updated) => ({
 	'event_id': uniqueIndex('event_id')
 		.on(position_updated.block_number, position_updated.tx_index, position_updated.event_index)
 }));
 
-/**
- * Shared schemas
- */
-// Schema doesnt work by default in drizzle generator
-// This is manual workaround
-const sharedSchema = pgSchema('shared');
+export const strategy_metadata = pgTable('strategy_metadata', {
+	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
+	strategy_address: text('strategy_address').notNull(),
+	strategy_name: text('strategy_name').notNull(),
+	quote_asset: text('quote_asset').notNull()
+});
 
-export const raw_price_events = sharedSchema.table('raw_price_events', {
+export const raw_price_events = pgTable('raw_price_events', {
 	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
 	block_number: integer('block_number').notNull(),
 	tx_index: integer('tx_index').notNull(),
@@ -108,18 +110,4 @@ export const raw_price_events = sharedSchema.table('raw_price_events', {
 }, (raw_price_events) => ({
 	'event_id': uniqueIndex('event_id')
 		.on(raw_price_events.block_number, raw_price_events.tx_index, raw_price_events.event_index)
-}));
-
-export const prices = sharedSchema.table('prices', {
-	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
-	asset: text('asset').notNull(),
-	price: doublePrecision('price').notNull(),
-	price_sum: doublePrecision('price_sum').notNull(),
-	sources_count: integer('sources_count').notNull(),
-	timestamp: integer('timestamp').notNull(),
-	block_number: integer('block_number').notNull(),
-	cursor: bigint('_cursor', { mode: 'bigint' })
-}, (prices) => ({
-	'price_id': uniqueIndex('price_id')
-		.on(prices.asset, prices.timestamp)
 }));

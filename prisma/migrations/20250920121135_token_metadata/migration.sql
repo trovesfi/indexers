@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE "shared"."token_metadata" (
+CREATE TABLE "public"."token_metadata" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "address" TEXT NOT NULL,
     "name" TEXT NOT NULL,
@@ -11,4 +11,4 @@ CREATE TABLE "shared"."token_metadata" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "token_metadata_address_key" ON "shared"."token_metadata"("address");
+CREATE UNIQUE INDEX "token_metadata_address_key" ON "public"."token_metadata"("address");

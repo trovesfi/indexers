@@ -7,14 +7,14 @@
 
 */
 -- AlterTable
-ALTER TABLE "shared"."prices" DROP COLUMN "price_sum",
+ALTER TABLE "public"."prices" DROP COLUMN "price_sum",
 DROP COLUMN "sources_count";
 
 -- AlterTable
-ALTER TABLE "shared"."token_metadata" ADD COLUMN     "pragma_decimals" INTEGER NOT NULL;
+ALTER TABLE "public"."token_metadata" ADD COLUMN     "pragma_decimals" INTEGER NOT NULL;
 
 -- CreateIndex
-CREATE INDEX "raw_price_events_pair_id_timestamp_idx" ON "shared"."raw_price_events"("pair_id", "timestamp");
+CREATE INDEX "raw_price_events_pair_id_timestamp_idx" ON "public"."raw_price_events"("pair_id", "timestamp");
 
 -- CreateIndex
-CREATE INDEX "raw_price_events_timestamp_pair_id_idx" ON "shared"."raw_price_events"("timestamp", "pair_id");
+CREATE INDEX "raw_price_events_timestamp_pair_id_idx" ON "public"."raw_price_events"("timestamp", "pair_id");
