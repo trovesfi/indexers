@@ -1,4 +1,4 @@
-import { ContractAddr, EkuboCLVaultStrategies, UniversalStrategies, VesuRebalanceStrategies } from "@strkfarm/sdk";
+import { ContractAddr, EkuboCLVaultStrategies, HyperLSTStrategies, UniversalStrategies, VesuRebalanceStrategies } from "@strkfarm/sdk";
 import { standariseAddress } from "../../../src/utils";
 import { AdditionalField, ContractConfig, EventConfig } from "../config";
 import { onEventEkuboVault } from "../ekubo_vault";
@@ -11,6 +11,11 @@ const UNIVERSAL_STRATEGIES: ContractConfig[] = [
       address: standariseAddress(evergreenVault.address.address),
       asset: evergreenVault.depositTokens[0].address.address,
       name: evergreenVault.name,
+    })),
+    ...HyperLSTStrategies.map((hyperLST) => ({
+      address: standariseAddress(hyperLST.address.address),
+      asset: hyperLST.depositTokens[0].address.address,
+      name: hyperLST.name,
     })),
 ];
 
