@@ -4,12 +4,14 @@ import { AdditionalField, ContractConfig, EventConfig } from "../config";
 import { onEventEkuboVault } from "../ekubo_vault";
 import { eventKey } from "../common_transform";
 
-const EKUBO_VAULT_CONTRACTS: ContractConfig[] = [
-    ...EkuboCLVaultStrategies.map((ekuboStrat) => ({
+export const EKUBO_VAULT_CONTRACTS: ContractConfig[] = [
+    ...EkuboCLVaultStrategies
+    .filter((strat) => strat.curator?.name.toLowerCase().includes('re7'))
+    .map((ekuboStrat) => ({
       address: standariseAddress(ekuboStrat.address.address),
       asset: '', // not applicable for this dual asset vault
       name: ekuboStrat.name,
-    })).filter((strat) => strat.name.toLowerCase().includes('re7')),
+    }))
 ];
 
 const ERC4626_VAULT_CONTRACTS: ContractConfig[] = [

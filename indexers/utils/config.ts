@@ -6,7 +6,7 @@ import { VesuRebalanceStrategies, EkuboCLVaultStrategies, UniversalStrategies, C
 import { standariseAddress } from "../../src/utils";
 import { eventKey } from "./common_transform";
 import { onEventEkuboVault } from "./ekubo_vault";
-import { CONFIG_INVESTMENT_FLOWS_ERC4626 } from "./configs/investment_flows_erc4626";
+import { CONFIG_INVESTMENT_FLOWS_ERC4626, EKUBO_VAULT_CONTRACTS } from "./configs/investment_flows_erc4626";
 import { CONFIG_INVESTMENT_FLOWS_STARKNET_VAULT_KIT } from "./configs/investment_flows_starknet_vault_kit";
 import { CONFIG_PRAGMA_PRICE } from "./configs/pragma_price";
 
@@ -54,14 +54,6 @@ export interface EventConfig {
   onEvent?: OnEvent;
 }
 
-const EKUBO_VAULT_CONTRACTS: ContractConfig[] = [
-  ...EkuboCLVaultStrategies.map((ekuboStrat) => ({
-    address: standariseAddress(ekuboStrat.address.address),
-    asset: '', // not applicable for this dual asset vault
-    name: ekuboStrat.name,
-  })),
-];
-
 const HARVEST_CONTRACTS: ContractConfig[] = [
   ...VesuRebalanceStrategies.map((vesuStrat) => ({
     address: standariseAddress(vesuStrat.address.address),
@@ -76,30 +68,7 @@ export const CONFIG: EventConfig[] = [
   ...CONFIG_PRAGMA_PRICE,
   ...CONFIG_INVESTMENT_FLOWS_ERC4626,
   ...CONFIG_INVESTMENT_FLOWS_STARKNET_VAULT_KIT,
-  {
-    tableName: "position_fees_collected",
-    contracts: EKUBO_VAULT_CONTRACTS,
-    defaultKeys: [[eventKey("HandleFees")]],
-    keyFields: [],
-    dataFields: [
-      { name: "token0", type: "ContractAddress", sqlType: "text" },
-      { name: "token0_origin_bal", type: "u256", sqlType: "skip" },
-      { name: "amount0", type: "u256", sqlType: "numeric(78,0)" },
-      { name: "token1", type: "ContractAddress", sqlType: "text" },
-      { name: "token1_origin_bal", type: "u256", sqlType: "skip" },
-      { name: "amount1", type: "u256", sqlType: "numeric(78,0)" },
-    ],
-    additionalFields: [
-      {
-        name: "vault_address",
-        source: "custom",
-        sqlType: "text",
-        customLogic: (event) => {
-          return standariseAddress(event.address);
-        },
-      },
-    ],
-  },
+
   {
     tableName: "harvests",
     contracts: HARVEST_CONTRACTS,
