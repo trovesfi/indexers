@@ -71,6 +71,10 @@ export function createIndexer<
     async transform({ block, finality, endCursor, context }) {
       const logger = useLogger();
       const { db } = useDrizzleStorage();
+
+      if (block.header.blockNumber > 2415009) {
+        throw new Error("Block is greater than 2415010");
+      }
       await commonTransform(
         block,
         finality,

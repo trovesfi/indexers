@@ -9,7 +9,7 @@ const EKUBO_VAULT_CONTRACTS: ContractConfig[] = [
       address: standariseAddress(ekuboStrat.address.address),
       asset: '', // not applicable for this dual asset vault
       name: ekuboStrat.name,
-    })),
+    })).filter((strat) => strat.name.toLowerCase().includes('re7')),
 ];
 
 const ERC4626_VAULT_CONTRACTS: ContractConfig[] = [

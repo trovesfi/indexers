@@ -17,6 +17,22 @@ const overridePragmaBaseAsset = {
         baseAsset: 'BTC',
         priceDecimals: 8,
     },
+    xLBTC: {
+        baseAsset: 'BTC',
+        priceDecimals: 8,
+    },
+    xtBTC: {
+        baseAsset: 'BTC',
+        priceDecimals: 8,
+    },
+    xWBTC: {
+        baseAsset: 'BTC',
+        priceDecimals: 8,
+    },
+    xsBTC: {
+        baseAsset: 'BTC',
+        priceDecimals: 8,
+    },
     solvBTC: {
         baseAsset: 'BTC',
         priceDecimals: 8,
@@ -49,7 +65,7 @@ const tokenInfo: Omit<token_metadata, 'id'>[] = [
         pragma_pair_id: getPragmaPairId(token.symbol),
         pragma_decimals: getPragmaDecimals(token.symbol),
     }))
-]
+].filter((token) => !['solvBTC', 'LBTC', 'xLBTC', 'xtBTC', 'xWBTC', 'xsBTC', 'tBTC'].includes(token.symbol))
 
 async function seedStrategyMetadata() {
   const prisma = new PrismaClient();
@@ -61,7 +77,9 @@ async function seedStrategyMetadata() {
             strategy_name: strategy.name,
             quote_asset: strategy.depositTokens[0].address.address,
         })),
-        ...EkuboCLVaultStrategies.map((strategy) => ({
+        ...EkuboCLVaultStrategies
+        .filter((str) => str.curator?.name.toLowerCase().includes('re7'))
+        .map((strategy) => ({
             strategy_address: strategy.address.address,
             strategy_name: strategy.name,
             quote_asset: strategy.additionalInfo.quoteAsset.address.address,
@@ -78,11 +96,12 @@ async function seedStrategyMetadata() {
 async function seed() {
   const prisma = new PrismaClient();
 
+  // Required by DB Triggers
+  await prisma.token_metadata.deleteMany();
   console.log(`Seeding ${tokenInfo.length} token metadata`);
   await prisma.token_metadata.createMany({
     data: tokenInfo
   });
-
   await seedStrategyMetadata();
 }
 
