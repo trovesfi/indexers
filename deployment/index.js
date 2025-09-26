@@ -105,7 +105,7 @@ async function getSummaryData() {
 
   const minIndexerHead = await getMinIndexerHeadFromDB();
   const blockLag = Math.abs(currentBlock - Number(minIndexerHead));
-  const isSynced = blockLag <= 10;
+  const isSynced = blockLag <= 100;
       
   results.push({
     file: 'indexer_head',
