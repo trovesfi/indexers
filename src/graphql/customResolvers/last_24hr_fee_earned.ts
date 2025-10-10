@@ -63,6 +63,9 @@ export class CustomPositionFeesResolver {
       case "24h":
         hoursAgo = 24;
         break;
+      case "7d":
+        hoursAgo = 24 * 7;
+        break;
       case "30d":
         hoursAgo = 24 * 30;
         break;
