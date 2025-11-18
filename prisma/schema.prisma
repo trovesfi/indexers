@@ -171,6 +171,7 @@ model prices {
   cursor BigInt? @map("_cursor")
 
   @@unique([asset, timestamp], name: "price_id")
+  @@index([asset, block_number])
   @@schema("public")
 }
 
