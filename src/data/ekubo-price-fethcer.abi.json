@@ -1,0 +1,266 @@
+[
+  {
+    "type": "impl",
+    "name": "PriceFetcherImpl",
+    "interface_name": "ekubo_oracle_extension::price_fetcher::IPriceFetcher"
+  },
+  {
+    "type": "struct",
+    "name": "core::array::Span::<core::starknet::contract_address::ContractAddress>",
+    "members": [
+      {
+        "name": "snapshot",
+        "type": "@core::array::Array::<core::starknet::contract_address::ContractAddress>"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "core::integer::u256",
+    "members": [
+      {
+        "name": "low",
+        "type": "core::integer::u128"
+      },
+      {
+        "name": "high",
+        "type": "core::integer::u128"
+      }
+    ]
+  },
+  {
+    "type": "enum",
+    "name": "ekubo_oracle_extension::price_fetcher::PriceResult",
+    "variants": [
+      {
+        "name": "NotInitialized",
+        "type": "()"
+      },
+      {
+        "name": "InsufficientLiquidity",
+        "type": "()"
+      },
+      {
+        "name": "PeriodTooLong",
+        "type": "()"
+      },
+      {
+        "name": "Price",
+        "type": "core::integer::u256"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "core::array::Span::<ekubo_oracle_extension::price_fetcher::PriceResult>",
+    "members": [
+      {
+        "name": "snapshot",
+        "type": "@core::array::Array::<ekubo_oracle_extension::price_fetcher::PriceResult>"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "ekubo_oracle_extension::price_fetcher::CandlestickPoint",
+    "members": [
+      {
+        "name": "time",
+        "type": "core::integer::u64"
+      },
+      {
+        "name": "low",
+        "type": "core::integer::u256"
+      },
+      {
+        "name": "high",
+        "type": "core::integer::u256"
+      },
+      {
+        "name": "open",
+        "type": "core::integer::u256"
+      },
+      {
+        "name": "close",
+        "type": "core::integer::u256"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "core::array::Span::<ekubo_oracle_extension::price_fetcher::CandlestickPoint>",
+    "members": [
+      {
+        "name": "snapshot",
+        "type": "@core::array::Array::<ekubo_oracle_extension::price_fetcher::CandlestickPoint>"
+      }
+    ]
+  },
+  {
+    "type": "interface",
+    "name": "ekubo_oracle_extension::price_fetcher::IPriceFetcher",
+    "items": [
+      {
+        "type": "function",
+        "name": "get_prices",
+        "inputs": [
+          {
+            "name": "quote_token",
+            "type": "core::starknet::contract_address::ContractAddress"
+          },
+          {
+            "name": "base_tokens",
+            "type": "core::array::Span::<core::starknet::contract_address::ContractAddress>"
+          },
+          {
+            "name": "period",
+            "type": "core::integer::u64"
+          },
+          {
+            "name": "min_token",
+            "type": "core::integer::u128"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "core::array::Span::<ekubo_oracle_extension::price_fetcher::PriceResult>"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "get_prices_in_oracle_tokens",
+        "inputs": [
+          {
+            "name": "base_tokens",
+            "type": "core::array::Span::<core::starknet::contract_address::ContractAddress>"
+          },
+          {
+            "name": "period",
+            "type": "core::integer::u64"
+          },
+          {
+            "name": "min_token",
+            "type": "core::integer::u128"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "(core::starknet::contract_address::ContractAddress, core::array::Span::<ekubo_oracle_extension::price_fetcher::PriceResult>)"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "get_candlestick_chart_data",
+        "inputs": [
+          {
+            "name": "base_token",
+            "type": "core::starknet::contract_address::ContractAddress"
+          },
+          {
+            "name": "quote_token",
+            "type": "core::starknet::contract_address::ContractAddress"
+          },
+          {
+            "name": "interval_seconds",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "num_intervals",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "max_resolution",
+            "type": "core::integer::u8"
+          },
+          {
+            "name": "end_time",
+            "type": "core::integer::u64"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "core::array::Span::<ekubo_oracle_extension::price_fetcher::CandlestickPoint>"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "get_candlestick_chart_data_now",
+        "inputs": [
+          {
+            "name": "base_token",
+            "type": "core::starknet::contract_address::ContractAddress"
+          },
+          {
+            "name": "quote_token",
+            "type": "core::starknet::contract_address::ContractAddress"
+          },
+          {
+            "name": "interval_seconds",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "num_intervals",
+            "type": "core::integer::u32"
+          },
+          {
+            "name": "max_resolution",
+            "type": "core::integer::u8"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "(core::integer::u64, core::array::Span::<ekubo_oracle_extension::price_fetcher::CandlestickPoint>)"
+          }
+        ],
+        "state_mutability": "view"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "ekubo::interfaces::core::ICoreDispatcher",
+    "members": [
+      {
+        "name": "contract_address",
+        "type": "core::starknet::contract_address::ContractAddress"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "ekubo_oracle_extension::oracle::IOracleDispatcher",
+    "members": [
+      {
+        "name": "contract_address",
+        "type": "core::starknet::contract_address::ContractAddress"
+      }
+    ]
+  },
+  {
+    "type": "constructor",
+    "name": "constructor",
+    "inputs": [
+      {
+        "name": "core",
+        "type": "ekubo::interfaces::core::ICoreDispatcher"
+      },
+      {
+        "name": "oracle",
+        "type": "ekubo_oracle_extension::oracle::IOracleDispatcher"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "ekubo_oracle_extension::price_fetcher::PriceFetcher::Event",
+    "kind": "enum",
+    "variants": []
+  }
+]
+
