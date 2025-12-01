@@ -69,6 +69,12 @@ const LST_TOKENS: TokenInfo[] = [
       "0x06a567e68c805323525fe1649adb80b03cddf92c23d2629a6779f54192dffc13",
     decimals: 8,
   },
+  {
+    symbol: "xSTRK",
+    address:
+      "0x028d709c875c0ceac3dce7065bec5328186dc89fe254527084d1689910954b0a",
+    decimals: 18,
+  },
 ];
 
 const EKUBO_PRICER_ADDRESS =
