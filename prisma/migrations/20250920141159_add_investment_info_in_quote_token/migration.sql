@@ -34,9 +34,21 @@ BEGIN
         RETURN NULL;
     END IF;
 
+    -- if v2 usdc, use price of v1 usdc
+    -- ! to make it dynamic later
+    IF _quote_asset = '0x33068f6539f8e6e6b131e6b2b814e6c34a5224bc66947c47dab9dfee93b35fb' THEN
+        _quote_asset = '0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8';
+    END IF;
+
+    -- if v2 usdc, use price of v1 usdc
+    IF _asset = '0x33068f6539f8e6e6b131e6b2b814e6c34a5224bc66947c47dab9dfee93b35fb' THEN
+        _asset = '0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8';
+    END IF;
+
     IF _asset = _quote_asset THEN
         RETURN amount / 10^token_decimals;
     END IF;
+    
 
     SELECT p.price, p.timestamp INTO asset_price, asset_price_timestamp
     FROM "public"."prices" p
