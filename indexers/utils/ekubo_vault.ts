@@ -32,7 +32,7 @@ export const onEventEkuboVault: OnEvent = async (
 
   // First PositionUpdated event
   const positionUpdateEvent = filteredEvents.find(
-    (e) =>
+    (e) =>  
       standariseAddress(e.keys[0]) ==
       standariseAddress(num.getDecimalString(eventKey("PositionUpdated")))
   );

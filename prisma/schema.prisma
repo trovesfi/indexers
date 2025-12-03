@@ -134,6 +134,8 @@ model strategy_metadata {
   strategy_name String
   quote_asset String
   @@schema("public")
+
+  @@unique([strategy_address], name: "strategy_metadata_id")
 }
 
 //

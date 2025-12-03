@@ -90,10 +90,13 @@ export const position_updated = pgTable('position_updated', {
 
 export const strategy_metadata = pgTable('strategy_metadata', {
 	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
-	strategy_address: text('strategy_address').notNull(),
+	strategy_address: text('strategy_address').notNull().unique(),
 	strategy_name: text('strategy_name').notNull(),
 	quote_asset: text('quote_asset').notNull()
-});
+}, (strategy_metadata) => ({
+	'strategy_metadata_id': uniqueIndex('strategy_metadata_id')
+		.on(strategy_metadata.strategy_address)
+}));
 
 export const raw_price_events = pgTable('raw_price_events', {
 	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
