@@ -64,13 +64,14 @@ export function createIndexer<
     ],
     finality: "pending",
     filter: {
-      header: "on_data",
+      header: "on_data_or_on_new_block",
       events,
     },
     // @ts-ignore
     async transform({ block, finality, endCursor, context }) {
       const logger = useLogger();
       const { db } = useDrizzleStorage();
+      logger.info("New block:", block.header.blockNumber);
       await commonTransform(
         block,
         finality,
