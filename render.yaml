@@ -28,3 +28,16 @@ services:
   buildCommand: yarn; npx prisma generate
   startCommand: npx tsx src/graphql
   autoDeployTrigger: off
+- type: cron
+  name: troves-indexers-fetch-lst-prices
+  runtime: node
+  repo: https://github.com/trovesfi/indexers
+  branch: hemant/indexer
+  plan: starter
+  schedule: "0 */2 * * *"
+  envVars:
+  - fromGroup: troves-indexers
+  region: oregon
+  buildCommand: pnpm install --frozen-lockfile
+  startCommand: pnpm run fetch-lst-prices
+  autoDeployTrigger: off
