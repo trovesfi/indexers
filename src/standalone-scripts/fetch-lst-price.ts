@@ -46,7 +46,7 @@ function getLSTTokens(): TokenInfo[] {
 const LST_TOKENS = getLSTTokens();
 
 const BATCH_SIZE = 1000;
-const BLOCKS_PER_INTERVAL = 200; // Process every ~200 blocks (10 minutes)
+const BLOCKS_PER_INTERVAL = 130; // Process every ~130 blocks (5-10 minutes)
 const PROGRESS_ID = "lst_price_sync";
 
 function standardiseAddress(address: string | bigint): string {
@@ -71,6 +71,11 @@ async function retryWithBackoff<T>(
       console.error(
         `${operation} failed (attempt ${attempt}/${maxRetries}): ${error.message}`,
       );
+
+      // dont have to retry if the error is not initialized
+      if (error.message?.includes("NotInitialized")) {
+        throw new Error(`${operation} failed: ${error.message}`);
+      }
 
       if (isLastAttempt) {
         throw new Error(

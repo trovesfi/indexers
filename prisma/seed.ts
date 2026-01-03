@@ -65,7 +65,9 @@ const tokenInfo: Omit<token_metadata, 'id'>[] = [
         pragma_pair_id: getPragmaPairId(token.symbol),
         pragma_decimals: getPragmaDecimals(token.symbol),
     }))
-].filter((token) => !['solvBTC', 'LBTC', 'xLBTC', 'xtBTC', 'xWBTC', 'xsBTC', 'tBTC'].includes(token.symbol))
+]
+// As we started tracking LST and some BTC prices from cron, we added them to the token info
+// .filter((token) => !['solvBTC', 'LBTC', 'xLBTC', 'xtBTC', 'xWBTC', 'xsBTC', 'tBTC'].includes(token.symbol))
 
 async function seedStrategyMetadata() {
   const prisma = new PrismaClient();
