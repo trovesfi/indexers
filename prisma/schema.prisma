@@ -129,13 +129,13 @@ model position_updated {
 }
 
 model strategy_metadata {
-  id           String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id               String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   strategy_address String
-  strategy_name String
-  quote_asset String
-  @@schema("public")
+  strategy_name    String
+  quote_asset      String
 
   @@unique([strategy_address], name: "strategy_metadata_id")
+  @@schema("public")
 }
 
 //
@@ -157,18 +157,17 @@ model raw_price_events {
   volume    Decimal
 
   @@unique([block_number, tx_index, event_index], name: "event_id")
-  @@schema("public")
-
   @@index([pair_id, timestamp])
   @@index([timestamp, pair_id])
+  @@schema("public")
 }
 
 model prices {
-  id            String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  asset         String
-  price         Float  @default(0)
-  timestamp     Int
-  block_number  Int
+  id           String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  asset        String
+  price        Float  @default(0)
+  timestamp    Int
+  block_number Int
 
   cursor BigInt? @map("_cursor")
 
@@ -183,9 +182,104 @@ model token_metadata {
   symbol   String
   decimals Int
 
-  pragma_pair_id String
+  pragma_pair_id  String
   pragma_decimals Int
 
   @@unique([address], name: "token_metadata_id")
+  @@schema("public")
+}
+
+// Redemption Router Raw Event Tables
+model svk_alt_redemptions_subscribed {
+  id           String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  block_number Int
+  tx_index     Int    @default(0)
+  event_index  Int    @default(0)
+  tx_hash      String
+
+  contract_address String // redemption router address
+  new_nft_id       Int
+  old_nft_id       Int
+  receiver         String
+  timestamp        Int
+  cursor           BigInt? @map("_cursor")
+
+  @@unique([block_number, tx_index, event_index], name: "event_id")
+  @@index([contract_address, old_nft_id])
+  @@index([contract_address, new_nft_id])
+  @@schema("public")
+}
+
+model svk_alt_redemptions_claimed {
+  id           String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  block_number Int
+  tx_index     Int    @default(0)
+  event_index  Int    @default(0)
+  tx_hash      String
+
+  contract_address String // redemption router address
+  new_nft_id       Int
+  old_nft_id       Int
+  receivable       String
+  swap_id          Int
+  timestamp        Int
+  cursor           BigInt? @map("_cursor")
+
+  @@unique([block_number, tx_index, event_index], name: "event_id")
+  @@index([contract_address, old_nft_id])
+  @@index([contract_address, new_nft_id])
+  @@schema("public")
+}
+
+model svk_alt_redemptions_unsubscribed {
+  id           String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  block_number Int
+  tx_index     Int    @default(0)
+  event_index  Int    @default(0)
+  tx_hash      String
+
+  contract_address            String // redemption router address
+  new_nft_id                  Int
+  old_nft_id                  Int
+  owner                       String
+  is_old_nft_returned         Boolean
+  is_original_assets_returned Boolean
+  original_assets_returned    String
+  timestamp                   Int
+  cursor                      BigInt? @map("_cursor")
+
+  @@unique([block_number, tx_index, event_index], name: "event_id")
+  @@index([contract_address, old_nft_id])
+  @@index([contract_address, new_nft_id])
+  @@schema("public")
+}
+
+// Post-processed table maintaining final state
+model svk_alt_redemptions {
+  id           String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  block_number Int
+  tx_index     Int    @default(0)
+  event_index  Int    @default(0)
+  tx_hash      String
+
+  contract_address            String // redemption router address
+  old_nft_id                  String
+  new_nft_id                  String
+  receiver                    String?
+  owner                       String?
+  receivable                  String? // amount claimable
+  swap_id                     String?
+  is_claimed                  Boolean @default(false)
+  is_unsubscribed             Boolean @default(false)
+  is_old_nft_returned         Boolean @default(false)
+  is_original_assets_returned Boolean @default(false)
+  original_assets_returned    String?
+  timestamp                   Int
+  cursor                      BigInt? @map("_cursor")
+
+  @@unique([contract_address, old_nft_id], name: "redemption_unique")
+  @@index([contract_address, new_nft_id])
+  @@index([contract_address, is_claimed])
+  @@index([contract_address, is_unsubscribed])
   @@schema("public")
 }

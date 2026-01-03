@@ -7,6 +7,9 @@ import {
   FindManyInvestment_flowsResolver,
   AggregateInvestment_flowsResolver,
   FindManyHarvestsResolver,
+  FindFirstSvk_alt_redemptionsResolver,
+  FindManySvk_alt_redemptionsResolver,
+  FindFirstInvestment_flowsResolver,
 } from "@generated/type-graphql";
 import { buildSchema, Resolver, Query, Arg } from 'type-graphql';
 import { startStandaloneServer } from "@apollo/server/standalone";
@@ -46,7 +49,9 @@ async function main() {
       CustomHarvestsResolver,
       CustomInvestmentFlowsResolver,
       CustomPositionFeesResolver,
-      EkuboVaultFlowsResolver
+      EkuboVaultFlowsResolver,
+      FindFirstSvk_alt_redemptionsResolver,
+      FindManySvk_alt_redemptionsResolver
     ],
     validate: false,
   });

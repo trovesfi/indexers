@@ -19,6 +19,16 @@ const UNIVERSAL_STRATEGIES: ContractConfig[] = [
     })),
 ];
 
+const REDEMPTION_ROUTER_STRATEGIES: ContractConfig[] = [
+  ...HyperLSTStrategies
+  .filter((hyperLST) => !!hyperLST.additionalInfo.redemptionRouter)
+  .map((hyperLST) => ({
+    address: standariseAddress(hyperLST.additionalInfo.redemptionRouter?.address ?? ''),
+    asset: hyperLST.depositTokens[0].address.address,
+    name: hyperLST.name,
+  })),
+];
+
   
 const commonInvestmentFlowAdditionalFields = (type: "deposit" | "withdraw"): AdditionalField[] => {
     return [{
@@ -181,5 +191,83 @@ export const CONFIG_INVESTMENT_FLOWS_STARKNET_VAULT_KIT: EventConfig[] = [
                 return field.name !== "receiver"
             })
         ]
-      }
+      },
+      {
+        tableName: "svk_alt_redemptions_subscribed",
+        includeReceipt: true,
+        contracts: REDEMPTION_ROUTER_STRATEGIES,
+        defaultKeys: [
+          [eventKey("Subscribed")],
+        ],
+        keyFields: [
+          { name: "new_nft_id", type: "u256", sqlType: "numeric(78,0)" },
+          { name: "old_nft_id", type: "u256", sqlType: "numeric(78,0)" },
+          { name: "receiver", type: "ContractAddress", sqlType: "text" },
+        ],
+        dataFields: [],
+        additionalFields: [
+          {
+            name: "contract_address",
+            source: "custom",
+            sqlType: "text",
+            customLogic: (event) => {
+              return standariseAddress(event.address);
+            },
+          },
+        ],
+      },
+      {
+        tableName: "svk_alt_redemptions_claimed",
+        includeReceipt: true,
+        contracts: REDEMPTION_ROUTER_STRATEGIES,
+        defaultKeys: [
+          [eventKey("Claimed")],
+        ],
+        keyFields: [
+          { name: "new_nft_id", type: "u256", sqlType: "numeric(78,0)" },
+          { name: "old_nft_id", type: "u256", sqlType: "numeric(78,0)" },
+          { name: "swap_id", type: "u256", sqlType: "numeric(78,0)" },
+        ],
+        dataFields: [
+          { name: "receivable", type: "u256", sqlType: "numeric(78,0)" },
+        ],
+        additionalFields: [
+          {
+            name: "contract_address",
+            source: "custom",
+            sqlType: "text",
+            customLogic: (event) => {
+              return standariseAddress(event.address);
+            },
+          },
+        ],
+      },
+      {
+        tableName: "svk_alt_redemptions_unsubscribed",
+        includeReceipt: true,
+        contracts: REDEMPTION_ROUTER_STRATEGIES,
+        defaultKeys: [
+          [eventKey("Unsubscribed")],
+        ],
+        keyFields: [
+          { name: "new_nft_id", type: "u256", sqlType: "numeric(78,0)" },
+          { name: "old_nft_id", type: "u256", sqlType: "numeric(78,0)" },
+          { name: "owner", type: "ContractAddress", sqlType: "text" },
+        ],
+        dataFields: [
+          { name: "is_old_nft_returned", type: "bool", sqlType: "boolean" },
+          { name: "is_original_assets_returned", type: "bool", sqlType: "boolean" },
+          { name: "original_assets_returned", type: "u256", sqlType: "numeric(78,0)" },
+        ],
+        additionalFields: [
+          {
+            name: "contract_address",
+            source: "custom",
+            sqlType: "text",
+            customLogic: (event) => {
+              return standariseAddress(event.address);
+            },
+          },
+        ],
+      },
 ];
