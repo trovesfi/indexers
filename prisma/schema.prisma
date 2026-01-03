@@ -129,10 +129,11 @@ model position_updated {
 }
 
 model strategy_metadata {
-  id           String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id               String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   strategy_address String
-  strategy_name String
-  quote_asset String
+  strategy_name    String
+  quote_asset      String
+
   @@schema("public")
 
   @@unique([strategy_address], name: "strategy_metadata_id")
@@ -157,22 +158,22 @@ model raw_price_events {
   volume    Decimal
 
   @@unique([block_number, tx_index, event_index], name: "event_id")
-  @@schema("public")
-
   @@index([pair_id, timestamp])
   @@index([timestamp, pair_id])
+  @@schema("public")
 }
 
 model prices {
-  id            String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  asset         String
-  price         Float  @default(0)
-  timestamp     Int
-  block_number  Int
+  id           String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  asset        String
+  price        Float  @default(0)
+  timestamp    Int
+  block_number Int
 
   cursor BigInt? @map("_cursor")
 
   @@unique([asset, timestamp], name: "price_id")
+  @@index([asset, block_number])
   @@schema("public")
 }
 
@@ -183,9 +184,16 @@ model token_metadata {
   symbol   String
   decimals Int
 
-  pragma_pair_id String
+  pragma_pair_id  String
   pragma_decimals Int
 
   @@unique([address], name: "token_metadata_id")
+  @@schema("public")
+}
+
+model lst_price_sync_progress {
+  id                   String @id @default("lst_price_sync") @db.Text
+  last_processed_block Int?
+
   @@schema("public")
 }

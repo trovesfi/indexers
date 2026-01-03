@@ -139,3 +139,8 @@ export const token_metadata = pgTable('token_metadata', {
 	'token_metadata_id': uniqueIndex('token_metadata_id')
 		.on(token_metadata.address)
 }));
+
+export const lst_price_sync_progress = pgTable('lst_price_sync_progress', {
+	id: text('id').notNull().primaryKey().default("lst_price_sync"),
+	last_processed_block: integer('last_processed_block')
+});

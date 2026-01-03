@@ -7,6 +7,7 @@ import {
   FindManyInvestment_flowsResolver,
   AggregateInvestment_flowsResolver,
   FindManyHarvestsResolver,
+  FindFirstPricesResolver,
 } from "@generated/type-graphql";
 import { buildSchema, Resolver, Query, Arg } from 'type-graphql';
 import { startStandaloneServer } from "@apollo/server/standalone";
@@ -46,7 +47,8 @@ async function main() {
       CustomHarvestsResolver,
       CustomInvestmentFlowsResolver,
       CustomPositionFeesResolver,
-      EkuboVaultFlowsResolver
+      EkuboVaultFlowsResolver,
+      FindFirstPricesResolver
     ],
     validate: false,
   });
