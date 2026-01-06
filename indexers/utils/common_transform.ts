@@ -185,9 +185,25 @@ export async function processEvent(
   const timestampISO = header.timestamp.toISOString();
 
   // Parse keys
-  config.keyFields.forEach((key, index) => {
-    result[key.name] = convertToSqlFormat(event.keys[index + 1], key);
-  });
+  let keyIndexAdjustment = 0;
+  for (let index = 0; index < config.keyFields.length; index++) {
+    const key = config.keyFields[index];
+    let keyField: any = event.keys[index + 1 + keyIndexAdjustment];
+    
+    if (key.type == "u256") {
+      // Read u256 as two values (low and high)
+      keyField = uint256
+        .uint256ToBN({
+          low: event.keys[index + 1 + keyIndexAdjustment],
+          high: event.keys[index + 2 + keyIndexAdjustment],
+        })
+        .toString();
+      // Skip the next index for the high part
+      keyIndexAdjustment++;
+    }
+    
+    result[key.name] = convertToSqlFormat(keyField, key);
+  }
 
   // Parse data
   let indexAdjustment = 0;

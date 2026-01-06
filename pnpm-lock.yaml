@@ -1707,8 +1707,8 @@ packages:
     peerDependencies:
       '@types/react': ^19.1.2
       axios: ^1.7.2
-      react: 19.1.0
-      starknet: 8.5.2
+      react: 19.1.2
+      starknet: 9.2.1
 
   '@ts-morph/common@0.24.0':
     resolution: {integrity: sha512-c1xMmNHWpNselmpIqursHeOHHBTIsJLbB+NuovbTTRCNiTLEr/U9dbJ8qy0jd/O2x5pc3seWuOUN5R2IoOTp8A==}
