@@ -194,6 +194,13 @@ BEGIN
     
     -- Calculate median price for this time window (after deletion)
     SELECT get_median_price(OLD.pair_id, OLD.timestamp) INTO median_price;
+
+    -- if median_price is NULL, delete the price record
+    IF median_price IS NULL THEN
+        DELETE FROM "public"."prices"
+        WHERE asset = token_address AND timestamp = rounded_timestamp;
+        RETURN OLD;
+    END IF;
     
     -- Update the prices table with new median price
     UPDATE "public"."prices"
@@ -202,9 +209,6 @@ BEGIN
         block_number = GREATEST(block_number, OLD.block_number),
         _cursor = GREATEST(_cursor, OLD.block_number)
     WHERE asset = token_address AND timestamp = rounded_timestamp;
-    
-    -- If no more price events exist for this time window, median_price will be NULL
-    -- and the price will be set to NULL (which is 0 due to the default value)
     
     RETURN OLD;
 END;

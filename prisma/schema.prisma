@@ -25,6 +25,7 @@ datasource db {
   schemas  = ["public", "airfoil"]
 }
 
+// Raw events
 model investment_flows {
   id           String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   block_number Int
@@ -128,16 +129,6 @@ model position_updated {
   @@schema("public")
 }
 
-model strategy_metadata {
-  id               String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  strategy_address String
-  strategy_name    String
-  quote_asset      String
-
-  @@unique([strategy_address], name: "strategy_metadata_id")
-  @@schema("public")
-}
-
 //
 // Shared schemas
 // 
@@ -159,41 +150,6 @@ model raw_price_events {
   @@unique([block_number, tx_index, event_index], name: "event_id")
   @@index([pair_id, timestamp])
   @@index([timestamp, pair_id])
-  @@schema("public")
-}
-
-model prices {
-  id           String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  asset        String
-  price        Float  @default(0)
-  timestamp    Int
-  block_number Int
-
-  cursor BigInt? @map("_cursor")
-
-  @@unique([asset, timestamp], name: "price_id")
-  @@index([asset, block_number])
-  @@schema("public")
-}
-
-model token_metadata {
-  id       String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  address  String
-  name     String
-  symbol   String
-  decimals Int
-
-  pragma_pair_id  String
-  pragma_decimals Int
-
-  @@unique([address], name: "token_metadata_id")
-  @@schema("public")
-}
-
-model lst_price_sync_progress {
-  id                   String @id @default("lst_price_sync") @db.Text
-  last_processed_block Int?
-
   @@schema("public")
 }
 
@@ -259,6 +215,53 @@ model svk_alt_redemptions_unsubscribed {
   @@unique([block_number, tx_index, event_index], name: "event_id")
   @@index([contract_address, old_nft_id])
   @@index([contract_address, new_nft_id])
+  @@schema("public")
+}
+
+// Post-processed tables
+
+model strategy_metadata {
+  id               String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  strategy_address String
+  strategy_name    String
+  quote_asset      String
+
+  @@unique([strategy_address], name: "strategy_metadata_id")
+  @@schema("public")
+}
+
+model prices {
+  id           String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  asset        String
+  price        Float  @default(0)
+  timestamp    Int
+  block_number Int
+
+  cursor BigInt? @map("_cursor")
+
+  @@unique([asset, timestamp], name: "price_id")
+  @@index([asset, block_number])
+  @@schema("public")
+}
+
+model token_metadata {
+  id       String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  address  String
+  name     String
+  symbol   String
+  decimals Int
+
+  pragma_pair_id  String
+  pragma_decimals Int
+
+  @@unique([address], name: "token_metadata_id")
+  @@schema("public")
+}
+
+model lst_price_sync_progress {
+  id                   String @id @default("lst_price_sync") @db.Text
+  last_processed_block Int?
+
   @@schema("public")
 }
 

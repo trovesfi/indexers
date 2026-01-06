@@ -88,16 +88,6 @@ export const position_updated = pgTable('position_updated', {
 		.on(position_updated.block_number, position_updated.tx_index, position_updated.event_index)
 }));
 
-export const strategy_metadata = pgTable('strategy_metadata', {
-	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
-	strategy_address: text('strategy_address').notNull().unique(),
-	strategy_name: text('strategy_name').notNull(),
-	quote_asset: text('quote_asset').notNull()
-}, (strategy_metadata) => ({
-	'strategy_metadata_id': uniqueIndex('strategy_metadata_id')
-		.on(strategy_metadata.strategy_address)
-}));
-
 export const raw_price_events = pgTable('raw_price_events', {
 	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
 	block_number: integer('block_number').notNull(),
@@ -114,36 +104,6 @@ export const raw_price_events = pgTable('raw_price_events', {
 	'event_id': uniqueIndex('event_id')
 		.on(raw_price_events.block_number, raw_price_events.tx_index, raw_price_events.event_index)
 }));
-
-export const prices = pgTable('prices', {
-	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
-	asset: text('asset').notNull(),
-	price: doublePrecision('price').notNull(),
-	timestamp: integer('timestamp').notNull(),
-	block_number: integer('block_number').notNull(),
-	cursor: bigint('_cursor', { mode: 'bigint' })
-}, (prices) => ({
-	'price_id': uniqueIndex('price_id')
-		.on(prices.asset, prices.timestamp)
-}));
-
-export const token_metadata = pgTable('token_metadata', {
-	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
-	address: text('address').notNull().unique(),
-	name: text('name').notNull(),
-	symbol: text('symbol').notNull(),
-	decimals: integer('decimals').notNull(),
-	pragma_pair_id: text('pragma_pair_id').notNull(),
-	pragma_decimals: integer('pragma_decimals').notNull()
-}, (token_metadata) => ({
-	'token_metadata_id': uniqueIndex('token_metadata_id')
-		.on(token_metadata.address)
-}));
-
-export const lst_price_sync_progress = pgTable('lst_price_sync_progress', {
-	id: text('id').notNull().primaryKey().default("lst_price_sync"),
-	last_processed_block: integer('last_processed_block')
-});
 
 export const svk_alt_redemptions_subscribed = pgTable('svk_alt_redemptions_subscribed', {
 	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
@@ -199,6 +159,46 @@ export const svk_alt_redemptions_unsubscribed = pgTable('svk_alt_redemptions_uns
 	'event_id': uniqueIndex('event_id')
 		.on(svk_alt_redemptions_unsubscribed.block_number, svk_alt_redemptions_unsubscribed.tx_index, svk_alt_redemptions_unsubscribed.event_index)
 }));
+
+export const strategy_metadata = pgTable('strategy_metadata', {
+	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
+	strategy_address: text('strategy_address').notNull().unique(),
+	strategy_name: text('strategy_name').notNull(),
+	quote_asset: text('quote_asset').notNull()
+}, (strategy_metadata) => ({
+	'strategy_metadata_id': uniqueIndex('strategy_metadata_id')
+		.on(strategy_metadata.strategy_address)
+}));
+
+export const prices = pgTable('prices', {
+	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
+	asset: text('asset').notNull(),
+	price: doublePrecision('price').notNull(),
+	timestamp: integer('timestamp').notNull(),
+	block_number: integer('block_number').notNull(),
+	cursor: bigint('_cursor', { mode: 'bigint' })
+}, (prices) => ({
+	'price_id': uniqueIndex('price_id')
+		.on(prices.asset, prices.timestamp)
+}));
+
+export const token_metadata = pgTable('token_metadata', {
+	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
+	address: text('address').notNull().unique(),
+	name: text('name').notNull(),
+	symbol: text('symbol').notNull(),
+	decimals: integer('decimals').notNull(),
+	pragma_pair_id: text('pragma_pair_id').notNull(),
+	pragma_decimals: integer('pragma_decimals').notNull()
+}, (token_metadata) => ({
+	'token_metadata_id': uniqueIndex('token_metadata_id')
+		.on(token_metadata.address)
+}));
+
+export const lst_price_sync_progress = pgTable('lst_price_sync_progress', {
+	id: text('id').notNull().primaryKey().default("lst_price_sync"),
+	last_processed_block: integer('last_processed_block')
+});
 
 export const svk_alt_redemptions = pgTable('svk_alt_redemptions', {
 	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),

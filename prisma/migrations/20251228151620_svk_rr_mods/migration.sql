@@ -227,13 +227,8 @@ BEGIN
         WHERE contract_address = OLD.contract_address
           AND old_nft_id = OLD.old_nft_id;
     ELSE
-        -- If other events exist, just clear the subscription data
-        UPDATE "public"."svk_alt_redemptions"
-        SET
-            new_nft_id = NULL,
-            receiver = NULL
-        WHERE contract_address = OLD.contract_address
-          AND old_nft_id = OLD.old_nft_id;
+        -- this shouldnt happen bcz claim and unsub are always called after subscribe
+        RAISE EXCEPTION 'Claim or unsubscribed event shouldnt have existed';
     END IF;
     
     RETURN OLD;
