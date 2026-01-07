@@ -64,16 +64,16 @@ export function createIndexer<
     ],
     finality: "pending",
     filter: {
-      header: "on_data",
+      header: "always",
       events,
     },
     // @ts-ignore
     async transform({ block, finality, endCursor, context }) {
       const logger = useLogger();
       const { db } = useDrizzleStorage();
-
-      if (block.header.blockNumber > 2668133) {
-        throw new Error("Block is greater than 2415010");
+      console.log(`New block: ${block.header.blockNumber}`);
+      if (block.header.blockNumber > 5233517) {
+        throw new Error("Block is greater than 5233517");
       }
       await commonTransform(
         block,

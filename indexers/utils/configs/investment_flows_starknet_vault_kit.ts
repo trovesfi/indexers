@@ -36,6 +36,9 @@ const commonInvestmentFlowAdditionalFields = (type: "deposit" | "withdraw"): Add
       source: "custom",
       sqlType: "text",
       customLogic: (event) => {
+        if (standariseAddress(event.keys[0]) == standariseAddress(eventKey("Deposit"))) {
+          return standariseAddress(event.keys[2]);
+        }
         return standariseAddress(event.keys[3]); // same as owner
       },
     },
@@ -109,7 +112,8 @@ export const CONFIG_INVESTMENT_FLOWS_STARKNET_VAULT_KIT: EventConfig[] = [
       includeReceipt: true,
       contracts: UNIVERSAL_STRATEGIES,
       defaultKeys: [
-        [eventKey("ERC4626Event"), eventKey("Deposit")], // for usual ERC4626 vaults
+        // [eventKey("ERC4626Event"), eventKey("Deposit")], // for usual ERC4626 vaults
+        [eventKey("Deposit")], // alternate event key for universal strategies
       ],
       keyFields: [
         { name: "sender", type: "ContractAddress", sqlType: "text" },
