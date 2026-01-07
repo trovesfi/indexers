@@ -112,7 +112,7 @@ export const CONFIG_INVESTMENT_FLOWS_STARKNET_VAULT_KIT: EventConfig[] = [
       includeReceipt: true,
       contracts: UNIVERSAL_STRATEGIES,
       defaultKeys: [
-        // [eventKey("ERC4626Event"), eventKey("Deposit")], // for usual ERC4626 vaults
+        [eventKey("ERC4626Event"), eventKey("Deposit")], // for usual ERC4626 vaults
         [eventKey("Deposit")], // alternate event key for universal strategies
       ],
       keyFields: [

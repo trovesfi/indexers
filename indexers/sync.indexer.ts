@@ -64,7 +64,7 @@ export function createIndexer<
     ],
     finality: "pending",
     filter: {
-      header: "always",
+      header: "on_data",
       events,
     },
     // @ts-ignore
