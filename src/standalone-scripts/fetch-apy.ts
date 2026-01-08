@@ -235,6 +235,9 @@ async function main() {
     `[APY] Using block_number=${blockNumber}, timestamp=${timestamp} for APY snapshot`,
   );
 
+  let failedStrategies: string[] = [];
+  let apys: { strategyName: string, netApy: number | null }[] = [];
+
   for (const entry of registry) {
     const metadata = entry.metadata as IStrategyMetadata<any>;
     const strategyId = metadata.id;
@@ -251,6 +254,7 @@ async function main() {
       console.warn(
         `[APY] Skipping strategy ${metadata.name} (${strategyId}) due to instantiation failure`,
       );
+      failedStrategies.push(metadata.name);
       continue;
     }
 
@@ -259,7 +263,8 @@ async function main() {
 
       // Double-check before inserting (defensive programming)
       const finalApy = sanitizeAPY(netApy);
-      
+      apys.push({ strategyName: metadata.name, netApy: finalApy });
+
       if (finalApy === null && netApy !== null) {
         console.warn(
           `[APY] Sanitization changed APY from ${netApy} to NULL for ${metadata.name} (${strategyId})`,
@@ -291,7 +296,15 @@ async function main() {
         `[APY] Failed to fetch/store APY for ${metadata.name} (${strategyId}):`,
         error?.message ?? error,
       );
+      failedStrategies.push(metadata.name);
     }
+  }
+
+  console.log("[APY] APYs:", apys);
+
+  if (failedStrategies.length > 0) {
+    console.warn(`[APY] Failed to fetch/store APY for ${failedStrategies.length} strategies: ${failedStrategies.join(", ")}`);
+    throw new Error(`Failed to fetch/store APY for ${failedStrategies.length} strategies: ${failedStrategies.join(", ")}`);
   }
 
   console.log("[APY] Completed APY fetch for all strategies");
