@@ -41,3 +41,16 @@ services:
   buildCommand: pnpm install --frozen-lockfile
   startCommand: pnpm run fetch-lst-prices
   autoDeployTrigger: off
+- type: cron
+  name: troves-indexers-fetch-apy
+  runtime: node
+  repo: https://github.com/trovesfi/indexers
+  branch: hemant/indexer
+  plan: starter
+  schedule: "0 */4 * * *"
+  envVars:
+  - fromGroup: troves-indexers
+  region: oregon
+  buildCommand: pnpm install --frozen-lockfile
+  startCommand: pnpm run fetch-apy
+  autoDeployTrigger: off

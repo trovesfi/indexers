@@ -294,3 +294,17 @@ model svk_alt_redemptions {
   @@index([contract_address, is_unsubscribed])
   @@schema("public")
 }
+
+model strategy_apy {
+  id               String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  strategy_id      String
+  strategy_address String
+  net_apy          Float? // Made nullable to handle cases where APY cannot be calculated
+  timestamp        Int
+  block_number     Int?
+
+  @@unique([strategy_id, timestamp], name: "strategy_apy_unique")
+  @@index([strategy_id], name: "strategy_apy_strategy_id_idx")
+  @@index([timestamp], name: "strategy_apy_timestamp_idx")
+  @@schema("public")
+}

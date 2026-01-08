@@ -224,3 +224,15 @@ export const svk_alt_redemptions = pgTable('svk_alt_redemptions', {
 	'redemption_unique': uniqueIndex('redemption_unique')
 		.on(svk_alt_redemptions.contract_address, svk_alt_redemptions.old_nft_id)
 }));
+
+export const strategy_apy = pgTable('strategy_apy', {
+	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
+	strategy_id: text('strategy_id').notNull(),
+	strategy_address: text('strategy_address').notNull(),
+	net_apy: doublePrecision('net_apy'),
+	timestamp: integer('timestamp').notNull(),
+	block_number: integer('block_number')
+}, (strategy_apy) => ({
+	'strategy_apy_unique': uniqueIndex('strategy_apy_unique')
+		.on(strategy_apy.strategy_id, strategy_apy.timestamp)
+}));
