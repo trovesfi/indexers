@@ -20,7 +20,8 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
-    "fetch-lst-prices": "tsx src/standalone-scripts/fetch-lst-price.ts"
+    "fetch-lst-prices": "tsx src/standalone-scripts/fetch-lst-price.ts",
+    "fetch-apy": "tsx src/standalone-scripts/fetch-apy.ts"
   },
   "author": "akiraonstarknet",
   "license": "ISC",

@@ -28,6 +28,8 @@ services:
   buildCommand: yarn; npx prisma generate
   startCommand: npx tsx src/graphql
   autoDeployTrigger: off
+
+  # store LST Price history
 - type: cron
   name: troves-indexers-fetch-lst-prices
   runtime: node
@@ -41,6 +43,8 @@ services:
   buildCommand: pnpm install --frozen-lockfile
   startCommand: pnpm run fetch-lst-prices
   autoDeployTrigger: off
+
+  # temp to store apys
 - type: cron
   name: troves-indexers-fetch-apy
   runtime: node
