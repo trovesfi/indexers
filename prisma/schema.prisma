@@ -86,6 +86,7 @@ model position_fees_collected {
   amount1 String
 
   vault_address String
+  pool_info     String? // JSON snapshot of ManagedPool (V2 contracts only)
 
   timestamp Int
   cursor    BigInt? @map("_cursor")

@@ -53,6 +53,7 @@ export const position_fees_collected = pgTable('position_fees_collected', {
 	amount0: text('amount0').notNull(),
 	amount1: text('amount1').notNull(),
 	vault_address: text('vault_address').notNull(),
+	pool_info: text('pool_info'),
 	timestamp: integer('timestamp').notNull(),
 	cursor: bigint('_cursor', { mode: 'bigint' })
 }, (position_fees_collected) => ({
