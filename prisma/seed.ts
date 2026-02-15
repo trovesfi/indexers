@@ -80,14 +80,12 @@ async function seedStrategyMetadata() {
             quote_asset: strategy.depositTokens[0].address.address,
         })),
         ...EkuboCLVaultStrategies
-        .filter((str) => str.curator?.name.toLowerCase().includes('re7'))
         .map((strategy) => ({
             strategy_address: strategy.address.address,
             strategy_name: strategy.name,
             quote_asset: strategy.additionalInfo.quoteAsset.address.address,
         })),
         ...EkuboCLVaultV2Strategies
-        .filter((str) => str.curator?.name.toLowerCase().includes('re7'))
         .map((strategy) => ({
             strategy_address: strategy.address.address,
             strategy_name: strategy.name,
