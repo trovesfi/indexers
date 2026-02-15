@@ -2,6 +2,7 @@ import { ContractAddr, EkuboCLVaultStrategies, EkuboCLVaultV2Strategies, Univers
 import { standariseAddress } from "../../../src/utils";
 import { AdditionalField, ContractConfig, EventConfig } from "../config";
 import { onEventEkuboVault } from "../ekubo_vault";
+import { onEventEkuboVaultV2 } from "../ekubo_vault_v2";
 import { eventKey } from "../common_transform";
 import { uint256 } from "starknet";
 
@@ -133,6 +134,201 @@ export const CONFIG_INVESTMENT_FLOWS_ERC4626: EventConfig[] = [
           return field.name !== "receiver"
         })
       ]
+    },
+    {
+      tableName: "ekubo_v2_investment_flows",
+      includeReceipt: true, // REQUIRED to get all events in tx
+      contracts: EKUBO_VAULT_CONTRACTS_V2,
+      onEvent: onEventEkuboVaultV2, // NEW callback for V2
+      defaultKeys: [[eventKey("Deposit")]],
+      keyFields: [
+        { name: "sender", type: "ContractAddress", sqlType: "text" },
+        { name: "owner", type: "ContractAddress", sqlType: "text" },
+      ],
+      dataFields: [
+        { name: "shares", type: "u256", sqlType: "numeric(78,0)" },
+        { name: "amount0", type: "u256", sqlType: "numeric(78,0)" },
+        { name: "amount1", type: "u256", sqlType: "numeric(78,0)" },
+      ],
+      additionalFields: [
+        {
+          name: "contract",
+          source: "custom",
+          sqlType: "text",
+          customLogic: (event) => standariseAddress(event.address),
+        },
+        {
+          name: "receiver",
+          source: "custom",
+          sqlType: "text",
+          customLogic: (event) => standariseAddress(event.keys[2]), // owner
+        },
+        {
+          name: "user_address",
+          source: "custom",
+          sqlType: "text",
+          customLogic: (event) => standariseAddress(event.keys[2]), // owner
+        },
+        {
+          name: "type",
+          source: "custom",
+          sqlType: "text",
+          customLogic: () => "deposit",
+        },
+      ],
+    },
+    {
+      tableName: "ekubo_v2_investment_flows",
+      includeReceipt: true,
+      contracts: EKUBO_VAULT_CONTRACTS_V2,
+      onEvent: onEventEkuboVaultV2,
+      defaultKeys: [[eventKey("Withdraw")]],
+      keyFields: [
+        { name: "sender", type: "ContractAddress", sqlType: "text" },
+        { name: "receiver", type: "ContractAddress", sqlType: "text" },
+        { name: "owner", type: "ContractAddress", sqlType: "text" },
+      ],
+      dataFields: [
+        { name: "shares", type: "u256", sqlType: "numeric(78,0)" },
+        { name: "amount0", type: "u256", sqlType: "numeric(78,0)" },
+        { name: "amount1", type: "u256", sqlType: "numeric(78,0)" },
+      ],
+      additionalFields: [
+        {
+          name: "contract",
+          source: "custom",
+          sqlType: "text",
+          customLogic: (event) => standariseAddress(event.address),
+        },
+        {
+          name: "user_address",
+          source: "custom",
+          sqlType: "text",
+          customLogic: (event) => standariseAddress(event.keys[3]), // owner (3rd key)
+        },
+        {
+          name: "type",
+          source: "custom",
+          sqlType: "text",
+          customLogic: () => "withdraw",
+        },
+      ],
+    },
+    {
+      tableName: "investment_flows",
+      includeReceipt: false,
+      contracts: EKUBO_VAULT_CONTRACTS_V2,
+      onEvent: undefined, // No callback for V2 in investment_flows
+      defaultKeys: [[eventKey("Deposit")]],
+      keyFields: [
+        { name: "sender", type: "ContractAddress", sqlType: "text" },
+        { name: "owner", type: "ContractAddress", sqlType: "text" },
+      ],
+      dataFields: [
+        { name: "shares", type: "u256", sqlType: "numeric(78,0)" },
+        { name: "amount0", type: "u256", sqlType: "skip" },
+        { name: "amount1", type: "u256", sqlType: "skip" },
+      ],
+      additionalFields: [
+        {
+          name: "receiver",
+          source: "custom",
+          sqlType: "text",
+          customLogic: (event) => standariseAddress(event.keys[2]), // owner
+        },
+        {
+          name: "amount",
+          source: "custom",
+          sqlType: "text",
+          customLogic: () => "", // Empty for V2
+        },
+        {
+          name: "asset",
+          source: "custom",
+          sqlType: "text",
+          customLogic: () => "", // Empty for V2
+        },
+        {
+          name: "contract",
+          source: "custom",
+          sqlType: "text",
+          customLogic: (event) => standariseAddress(event.address),
+        },
+        {
+          name: "epoch",
+          source: "custom",
+          sqlType: "numeric(20,0)",
+          customLogic: () => 0,
+        },
+        {
+          name: "request_id",
+          source: "custom",
+          sqlType: "numeric(20,0)",
+          customLogic: () => 0,
+        },
+        {
+          name: "type",
+          source: "custom",
+          sqlType: "text",
+          customLogic: () => "deposit",
+        },
+      ],
+    },
+    // V2 Ekubo Vault Withdraw for investment_flows (backward compatibility, empty amount)
+    {
+      tableName: "investment_flows",
+      includeReceipt: false,
+      contracts: EKUBO_VAULT_CONTRACTS_V2,
+      onEvent: undefined,
+      defaultKeys: [[eventKey("Withdraw")]],
+      keyFields: [
+        { name: "sender", type: "ContractAddress", sqlType: "text" },
+        { name: "receiver", type: "ContractAddress", sqlType: "text" },
+        { name: "owner", type: "ContractAddress", sqlType: "text" },
+      ],
+      dataFields: [
+        { name: "shares", type: "u256", sqlType: "numeric(78,0)" },
+        { name: "amount0", type: "u256", sqlType: "skip" },
+        { name: "amount1", type: "u256", sqlType: "skip" },
+      ],
+      additionalFields: [
+        {
+          name: "amount",
+          source: "custom",
+          sqlType: "text",
+          customLogic: () => "", // Empty for V2
+        },
+        {
+          name: "asset",
+          source: "custom",
+          sqlType: "text",
+          customLogic: () => "", // Empty for V2
+        },
+        {
+          name: "contract",
+          source: "custom",
+          sqlType: "text",
+          customLogic: (event) => standariseAddress(event.address),
+        },
+        {
+          name: "epoch",
+          source: "custom",
+          sqlType: "numeric(20,0)",
+          customLogic: () => 0,
+        },
+        {
+          name: "request_id",
+          source: "custom",
+          sqlType: "numeric(20,0)",
+          customLogic: () => 0,
+        },
+        {
+          name: "type",
+          source: "custom",
+          sqlType: "text",
+          customLogic: () => "withdraw",
+        },
+      ],
     },
     {
       tableName: "position_fees_collected",

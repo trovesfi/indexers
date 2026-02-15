@@ -89,6 +89,31 @@ export const position_updated = pgTable('position_updated', {
 		.on(position_updated.block_number, position_updated.tx_index, position_updated.event_index)
 }));
 
+export const ekubo_v2_investment_flows = pgTable('ekubo_v2_investment_flows', {
+	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
+	block_number: integer('block_number').notNull(),
+	tx_index: integer('tx_index').notNull(),
+	event_index: integer('event_index').notNull(),
+	tx_hash: text('tx_hash').notNull(),
+	sender: text('sender').notNull(),
+	owner: text('owner').notNull(),
+	receiver: text('receiver').notNull(),
+	shares: text('shares').notNull(),
+	amount0: text('amount0').notNull(),
+	amount1: text('amount1').notNull(),
+	token0: text('token0').notNull(),
+	token1: text('token1').notNull(),
+	vault_address: text('vault_address').notNull(),
+	user_address: text('user_address').notNull(),
+	type: text('type').notNull(),
+	timestamp: integer('timestamp').notNull(),
+	cursor: bigint('_cursor', { mode: 'bigint' }),
+	quote_amount: decimal('quote_amount', { precision: 65, scale: 30 }).notNull()
+}, (ekubo_v2_investment_flows) => ({
+	'event_id': uniqueIndex('event_id')
+		.on(ekubo_v2_investment_flows.block_number, ekubo_v2_investment_flows.tx_index, ekubo_v2_investment_flows.event_index)
+}));
+
 export const raw_price_events = pgTable('raw_price_events', {
 	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
 	block_number: integer('block_number').notNull(),

@@ -1,5 +1,5 @@
 import { PrismaClient, token_metadata } from "@prisma/client";
-import { EkuboCLVaultStrategies } from "@strkfarm/sdk";
+import { EkuboCLVaultStrategies, EkuboCLVaultV2Strategies } from "@strkfarm/sdk";
 import { UniversalStrategies } from "@strkfarm/sdk";
 import { VesuRebalanceStrategies } from "@strkfarm/sdk";
 import { Global } from "@strkfarm/sdk";
@@ -80,6 +80,13 @@ async function seedStrategyMetadata() {
             quote_asset: strategy.depositTokens[0].address.address,
         })),
         ...EkuboCLVaultStrategies
+        .filter((str) => str.curator?.name.toLowerCase().includes('re7'))
+        .map((strategy) => ({
+            strategy_address: strategy.address.address,
+            strategy_name: strategy.name,
+            quote_asset: strategy.additionalInfo.quoteAsset.address.address,
+        })),
+        ...EkuboCLVaultV2Strategies
         .filter((str) => str.curator?.name.toLowerCase().includes('re7'))
         .map((strategy) => ({
             strategy_address: strategy.address.address,

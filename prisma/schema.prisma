@@ -130,6 +130,38 @@ model position_updated {
   @@schema("public")
 }
 
+model ekubo_v2_investment_flows {
+  id           String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  block_number Int
+  tx_index     Int    @default(0)
+  event_index  Int    @default(0)
+  tx_hash      String
+
+  sender   String
+  owner    String
+  receiver String
+  shares   String
+  amount0  String
+  amount1  String
+
+  token0 String
+  token1 String
+
+  vault_address String
+  user_address  String
+  type          String // deposit | withdraw
+
+  timestamp Int
+  cursor    BigInt? @map("_cursor")
+
+  // The represent the value of investment in the quote asset (from strategy_metadata)
+  // updated by trigger on this table using the prices table as info
+  quote_amount Decimal @default(0)
+
+  @@unique([block_number, tx_index, event_index], name: "event_id")
+  @@schema("public")
+}
+
 //
 // Shared schemas
 // 
