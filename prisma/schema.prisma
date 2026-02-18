@@ -341,3 +341,51 @@ model strategy_apy {
   @@index([timestamp], name: "strategy_apy_timestamp_idx")
   @@schema("public")
 }
+
+// Raw events table for role-based access control events
+model role_events {
+  id           String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  block_number Int
+  tx_index     Int    @default(0)
+  event_index  Int    @default(0)
+  tx_hash      String
+
+  event_type               String  // 'RoleGranted', 'RoleRevoked', 'RoleAdminChanged'
+  contract_address         String
+  role                     String
+  role_name                String  // Decoded role name (computed during indexing)
+  account                  String?
+  sender                   String?
+  previous_admin_role      String?
+  previous_admin_role_name String? // Decoded previous admin role name
+  new_admin_role           String?
+  new_admin_role_name      String? // Decoded new admin role name
+  timestamp                Int
+  cursor                   BigInt? @map("_cursor")
+
+  @@unique([block_number, tx_index, event_index], name: "event_id")
+  @@index([contract_address, role])
+  @@index([contract_address, account])
+  @@schema("public")
+}
+
+// State table maintaining current role assignments
+model contract_roles {
+  id           String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  contract_address        String
+  role_id                 String
+  role_name               String
+  account                 String
+  role_admin_id           String  @default("0x0000000000000000000000000000000000000000000000000000000000000000")
+  role_admin_name         String  @default("DEFAULT_ADMIN_ROLE")
+  granted_at_block        Int
+  granted_at_timestamp    Int
+  last_modified_block     Int
+  last_modified_timestamp Int
+
+  @@unique([contract_address, role_id, account], name: "contract_roles_unique")
+  @@index([contract_address])
+  @@index([account])
+  @@index([role_admin_id])
+  @@schema("public")
+}

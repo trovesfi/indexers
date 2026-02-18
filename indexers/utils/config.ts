@@ -9,6 +9,7 @@ import { onEventEkuboVault } from "./ekubo_vault";
 import { CONFIG_INVESTMENT_FLOWS_ERC4626, EKUBO_VAULT_CONTRACTS } from "./configs/investment_flows_erc4626";
 import { CONFIG_INVESTMENT_FLOWS_STARKNET_VAULT_KIT } from "./configs/investment_flows_starknet_vault_kit";
 import { CONFIG_PRAGMA_PRICE } from "./configs/pragma_price";
+import { CONFIG_ACTIVE_PERMISSIONS } from "./configs/active_permissions";
 
 export interface EventField {
   name: string;
@@ -68,6 +69,7 @@ export const CONFIG: EventConfig[] = [
   ...CONFIG_PRAGMA_PRICE,
   ...CONFIG_INVESTMENT_FLOWS_ERC4626,
   ...CONFIG_INVESTMENT_FLOWS_STARKNET_VAULT_KIT,
+  ...CONFIG_ACTIVE_PERMISSIONS,
 
   {
     tableName: "harvests",
