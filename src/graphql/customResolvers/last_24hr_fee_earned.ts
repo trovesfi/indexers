@@ -54,35 +54,50 @@ export class CustomPositionFeesResolver {
   @Query(() => FeeSummary)
   async contractFeeEarnings(
     @Arg("contract", () => String) contract: string,
-    @Arg("timeframe", () => String) timeframe: string
+    @Arg("timeframe", () => String) timeframe: string,
+    @Arg("startTimestamp", () => Number, { nullable: true }) startTimestampArg?: number,
+    @Arg("endTimestamp", () => Number, { nullable: true }) endTimestampArg?: number
   ): Promise<FeeSummary> {
     const standardizedContract = standariseAddress(contract);
 
-    let hoursAgo: number;
-    switch (timeframe) {
-      case "24h":
-        hoursAgo = 24;
-        break;
-      case "7d":
-        hoursAgo = 24 * 7;
-        break;
-      case "30d":
-        hoursAgo = 24 * 30;
-        break;
-      case "3m":
-        hoursAgo = 24 * 90;
-        break;
-      default:
-        hoursAgo = 24;
-    }
+    let startTimestamp: number;
+    let endTimestamp: number | undefined;
 
-    const startTimestamp = Math.floor(Date.now() / 1000) - hoursAgo * 60 * 60;
+    // If explicit time range is provided, use it and ignore timeframe
+    if (startTimestampArg !== undefined && endTimestampArg !== undefined) {
+      startTimestamp = startTimestampArg;
+      endTimestamp = endTimestampArg;
+    } else {
+      let hoursAgo: number;
+      switch (timeframe) {
+        case "24h":
+          hoursAgo = 24;
+          break;
+        case "7d":
+          hoursAgo = 24 * 7;
+          break;
+        case "30d":
+          hoursAgo = 24 * 30;
+          break;
+        case "3m":
+          hoursAgo = 24 * 90;
+          break;
+        case "6m":
+          hoursAgo = 24 * 180;
+          break;
+        default:
+          hoursAgo = 24;
+      }
+
+      startTimestamp = Math.floor(Date.now() / 1000) - hoursAgo * 60 * 60;
+    }
 
     const feeCollections = await prisma.position_fees_collected.findMany({
       where: {
         vault_address: standardizedContract,
         timestamp: {
           gte: startTimestamp,
+          ...(endTimestamp !== undefined ? { lte: endTimestamp } : {}),
         },
       },
       orderBy: {
