@@ -48,16 +48,8 @@ BEGIN
         RETURN NULL;
     END IF;
     
-    -- Normalize token addresses (v2 STRK -> v1 STRK for pricing)
     token0_address = NEW.token0;
-    IF token0_address = '0x28d709c875c0ceac3dce7065bec5328186dc89fe254527084d1689910954b0a' THEN
-        token0_address = '0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d';
-    END IF;
-
     token1_address = NEW.token1;
-    IF token1_address = '0x28d709c875c0ceac3dce7065bec5328186dc89fe254527084d1689910954b0a' THEN
-        token1_address = '0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d';
-    END IF;
 
     -- Calculate quote amounts for both tokens using existing helper function
     token0_quote_amount := calculate_quote_amount(token0_address, quote_asset_address, NEW.amount0::DECIMAL, NEW.timestamp);
