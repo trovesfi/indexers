@@ -131,7 +131,7 @@ CREATE TRIGGER role_events_update_trigger
     FOR EACH ROW
     EXECUTE FUNCTION handle_role_event();
 
-CREATE TRIGGER role_events_delete_trigger
-    AFTER DELETE ON "public"."role_events"
-    FOR EACH ROW
-    EXECUTE FUNCTION handle_role_event();
+-- CREATE TRIGGER role_events_delete_trigger
+--     AFTER DELETE ON "public"."role_events"
+--     FOR EACH ROW
+--     EXECUTE FUNCTION handle_role_event();
