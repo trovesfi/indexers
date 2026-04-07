@@ -1,24 +1,51 @@
-import { UniversalStrategies, HyperLSTStrategies } from "@strkfarm/sdk";
+import {
+  UniversalStrategies,
+  HyperLSTStrategies,
+  EkuboCLVaultStrategies,
+  YoloVaultStrategies,
+  SenseiStrategies,
+  VesuRebalanceStrategies,
+} from "@strkfarm/sdk";
 import { standariseAddress } from "../../../src/utils";
 import { ContractConfig, EventConfig } from "../config";
 import { eventKey } from "../common_transform";
-// Ekubo Access Control Contracts
-const EKUBO_ACCESS_CONTROL_CONTRACTS: ContractConfig[] = [
-  {
-    address: standariseAddress(
-      "0x0636a3f51cc37f5729e4da4b1de6a8549a28f3c0d5bf3b17f150971e451ff9c2",
-    ),
-    asset: "", // Not applicable for access control contracts
-    name: "Ekubo Access Control 1",
-  },
-  {
-    address: standariseAddress(
-      "0x00707bf89863473548fb2844c9f3f96d83fe2394453259035a5791e4b1490642",
-    ),
-    asset: "",
-    name: "Ekubo Access Control 2",
-  },
-];
+
+// Derive global (role-based) AC contracts dynamically from all SDK strategy lists.
+// Any strategy whose security.accessControl.type === ROLE_BASED_ACCESS contributes
+// its AC contract address(es). Addresses of 0x0 are placeholders (not yet deployed)
+// and are skipped. Duplicates are deduplicated so each AC contract appears once.
+const ALL_STRATEGY_LISTS = [
+  EkuboCLVaultStrategies,
+  YoloVaultStrategies,
+  SenseiStrategies,
+  VesuRebalanceStrategies,
+  UniversalStrategies,
+  HyperLSTStrategies,
+] as any[][];
+
+const ZERO = standariseAddress("0x0");
+
+const _seenAcAddresses = new Set<string>();
+const GLOBAL_ACCESS_CONTROL_CONTRACTS: ContractConfig[] = [];
+
+for (const strategies of ALL_STRATEGY_LISTS) {
+  for (const strategy of strategies) {
+    const ac = strategy.security?.accessControl;
+    if (ac?.type !== "Role Based Access") continue;
+    for (const addrObj of (ac.addresses ?? [])) {
+      const normalised = standariseAddress(addrObj.address);
+      if (normalised === ZERO) continue; // placeholder — not deployed/indexed yet
+      if (_seenAcAddresses.has(normalised)) continue;
+      _seenAcAddresses.add(normalised);
+      const len = GLOBAL_ACCESS_CONTROL_CONTRACTS.length;
+      GLOBAL_ACCESS_CONTROL_CONTRACTS.push({
+        address: normalised,
+        asset: "",
+        name: `Access Control ${len+1}`,
+      });
+    }
+  }
+}
 
 // Universal Strategies - Extract vault and manager addresses dynamically from SDK
 const UNIVERSAL_STRATEGY_CONTRACTS: ContractConfig[] = [
@@ -54,7 +81,7 @@ const HYPERLST_STRATEGY_CONTRACTS: ContractConfig[] = [
 
 // Combine all access control contracts
 const ALL_ACCESS_CONTROL_CONTRACTS: ContractConfig[] = [
-  ...EKUBO_ACCESS_CONTROL_CONTRACTS,
+  ...GLOBAL_ACCESS_CONTROL_CONTRACTS,
   ...UNIVERSAL_STRATEGY_CONTRACTS,
   ...HYPERLST_STRATEGY_CONTRACTS,
 ];
