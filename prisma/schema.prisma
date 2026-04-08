@@ -383,6 +383,8 @@ model contract_roles {
   last_modified_block     Int
   last_modified_timestamp Int
 
+  cursor                   BigInt? @map("_cursor")
+
   @@unique([contract_address, role_id, account], name: "contract_roles_unique")
   @@index([contract_address])
   @@index([account])

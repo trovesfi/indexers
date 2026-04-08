@@ -297,7 +297,8 @@ export const contract_roles = pgTable('contract_roles', {
 	granted_at_block: integer('granted_at_block').notNull(),
 	granted_at_timestamp: integer('granted_at_timestamp').notNull(),
 	last_modified_block: integer('last_modified_block').notNull(),
-	last_modified_timestamp: integer('last_modified_timestamp').notNull()
+	last_modified_timestamp: integer('last_modified_timestamp').notNull(),
+	cursor: bigint('_cursor', { mode: 'bigint' })
 }, (contract_roles) => ({
 	'contract_roles_unique': uniqueIndex('contract_roles_unique')
 		.on(contract_roles.contract_address, contract_roles.role_id, contract_roles.account)
