@@ -206,27 +206,45 @@ export async function processEvent(
   }
 
   // Parse data
-  let indexAdjustment = 0;
-  for (let index = 0; index < event.data.length; index++) {
-    let dataField: any = event.data[index];
-    const field = config.dataFields[index - indexAdjustment];
-    if (config.dataFields[index - indexAdjustment].type == "u256") {
-      // if next event data is not 0, throw an error
-      dataField = uint256
-        .uint256ToBN({
-          low: event.data[index],
-          high: event.data[index + 1],
-        })
-        .toString();
-      // allows u to skip this index for the data type
-      indexAdjustment++;
-      index++;
-    }
+  if (!config.skipDataFieldParsing) {
+    let indexAdjustment = 0;
+    for (let index = 0; index < event.data.length; index++) {
+      let dataField: any = event.data[index];
+      const field = config.dataFields[index - indexAdjustment];
+      if (!field) {
+        throw new Error(
+          `${config.tableName}: event data length ${event.data.length} exceeds dataFields schema`,
+        );
+      }
+      if (field.type === "i257") {
+        const low = BigInt(event.data[index]);
+        const high = BigInt(event.data[index + 1]);
+        const isNegative = BigInt(event.data[index + 2]) !== 0n;
+        const abs = low + (high << 128n);
+        const signed = isNegative ? -abs : abs;
+        if (field.sqlType !== "skip") {
+          result[field.name] = signed.toString();
+        }
+        indexAdjustment += 2;
+        index += 2;
+        continue;
+      }
+      if (config.dataFields[index - indexAdjustment].type == "u256") {
+        dataField = uint256
+          .uint256ToBN({
+            low: event.data[index],
+            high: event.data[index + 1],
+          })
+          .toString();
+        indexAdjustment++;
+        index++;
+      }
 
-    if (field.sqlType == "skip") {
-      continue;
+      if (field.sqlType == "skip") {
+        continue;
+      }
+      result[field.name] = convertToSqlFormat(dataField, field);
     }
-    result[field.name] = convertToSqlFormat(dataField, field);
   }
 
   // Add additional fields

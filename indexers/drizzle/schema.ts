@@ -88,16 +88,6 @@ export const position_updated = pgTable('position_updated', {
 		.on(position_updated.block_number, position_updated.tx_index, position_updated.event_index)
 }));
 
-export const strategy_metadata = pgTable('strategy_metadata', {
-	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
-	strategy_address: text('strategy_address').notNull().unique(),
-	strategy_name: text('strategy_name').notNull(),
-	quote_asset: text('quote_asset').notNull()
-}, (strategy_metadata) => ({
-	'strategy_metadata_id': uniqueIndex('strategy_metadata_id')
-		.on(strategy_metadata.strategy_address)
-}));
-
 export const raw_price_events = pgTable('raw_price_events', {
 	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
 	block_number: integer('block_number').notNull(),
@@ -113,6 +103,71 @@ export const raw_price_events = pgTable('raw_price_events', {
 }, (raw_price_events) => ({
 	'event_id': uniqueIndex('event_id')
 		.on(raw_price_events.block_number, raw_price_events.tx_index, raw_price_events.event_index)
+}));
+
+export const svk_alt_redemptions_subscribed = pgTable('svk_alt_redemptions_subscribed', {
+	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
+	block_number: integer('block_number').notNull(),
+	tx_index: integer('tx_index').notNull(),
+	event_index: integer('event_index').notNull(),
+	tx_hash: text('tx_hash').notNull(),
+	contract_address: text('contract_address').notNull(),
+	new_nft_id: integer('new_nft_id').notNull(),
+	old_nft_id: integer('old_nft_id').notNull(),
+	receiver: text('receiver').notNull(),
+	timestamp: integer('timestamp').notNull(),
+	cursor: bigint('_cursor', { mode: 'bigint' })
+}, (svk_alt_redemptions_subscribed) => ({
+	'event_id': uniqueIndex('event_id')
+		.on(svk_alt_redemptions_subscribed.block_number, svk_alt_redemptions_subscribed.tx_index, svk_alt_redemptions_subscribed.event_index)
+}));
+
+export const svk_alt_redemptions_claimed = pgTable('svk_alt_redemptions_claimed', {
+	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
+	block_number: integer('block_number').notNull(),
+	tx_index: integer('tx_index').notNull(),
+	event_index: integer('event_index').notNull(),
+	tx_hash: text('tx_hash').notNull(),
+	contract_address: text('contract_address').notNull(),
+	new_nft_id: integer('new_nft_id').notNull(),
+	old_nft_id: integer('old_nft_id').notNull(),
+	receivable: text('receivable').notNull(),
+	swap_id: integer('swap_id').notNull(),
+	timestamp: integer('timestamp').notNull(),
+	cursor: bigint('_cursor', { mode: 'bigint' })
+}, (svk_alt_redemptions_claimed) => ({
+	'event_id': uniqueIndex('event_id')
+		.on(svk_alt_redemptions_claimed.block_number, svk_alt_redemptions_claimed.tx_index, svk_alt_redemptions_claimed.event_index)
+}));
+
+export const svk_alt_redemptions_unsubscribed = pgTable('svk_alt_redemptions_unsubscribed', {
+	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
+	block_number: integer('block_number').notNull(),
+	tx_index: integer('tx_index').notNull(),
+	event_index: integer('event_index').notNull(),
+	tx_hash: text('tx_hash').notNull(),
+	contract_address: text('contract_address').notNull(),
+	new_nft_id: integer('new_nft_id').notNull(),
+	old_nft_id: integer('old_nft_id').notNull(),
+	owner: text('owner').notNull(),
+	is_old_nft_returned: boolean('is_old_nft_returned').notNull(),
+	is_original_assets_returned: boolean('is_original_assets_returned').notNull(),
+	original_assets_returned: text('original_assets_returned').notNull(),
+	timestamp: integer('timestamp').notNull(),
+	cursor: bigint('_cursor', { mode: 'bigint' })
+}, (svk_alt_redemptions_unsubscribed) => ({
+	'event_id': uniqueIndex('event_id')
+		.on(svk_alt_redemptions_unsubscribed.block_number, svk_alt_redemptions_unsubscribed.tx_index, svk_alt_redemptions_unsubscribed.event_index)
+}));
+
+export const strategy_metadata = pgTable('strategy_metadata', {
+	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
+	strategy_address: text('strategy_address').notNull().unique(),
+	strategy_name: text('strategy_name').notNull(),
+	quote_asset: text('quote_asset').notNull()
+}, (strategy_metadata) => ({
+	'strategy_metadata_id': uniqueIndex('strategy_metadata_id')
+		.on(strategy_metadata.strategy_address)
 }));
 
 export const prices = pgTable('prices', {
@@ -140,60 +195,10 @@ export const token_metadata = pgTable('token_metadata', {
 		.on(token_metadata.address)
 }));
 
-export const svk_alt_redemptions_subscribed = pgTable('svk_alt_redemptions_subscribed', {
-	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
-	block_number: integer('block_number').notNull(),
-	tx_index: integer('tx_index').notNull(),
-	event_index: integer('event_index').notNull(),
-	tx_hash: text('tx_hash').notNull(),
-	contract_address: text('contract_address').notNull(),
-	new_nft_id: text('new_nft_id').notNull(),
-	old_nft_id: text('old_nft_id').notNull(),
-	receiver: text('receiver').notNull(),
-	timestamp: integer('timestamp').notNull(),
-	cursor: bigint('_cursor', { mode: 'bigint' })
-}, (svk_alt_redemptions_subscribed) => ({
-	'event_id': uniqueIndex('event_id')
-		.on(svk_alt_redemptions_subscribed.block_number, svk_alt_redemptions_subscribed.tx_index, svk_alt_redemptions_subscribed.event_index)
-}));
-
-export const svk_alt_redemptions_claimed = pgTable('svk_alt_redemptions_claimed', {
-	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
-	block_number: integer('block_number').notNull(),
-	tx_index: integer('tx_index').notNull(),
-	event_index: integer('event_index').notNull(),
-	tx_hash: text('tx_hash').notNull(),
-	contract_address: text('contract_address').notNull(),
-	new_nft_id: text('new_nft_id').notNull(),
-	old_nft_id: text('old_nft_id').notNull(),
-	receivable: text('receivable').notNull(),
-	swap_id: text('swap_id').notNull(),
-	timestamp: integer('timestamp').notNull(),
-	cursor: bigint('_cursor', { mode: 'bigint' })
-}, (svk_alt_redemptions_claimed) => ({
-	'event_id': uniqueIndex('event_id')
-		.on(svk_alt_redemptions_claimed.block_number, svk_alt_redemptions_claimed.tx_index, svk_alt_redemptions_claimed.event_index)
-}));
-
-export const svk_alt_redemptions_unsubscribed = pgTable('svk_alt_redemptions_unsubscribed', {
-	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
-	block_number: integer('block_number').notNull(),
-	tx_index: integer('tx_index').notNull(),
-	event_index: integer('event_index').notNull(),
-	tx_hash: text('tx_hash').notNull(),
-	contract_address: text('contract_address').notNull(),
-	new_nft_id: text('new_nft_id').notNull(),
-	old_nft_id: text('old_nft_id').notNull(),
-	owner: text('owner').notNull(),
-	is_old_nft_returned: boolean('is_old_nft_returned').notNull(),
-	is_original_assets_returned: boolean('is_original_assets_returned').notNull(),
-	original_assets_returned: text('original_assets_returned').notNull(),
-	timestamp: integer('timestamp').notNull(),
-	cursor: bigint('_cursor', { mode: 'bigint' })
-}, (svk_alt_redemptions_unsubscribed) => ({
-	'event_id': uniqueIndex('event_id')
-		.on(svk_alt_redemptions_unsubscribed.block_number, svk_alt_redemptions_unsubscribed.tx_index, svk_alt_redemptions_unsubscribed.event_index)
-}));
+export const lst_price_sync_progress = pgTable('lst_price_sync_progress', {
+	id: text('id').notNull().primaryKey().default("lst_price_sync"),
+	last_processed_block: integer('last_processed_block')
+});
 
 export const svk_alt_redemptions = pgTable('svk_alt_redemptions', {
 	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
@@ -218,4 +223,127 @@ export const svk_alt_redemptions = pgTable('svk_alt_redemptions', {
 }, (svk_alt_redemptions) => ({
 	'redemption_unique': uniqueIndex('redemption_unique')
 		.on(svk_alt_redemptions.contract_address, svk_alt_redemptions.old_nft_id)
+}));
+
+export const strategy_apy = pgTable('strategy_apy', {
+	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
+	strategy_id: text('strategy_id').notNull(),
+	strategy_address: text('strategy_address').notNull(),
+	net_apy: doublePrecision('net_apy'),
+	timestamp: integer('timestamp').notNull(),
+	block_number: integer('block_number')
+}, (strategy_apy) => ({
+	'strategy_apy_unique': uniqueIndex('strategy_apy_unique')
+		.on(strategy_apy.strategy_id, strategy_apy.timestamp)
+}));
+
+export const vesu_extended_usdc_transfers = pgTable('vesu_extended_usdc_transfers', {
+	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
+	block_number: integer('block_number').notNull(),
+	tx_index: integer('tx_index').notNull(),
+	event_index: integer('event_index').notNull(),
+	tx_hash: text('tx_hash').notNull(),
+	strategy_id: text('strategy_id').notNull(),
+	flow_type: text('flow_type').notNull(),
+	from_address: text('from_address').notNull(),
+	to_address: text('to_address').notNull(),
+	amount: text('amount').notNull(),
+	timestamp: integer('timestamp').notNull(),
+	cursor: bigint('_cursor', { mode: 'bigint' })
+}, (vesu_extended_usdc_transfers) => ({
+	'vesu_ext_usdc_transfer_event_id': uniqueIndex('vesu_ext_usdc_transfer_event_id')
+		.on(vesu_extended_usdc_transfers.block_number, vesu_extended_usdc_transfers.tx_index, vesu_extended_usdc_transfers.event_index)
+}));
+
+export const vesu_extended_modify_position = pgTable('vesu_extended_modify_position', {
+	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
+	block_number: integer('block_number').notNull(),
+	tx_index: integer('tx_index').notNull(),
+	event_index: integer('event_index').notNull(),
+	tx_hash: text('tx_hash').notNull(),
+	strategy_id: text('strategy_id').notNull(),
+	pool_contract: text('pool_contract').notNull(),
+	collateral_asset: text('collateral_asset').notNull(),
+	debt_asset: text('debt_asset').notNull(),
+	user_address: text('user_address').notNull(),
+	collateral_delta: text('collateral_delta').notNull(),
+	collateral_shares_delta: text('collateral_shares_delta').notNull(),
+	debt_delta: text('debt_delta').notNull(),
+	nominal_debt_delta: text('nominal_debt_delta').notNull(),
+	timestamp: integer('timestamp').notNull(),
+	cursor: bigint('_cursor', { mode: 'bigint' })
+}, (vesu_extended_modify_position) => ({
+	'vesu_ext_modify_event_id': uniqueIndex('vesu_ext_modify_event_id')
+		.on(vesu_extended_modify_position.block_number, vesu_extended_modify_position.tx_index, vesu_extended_modify_position.event_index)
+}));
+
+export const vesu_extended_multiply_lever = pgTable('vesu_extended_multiply_lever', {
+	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
+	block_number: integer('block_number').notNull(),
+	tx_index: integer('tx_index').notNull(),
+	event_index: integer('event_index').notNull(),
+	tx_hash: text('tx_hash').notNull(),
+	strategy_id: text('strategy_id').notNull(),
+	lever_kind: text('lever_kind').notNull(),
+	pool_id: text('pool_id').notNull(),
+	collateral_asset: text('collateral_asset').notNull(),
+	debt_asset: text('debt_asset').notNull(),
+	user_address: text('user_address').notNull(),
+	margin: text('margin').notNull(),
+	collateral_delta: text('collateral_delta').notNull(),
+	debt_delta: text('debt_delta').notNull(),
+	timestamp: integer('timestamp').notNull(),
+	cursor: bigint('_cursor', { mode: 'bigint' })
+}, (t) => ({
+	'vesu_ext_multiply_lever_event_id': uniqueIndex('vesu_ext_multiply_lever_event_id')
+		.on(t.block_number, t.tx_index, t.event_index)
+}));
+
+export const vesu_extended_ekubo_swapped = pgTable('vesu_extended_ekubo_swapped', {
+	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
+	block_number: integer('block_number').notNull(),
+	tx_index: integer('tx_index').notNull(),
+	event_index: integer('event_index').notNull(),
+	tx_hash: text('tx_hash').notNull(),
+	strategy_id: text('strategy_id').notNull(),
+	locker: text('locker').notNull(),
+	token0: text('token0').notNull(),
+	token1: text('token1').notNull(),
+	fee: text('fee').notNull(),
+	tick_spacing: text('tick_spacing').notNull(),
+	extension: text('extension').notNull(),
+	swap_amount_signed: text('swap_amount_signed').notNull(),
+	is_token1: text('is_token1').notNull(),
+	sqrt_ratio_limit: text('sqrt_ratio_limit').notNull(),
+	skip_ahead: text('skip_ahead').notNull(),
+	delta0_signed: text('delta0_signed').notNull(),
+	delta1_signed: text('delta1_signed').notNull(),
+	sqrt_ratio_after: text('sqrt_ratio_after').notNull(),
+	tick_after_signed: text('tick_after_signed').notNull(),
+	liquidity_after: text('liquidity_after').notNull(),
+	timestamp: integer('timestamp').notNull(),
+	cursor: bigint('_cursor', { mode: 'bigint' })
+}, (t) => ({
+	'vesu_ext_ekubo_swap_event_id': uniqueIndex('vesu_ext_ekubo_swap_event_id')
+		.on(t.block_number, t.tx_index, t.event_index)
+}));
+
+export const vesu_extended_core_deposits = pgTable('vesu_extended_core_deposits', {
+	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
+	block_number: integer('block_number').notNull(),
+	tx_index: integer('tx_index').notNull(),
+	event_index: integer('event_index').notNull(),
+	tx_hash: text('tx_hash').notNull(),
+	strategy_id: text('strategy_id').notNull(),
+	vault_id_key: text('vault_id_key').notNull(),
+	va_address: text('va_address').notNull(),
+	collateral_id: text('collateral_id').notNull(),
+	quantized_amount: text('quantized_amount').notNull(),
+	unquantized_amount: text('unquantized_amount').notNull(),
+	salt: text('salt').notNull(),
+	timestamp: integer('timestamp').notNull(),
+	cursor: bigint('_cursor', { mode: 'bigint' })
+}, (vesu_extended_core_deposits) => ({
+	'vesu_ext_core_dep_event_id': uniqueIndex('vesu_ext_core_dep_event_id')
+		.on(vesu_extended_core_deposits.block_number, vesu_extended_core_deposits.tx_index, vesu_extended_core_deposits.event_index)
 }));

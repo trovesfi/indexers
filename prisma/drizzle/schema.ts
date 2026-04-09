@@ -236,3 +236,138 @@ export const strategy_apy = pgTable('strategy_apy', {
 	'strategy_apy_unique': uniqueIndex('strategy_apy_unique')
 		.on(strategy_apy.strategy_id, strategy_apy.timestamp)
 }));
+
+export const vesu_extended_usdc_transfers = pgTable('vesu_extended_usdc_transfers', {
+	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
+	block_number: integer('block_number').notNull(),
+	tx_index: integer('tx_index').notNull(),
+	event_index: integer('event_index').notNull(),
+	tx_hash: text('tx_hash').notNull(),
+	strategy_id: text('strategy_id').notNull(),
+	flow_type: text('flow_type').notNull(),
+	from_address: text('from_address').notNull(),
+	to_address: text('to_address').notNull(),
+	amount: text('amount').notNull(),
+	timestamp: integer('timestamp').notNull(),
+	cursor: bigint('_cursor', { mode: 'bigint' })
+}, (vesu_extended_usdc_transfers) => ({
+	'vesu_ext_usdc_transfer_event_id': uniqueIndex('vesu_ext_usdc_transfer_event_id')
+		.on(vesu_extended_usdc_transfers.block_number, vesu_extended_usdc_transfers.tx_index, vesu_extended_usdc_transfers.event_index)
+}));
+
+export const vesu_extended_modify_position = pgTable('vesu_extended_modify_position', {
+	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
+	block_number: integer('block_number').notNull(),
+	tx_index: integer('tx_index').notNull(),
+	event_index: integer('event_index').notNull(),
+	tx_hash: text('tx_hash').notNull(),
+	strategy_id: text('strategy_id').notNull(),
+	pool_contract: text('pool_contract').notNull(),
+	collateral_asset: text('collateral_asset').notNull(),
+	debt_asset: text('debt_asset').notNull(),
+	user_address: text('user_address').notNull(),
+	collateral_delta: text('collateral_delta').notNull(),
+	collateral_shares_delta: text('collateral_shares_delta').notNull(),
+	debt_delta: text('debt_delta').notNull(),
+	nominal_debt_delta: text('nominal_debt_delta').notNull(),
+	timestamp: integer('timestamp').notNull(),
+	cursor: bigint('_cursor', { mode: 'bigint' })
+}, (vesu_extended_modify_position) => ({
+	'vesu_ext_modify_event_id': uniqueIndex('vesu_ext_modify_event_id')
+		.on(vesu_extended_modify_position.block_number, vesu_extended_modify_position.tx_index, vesu_extended_modify_position.event_index)
+}));
+
+export const vesu_extended_multiply_lever = pgTable('vesu_extended_multiply_lever', {
+	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
+	block_number: integer('block_number').notNull(),
+	tx_index: integer('tx_index').notNull(),
+	event_index: integer('event_index').notNull(),
+	tx_hash: text('tx_hash').notNull(),
+	strategy_id: text('strategy_id').notNull(),
+	lever_kind: text('lever_kind').notNull(),
+	pool_id: text('pool_id').notNull(),
+	collateral_asset: text('collateral_asset').notNull(),
+	debt_asset: text('debt_asset').notNull(),
+	user_address: text('user_address').notNull(),
+	margin: text('margin').notNull(),
+	collateral_delta: text('collateral_delta').notNull(),
+	debt_delta: text('debt_delta').notNull(),
+	timestamp: integer('timestamp').notNull(),
+	cursor: bigint('_cursor', { mode: 'bigint' })
+}, (vesu_extended_multiply_lever) => ({
+	'vesu_ext_multiply_lever_event_id': uniqueIndex('vesu_ext_multiply_lever_event_id')
+		.on(vesu_extended_multiply_lever.block_number, vesu_extended_multiply_lever.tx_index, vesu_extended_multiply_lever.event_index)
+}));
+
+export const vesu_extended_ekubo_swapped = pgTable('vesu_extended_ekubo_swapped', {
+	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
+	block_number: integer('block_number').notNull(),
+	tx_index: integer('tx_index').notNull(),
+	event_index: integer('event_index').notNull(),
+	tx_hash: text('tx_hash').notNull(),
+	strategy_id: text('strategy_id').notNull(),
+	locker: text('locker').notNull(),
+	token0: text('token0').notNull(),
+	token1: text('token1').notNull(),
+	fee: text('fee').notNull(),
+	tick_spacing: text('tick_spacing').notNull(),
+	extension: text('extension').notNull(),
+	swap_amount_signed: text('swap_amount_signed').notNull(),
+	is_token1: text('is_token1').notNull(),
+	sqrt_ratio_limit: text('sqrt_ratio_limit').notNull(),
+	skip_ahead: text('skip_ahead').notNull(),
+	delta0_signed: text('delta0_signed').notNull(),
+	delta1_signed: text('delta1_signed').notNull(),
+	sqrt_ratio_after: text('sqrt_ratio_after').notNull(),
+	tick_after_signed: text('tick_after_signed').notNull(),
+	liquidity_after: text('liquidity_after').notNull(),
+	timestamp: integer('timestamp').notNull(),
+	cursor: bigint('_cursor', { mode: 'bigint' })
+}, (vesu_extended_ekubo_swapped) => ({
+	'vesu_ext_ekubo_swap_event_id': uniqueIndex('vesu_ext_ekubo_swap_event_id')
+		.on(vesu_extended_ekubo_swapped.block_number, vesu_extended_ekubo_swapped.tx_index, vesu_extended_ekubo_swapped.event_index)
+}));
+
+export const vesu_extended_core_deposits = pgTable('vesu_extended_core_deposits', {
+	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
+	block_number: integer('block_number').notNull(),
+	tx_index: integer('tx_index').notNull(),
+	event_index: integer('event_index').notNull(),
+	tx_hash: text('tx_hash').notNull(),
+	strategy_id: text('strategy_id').notNull(),
+	vault_id_key: text('vault_id_key').notNull(),
+	va_address: text('va_address').notNull(),
+	collateral_id: text('collateral_id').notNull(),
+	quantized_amount: text('quantized_amount').notNull(),
+	unquantized_amount: text('unquantized_amount').notNull(),
+	salt: text('salt').notNull(),
+	timestamp: integer('timestamp').notNull(),
+	cursor: bigint('_cursor', { mode: 'bigint' })
+}, (vesu_extended_core_deposits) => ({
+	'vesu_ext_core_dep_event_id': uniqueIndex('vesu_ext_core_dep_event_id')
+		.on(vesu_extended_core_deposits.block_number, vesu_extended_core_deposits.tx_index, vesu_extended_core_deposits.event_index)
+}));
+
+export const extended_trades = pgTable('extended_trades', {
+	trade_id: text('trade_id').notNull().primaryKey(),
+	strategy_id: text('strategy_id').notNull(),
+	account_id: text('account_id').notNull(),
+	market: text('market').notNull(),
+	order_id: text('order_id').notNull(),
+	external_id: text('external_id'),
+	side: text('side').notNull(),
+	price: text('price').notNull(),
+	qty: text('qty').notNull(),
+	value: text('value').notNull(),
+	fee: text('fee').notNull(),
+	trade_type: text('trade_type').notNull(),
+	created_time: text('created_time').notNull(),
+	is_taker: boolean('is_taker').notNull(),
+	synced_at: integer('synced_at').notNull()
+});
+
+export const extended_trades_poll_state = pgTable('extended_trades_poll_state', {
+	id: text('id').notNull().primaryKey(),
+	last_cursor: text('last_cursor'),
+	updated_at: integer('updated_at').notNull()
+});

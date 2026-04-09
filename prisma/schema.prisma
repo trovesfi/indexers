@@ -308,3 +308,145 @@ model strategy_apy {
   @@index([timestamp], name: "strategy_apy_timestamp_idx")
   @@schema("public")
 }
+
+model vesu_extended_usdc_transfers {
+  id            String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  block_number  Int
+  tx_index      Int
+  event_index   Int
+  tx_hash       String
+  strategy_id   String
+  flow_type     String
+  from_address  String
+  to_address    String
+  amount        String
+  timestamp     Int
+  cursor        BigInt? @map("_cursor")
+
+  @@unique([block_number, tx_index, event_index], name: "vesu_ext_usdc_transfer_event_id")
+  @@schema("public")
+}
+
+model vesu_extended_modify_position {
+  id                      String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  block_number            Int
+  tx_index                Int
+  event_index             Int
+  tx_hash                 String
+  strategy_id             String
+  pool_contract           String
+  collateral_asset        String
+  debt_asset              String
+  user_address            String
+  collateral_delta        String
+  collateral_shares_delta String
+  debt_delta              String
+  nominal_debt_delta      String
+  timestamp               Int
+  cursor                  BigInt? @map("_cursor")
+
+  @@unique([block_number, tx_index, event_index], name: "vesu_ext_modify_event_id")
+  @@schema("public")
+}
+
+/// Vesu multiply IncreaseLever / DecreaseLever (sibling to ModifyPosition in same tx when indexed with includeReceipt).
+model vesu_extended_multiply_lever {
+  id                String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  block_number      Int
+  tx_index          Int
+  event_index       Int
+  tx_hash           String
+  strategy_id       String
+  lever_kind        String
+  pool_id           String
+  collateral_asset  String
+  debt_asset        String
+  user_address      String
+  margin            String
+  collateral_delta  String
+  debt_delta        String
+  timestamp         Int
+  cursor            BigInt? @map("_cursor")
+
+  @@unique([block_number, tx_index, event_index], name: "vesu_ext_multiply_lever_event_id")
+  @@schema("public")
+}
+
+/// Ekubo core Swapped events where locker is Vesu multiply (execution prices for lever path).
+model vesu_extended_ekubo_swapped {
+  id                  String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  block_number        Int
+  tx_index            Int
+  event_index         Int
+  tx_hash             String
+  strategy_id         String
+  locker              String
+  token0              String
+  token1              String
+  fee                 String
+  tick_spacing        String
+  extension           String
+  swap_amount_signed  String
+  is_token1           String
+  sqrt_ratio_limit    String
+  skip_ahead          String
+  delta0_signed       String
+  delta1_signed       String
+  sqrt_ratio_after    String
+  tick_after_signed   String
+  liquidity_after     String
+  timestamp           Int
+  cursor              BigInt? @map("_cursor")
+
+  @@unique([block_number, tx_index, event_index], name: "vesu_ext_ekubo_swap_event_id")
+  @@schema("public")
+}
+
+model vesu_extended_core_deposits {
+  id                 String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  block_number       Int
+  tx_index           Int
+  event_index        Int
+  tx_hash            String
+  strategy_id        String
+  vault_id_key       String
+  va_address         String
+  collateral_id      String
+  quantized_amount   String
+  unquantized_amount String
+  salt               String
+  timestamp          Int
+  cursor             BigInt? @map("_cursor")
+
+  @@unique([block_number, tx_index, event_index], name: "vesu_ext_core_dep_event_id")
+  @@schema("public")
+}
+
+model extended_trades {
+  trade_id     String  @id
+  strategy_id  String
+  account_id   String
+  market       String
+  order_id     String
+  external_id  String?
+  side         String
+  price        String
+  qty          String
+  value        String
+  fee          String
+  trade_type   String
+  created_time String
+  is_taker     Boolean
+  synced_at    Int
+
+  @@index([strategy_id], name: "extended_trades_strategy_id_idx")
+  @@schema("public")
+}
+
+model extended_trades_poll_state {
+  id          String  @id
+  last_cursor String?
+  updated_at  Int
+
+  @@schema("public")
+}

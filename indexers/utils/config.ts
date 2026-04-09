@@ -9,9 +9,11 @@ import { onEventEkuboVault } from "./ekubo_vault";
 import { CONFIG_INVESTMENT_FLOWS_ERC4626, EKUBO_VAULT_CONTRACTS } from "./configs/investment_flows_erc4626";
 import { CONFIG_INVESTMENT_FLOWS_STARKNET_VAULT_KIT } from "./configs/investment_flows_starknet_vault_kit";
 import { CONFIG_PRAGMA_PRICE } from "./configs/pragma_price";
+import { CONFIG_VESU_EXTENDED_VAULT_OPS } from "./configs/vesu_extended_vault_ops";
 
 export interface EventField {
   name: string;
+  /** u256 = two felts (low, high); i257 = alexandria i257 (u256 abs low+high, then is_negative felt) */
   type: string;
   sqlType: string;
 }
@@ -51,6 +53,8 @@ export interface EventConfig {
   dataFields: EventField[];
   additionalFields: AdditionalField[];
   includeReceipt?: boolean;
+  /** When true, skip declarative data parsing; onEvent must populate from event.data. */
+  skipDataFieldParsing?: boolean;
   onEvent?: OnEvent;
 }
 
@@ -68,6 +72,7 @@ export const CONFIG: EventConfig[] = [
   ...CONFIG_PRAGMA_PRICE,
   ...CONFIG_INVESTMENT_FLOWS_ERC4626,
   ...CONFIG_INVESTMENT_FLOWS_STARKNET_VAULT_KIT,
+  ...CONFIG_VESU_EXTENDED_VAULT_OPS,
 
   {
     tableName: "harvests",
