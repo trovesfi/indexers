@@ -34,6 +34,7 @@ CREATE TABLE "public"."contract_roles" (
     "granted_at_timestamp" INTEGER NOT NULL,
     "last_modified_block" INTEGER NOT NULL,
     "last_modified_timestamp" INTEGER NOT NULL,
+    "_cursor" BIGINT,
 
     CONSTRAINT "contract_roles_pkey" PRIMARY KEY ("id")
 );
@@ -65,6 +66,8 @@ CREATE INDEX "contract_roles_role_admin_id_idx" ON "public"."contract_roles"("ro
 
 CREATE OR REPLACE FUNCTION handle_role_event()
 RETURNS TRIGGER AS $$
+DECLARE
+    event_cursor BIGINT := COALESCE(NEW._cursor, NEW.block_number::BIGINT);
 BEGIN
     IF NEW.event_type = 'RoleGranted' THEN
         -- Insert or update contract_roles table
@@ -73,7 +76,8 @@ BEGIN
             contract_address, role_id, role_name, account,
             role_admin_id, role_admin_name,
             granted_at_block, granted_at_timestamp,
-            last_modified_block, last_modified_timestamp
+            last_modified_block, last_modified_timestamp,
+            _cursor
         )
         VALUES (
             NEW.contract_address, 
@@ -85,12 +89,17 @@ BEGIN
             NEW.block_number, 
             NEW.timestamp,
             NEW.block_number, 
-            NEW.timestamp
+            NEW.timestamp,
+            event_cursor
         )
         ON CONFLICT (contract_address, role_id, account)
         DO UPDATE SET
             last_modified_block = EXCLUDED.last_modified_block,
-            last_modified_timestamp = EXCLUDED.last_modified_timestamp;
+            last_modified_timestamp = EXCLUDED.last_modified_timestamp,
+            _cursor = GREATEST(
+                COALESCE("public"."contract_roles"._cursor, 0),
+                COALESCE(EXCLUDED._cursor, 0)
+            );
             
     ELSIF NEW.event_type = 'RoleRevoked' THEN
         -- Delete from contract_roles table
@@ -107,7 +116,11 @@ BEGIN
             role_admin_id = NEW.new_admin_role,
             role_admin_name = NEW.new_admin_role_name,  -- Already decoded during indexing!
             last_modified_block = NEW.block_number,
-            last_modified_timestamp = NEW.timestamp
+            last_modified_timestamp = NEW.timestamp,
+            _cursor = GREATEST(
+                COALESCE("public"."contract_roles"._cursor, 0),
+                COALESCE(event_cursor, 0)
+            )
         WHERE contract_address = NEW.contract_address
           AND role_id = NEW.role;
     END IF;
@@ -131,6 +144,9 @@ CREATE TRIGGER role_events_update_trigger
     FOR EACH ROW
     EXECUTE FUNCTION handle_role_event();
 
+-- TODO: For now we are relying on the apibara -> airfoil.reorg_rollback audit_table, so that in cases of a chain reorganization 
+-- the apibara will handle the logic if a certain block is rolled back based on the cursor
+--
 -- CREATE TRIGGER role_events_delete_trigger
 --     AFTER DELETE ON "public"."role_events"
 --     FOR EACH ROW
