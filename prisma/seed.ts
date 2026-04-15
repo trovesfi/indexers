@@ -8,6 +8,9 @@ import { shortString } from "starknet";
 import { num } from "starknet";
 import { hash } from "starknet";
 
+// sdk is not ready to go live hence to run the indexer this vault has been hardcoded. Remember to remove it once sdk have required changes published.
+import { HC_EkuboCLVaultV2Strategies as EkuboCLVaultV2Strategies } from "../indexers/utils/constants";
+
 const overridePragmaBaseAsset = {
     tBTC: {
         baseAsset: 'BTC',
@@ -80,7 +83,12 @@ async function seedStrategyMetadata() {
             quote_asset: strategy.depositTokens[0].address.address,
         })),
         ...EkuboCLVaultStrategies
-        .filter((str) => str.curator?.name.toLowerCase().includes('re7'))
+        .map((strategy) => ({
+            strategy_address: strategy.address.address,
+            strategy_name: strategy.name,
+            quote_asset: strategy.additionalInfo.quoteAsset.address.address,
+        })),
+        ...EkuboCLVaultV2Strategies
         .map((strategy) => ({
             strategy_address: strategy.address.address,
             strategy_name: strategy.name,

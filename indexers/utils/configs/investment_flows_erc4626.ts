@@ -3,14 +3,26 @@ import { standariseAddress } from "../../../src/utils";
 import { AdditionalField, ContractConfig, EventConfig } from "../config";
 import { onEventEkuboVault } from "../ekubo_vault";
 import { eventKey } from "../common_transform";
+import { uint256 } from "starknet";
+
+// sdk is not ready to go live hence to run the indexer this vault has been hardcoded. Remember to remove it once sdk have required changes published.
+import { HC_EkuboCLVaultV2Strategies as EkuboCLVaultV2Strategies } from "../constants";
 
 export const EKUBO_VAULT_CONTRACTS: ContractConfig[] = [
     ...EkuboCLVaultStrategies
-    .filter((strat) => strat.curator?.name.toLowerCase().includes('re7'))
     .map((ekuboStrat) => ({
       address: standariseAddress(ekuboStrat.address.address),
       asset: '', // not applicable for this dual asset vault
       name: ekuboStrat.name,
+    }))
+];
+
+export const EKUBO_VAULT_CONTRACTS_V2: ContractConfig[] = [
+    ...EkuboCLVaultV2Strategies
+    .map((ekuboV2Strat) => ({
+      address: standariseAddress(ekuboV2Strat.address.address),
+      asset: '', // not applicable for this dual asset vault
+      name: ekuboV2Strat.name,
     }))
 ];
 
@@ -80,6 +92,35 @@ const commonInvestmentFlowAdditionalFields = (type: "deposit" | "withdraw"): Add
     }]
 }
 
+const token0_1_ekubo_v2:AdditionalField[] = [
+  {
+    name: 'token0',
+    source: "custom",
+    sqlType: "text",
+    customLogic: (event) => {
+      const strategyData = EkuboCLVaultV2Strategies.find((strat) => strat.address.eqString(event.address))
+      // if event is not from V2 Ekubo pools, return
+      if (!strategyData) {
+        throw new Error(`Unknown contract: ${standariseAddress(event.address)}`);
+      };
+      return strategyData.depositTokens[0].address.address
+    }
+  },
+  {
+    name: 'token1',
+    source: "custom",
+    sqlType: "text",
+    customLogic: (event) => {
+      const strategyData = EkuboCLVaultV2Strategies.find((strat) => strat.address.eqString(event.address))
+      // if event is not from V2 Ekubo pools, return
+      if (!strategyData) {
+        throw new Error(`Unknown contract: ${standariseAddress(event.address)}`);
+      };
+      return strategyData.depositTokens[1].address.address
+    }
+  }
+];
+
 export const CONFIG_INVESTMENT_FLOWS_ERC4626: EventConfig[] = [
     {
       tableName: "investment_flows",
@@ -126,8 +167,87 @@ export const CONFIG_INVESTMENT_FLOWS_ERC4626: EventConfig[] = [
       ]
     },
     {
+      tableName: "ekubo_v2_investment_flows",
+      includeReceipt: true, // REQUIRED to get all events in tx
+      contracts: EKUBO_VAULT_CONTRACTS_V2,
+      defaultKeys: [[eventKey("Deposit")]],
+      keyFields: [
+        { name: "sender", type: "ContractAddress", sqlType: "text" },
+        { name: "owner", type: "ContractAddress", sqlType: "text" },
+      ],
+      dataFields: [
+        { name: "shares", type: "u256", sqlType: "numeric(78,0)" },
+        { name: "amount0", type: "u256", sqlType: "numeric(78,0)" },
+        { name: "amount1", type: "u256", sqlType: "numeric(78,0)" },
+      ],
+      additionalFields: [
+        {
+          name: "vault_address",
+          source: "custom",
+          sqlType: "text",
+          customLogic: (event) => standariseAddress(event.address),
+        },
+        {
+          name: "receiver",
+          source: "custom",
+          sqlType: "text",
+          customLogic: (event) => standariseAddress(event.keys[2]), // owner
+        },
+        {
+          name: "user_address",
+          source: "custom",
+          sqlType: "text",
+          customLogic: (event) => standariseAddress(event.keys[2]), // owner
+        },
+        {
+          name: "type",
+          source: "custom",
+          sqlType: "text",
+          customLogic: () => "deposit",
+        },
+        ...token0_1_ekubo_v2
+      ],
+    },
+    {
+      tableName: "ekubo_v2_investment_flows",
+      includeReceipt: true,
+      contracts: EKUBO_VAULT_CONTRACTS_V2,
+      defaultKeys: [[eventKey("Withdraw")]],
+      keyFields: [
+        { name: "sender", type: "ContractAddress", sqlType: "text" },
+        { name: "receiver", type: "ContractAddress", sqlType: "text" },
+        { name: "owner", type: "ContractAddress", sqlType: "text" },
+      ],
+      dataFields: [
+        { name: "shares", type: "u256", sqlType: "numeric(78,0)" },
+        { name: "amount0", type: "u256", sqlType: "numeric(78,0)" },
+        { name: "amount1", type: "u256", sqlType: "numeric(78,0)" },
+      ],
+      additionalFields: [
+        {
+          name: "vault_address",
+          source: "custom",
+          sqlType: "text",
+          customLogic: (event) => standariseAddress(event.address),
+        },
+        {
+          name: "user_address",
+          source: "custom",
+          sqlType: "text",
+          customLogic: (event) => standariseAddress(event.keys[3]), // owner (3rd key)
+        },
+        {
+          name: "type",
+          source: "custom",
+          sqlType: "text",
+          customLogic: () => "withdraw",
+        },
+        ...token0_1_ekubo_v2
+      ],
+    },
+    {
       tableName: "position_fees_collected",
-      contracts: EKUBO_VAULT_CONTRACTS,
+      contracts: [...EKUBO_VAULT_CONTRACTS_V2],
       defaultKeys: [[eventKey("HandleFees")]],
       keyFields: [],
       dataFields: [
@@ -145,6 +265,52 @@ export const CONFIG_INVESTMENT_FLOWS_ERC4626: EventConfig[] = [
           sqlType: "text",
           customLogic: (event) => {
             return standariseAddress(event.address);
+          },
+        },
+        {
+          name: "pool_info",
+          source: "custom",
+          sqlType: "text",
+          customLogic: (event) => {
+            // V1 events have 10 data elements, V2 events have 22
+            // After u256 parsing: token0(1) + token0_origin_bal(2) + amount0(2) + 
+            //                     token1(1) + token1_origin_bal(2) + amount1(2) = 10 felts
+            // V2 adds ManagedPool struct: pool_key(7) + bounds(4) + nft_id(1) = 12 more felts
+            if (event.data.length <= 10) {
+              return null; // V1 contract - no pool_info
+            }
+            
+            try {
+              // Parse ManagedPool struct from event.data[10..21]
+              // PoolKey: token0, token1, fee(u128 = 2 felts), tick_spacing(u128 = 2 felts), extension
+              // Bounds: lower(i129 = 2 felts), upper(i129 = 2 felts)
+              // nft_id: u64 (1 felt)
+              const poolInfo = {
+                pool_key: {
+                  token0: standariseAddress(`0x${BigInt(event.data[10]).toString(16).padStart(64, "0")}`),
+                  token1: standariseAddress(`0x${BigInt(event.data[11]).toString(16).padStart(64, "0")}`),
+                  fee: uint256.uint256ToBN({ low: event.data[12], high: event.data[13] }).toString(),
+                  tick_spacing: uint256.uint256ToBN({ low: event.data[14], high: event.data[15] }).toString(),
+                  extension: standariseAddress(`0x${BigInt(event.data[16]).toString(16).padStart(64, "0")}`),
+                },
+                bounds: {
+                  lower: {
+                    mag: BigInt(event.data[17]).toString(),
+                    sign: BigInt(event.data[18]).toString() === "1",
+                  },
+                  upper: {
+                    mag: BigInt(event.data[19]).toString(),
+                    sign: BigInt(event.data[20]).toString() === "1",
+                  },
+                },
+                nft_id: BigInt(event.data[21]).toString(),
+              };
+              
+              return JSON.stringify(poolInfo);
+            } catch (error) {
+              console.error("Error parsing pool_info:", error);
+              return null;
+            }
           },
         },
       ],

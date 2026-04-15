@@ -53,6 +53,7 @@ export const position_fees_collected = pgTable('position_fees_collected', {
 	amount0: text('amount0').notNull(),
 	amount1: text('amount1').notNull(),
 	vault_address: text('vault_address').notNull(),
+	pool_info: text('pool_info'),
 	timestamp: integer('timestamp').notNull(),
 	cursor: bigint('_cursor', { mode: 'bigint' })
 }, (position_fees_collected) => ({
@@ -86,6 +87,31 @@ export const position_updated = pgTable('position_updated', {
 }, (position_updated) => ({
 	'event_id': uniqueIndex('event_id')
 		.on(position_updated.block_number, position_updated.tx_index, position_updated.event_index)
+}));
+
+export const ekubo_v2_investment_flows = pgTable('ekubo_v2_investment_flows', {
+	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
+	block_number: integer('block_number').notNull(),
+	tx_index: integer('tx_index').notNull(),
+	event_index: integer('event_index').notNull(),
+	tx_hash: text('tx_hash').notNull(),
+	sender: text('sender').notNull(),
+	owner: text('owner').notNull(),
+	receiver: text('receiver').notNull(),
+	shares: text('shares').notNull(),
+	amount0: text('amount0').notNull(),
+	amount1: text('amount1').notNull(),
+	token0: text('token0').notNull(),
+	token1: text('token1').notNull(),
+	vault_address: text('vault_address').notNull(),
+	user_address: text('user_address').notNull(),
+	type: text('type').notNull(),
+	timestamp: integer('timestamp').notNull(),
+	cursor: bigint('_cursor', { mode: 'bigint' }),
+	quote_amount: decimal('quote_amount', { precision: 65, scale: 30 }).notNull()
+}, (ekubo_v2_investment_flows) => ({
+	'event_id': uniqueIndex('event_id')
+		.on(ekubo_v2_investment_flows.block_number, ekubo_v2_investment_flows.tx_index, ekubo_v2_investment_flows.event_index)
 }));
 
 export const raw_price_events = pgTable('raw_price_events', {
@@ -235,4 +261,45 @@ export const strategy_apy = pgTable('strategy_apy', {
 }, (strategy_apy) => ({
 	'strategy_apy_unique': uniqueIndex('strategy_apy_unique')
 		.on(strategy_apy.strategy_id, strategy_apy.timestamp)
+}));
+
+export const role_events = pgTable('role_events', {
+	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
+	block_number: integer('block_number').notNull(),
+	tx_index: integer('tx_index').notNull(),
+	event_index: integer('event_index').notNull(),
+	tx_hash: text('tx_hash').notNull(),
+	event_type: text('event_type').notNull(),
+	contract_address: text('contract_address').notNull(),
+	role: text('role').notNull(),
+	role_name: text('role_name').notNull(),
+	account: text('account'),
+	sender: text('sender'),
+	previous_admin_role: text('previous_admin_role'),
+	previous_admin_role_name: text('previous_admin_role_name'),
+	new_admin_role: text('new_admin_role'),
+	new_admin_role_name: text('new_admin_role_name'),
+	timestamp: integer('timestamp').notNull(),
+	cursor: bigint('_cursor', { mode: 'bigint' })
+}, (role_events) => ({
+	'event_id': uniqueIndex('event_id')
+		.on(role_events.block_number, role_events.tx_index, role_events.event_index)
+}));
+
+export const contract_roles = pgTable('contract_roles', {
+	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
+	contract_address: text('contract_address').notNull(),
+	role_id: text('role_id').notNull(),
+	role_name: text('role_name').notNull(),
+	account: text('account').notNull(),
+	role_admin_id: text('role_admin_id').notNull().default("0x0000000000000000000000000000000000000000000000000000000000000000"),
+	role_admin_name: text('role_admin_name').notNull().default("DEFAULT_ADMIN_ROLE"),
+	granted_at_block: integer('granted_at_block').notNull(),
+	granted_at_timestamp: integer('granted_at_timestamp').notNull(),
+	last_modified_block: integer('last_modified_block').notNull(),
+	last_modified_timestamp: integer('last_modified_timestamp').notNull(),
+	cursor: bigint('_cursor', { mode: 'bigint' })
+}, (contract_roles) => ({
+	'contract_roles_unique': uniqueIndex('contract_roles_unique')
+		.on(contract_roles.contract_address, contract_roles.role_id, contract_roles.account)
 }));

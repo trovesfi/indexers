@@ -12,6 +12,7 @@ import {
   FindFirstSvk_alt_redemptionsResolver,
   FindManySvk_alt_redemptionsResolver,
   FindManyStrategy_apyResolver,
+  FindManyContract_rolesResolver,
 } from "@generated/type-graphql";
 import { buildSchema, Resolver, Query, Arg } from 'type-graphql';
 import { startStandaloneServer } from "@apollo/server/standalone";
@@ -56,7 +57,8 @@ async function main() {
       FindFirstInvestment_flowsResolver,
       FindFirstSvk_alt_redemptionsResolver,
       FindManySvk_alt_redemptionsResolver,
-      FindManyStrategy_apyResolver
+      FindManyStrategy_apyResolver,
+      FindManyContract_rolesResolver,
     ],
     validate: false,
   });
