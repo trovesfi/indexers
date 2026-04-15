@@ -6,7 +6,9 @@ import { OnEvent } from "./config";
 import { eventKey } from "./common_transform";
 import { standariseAddress } from ".";
 import * as schema from "../drizzle/schema";
-import { EkuboCLVaultV2Strategies } from "@strkfarm/sdk";
+// import { EkuboCLVaultV2Strategies } from "@strkfarm/sdk";
+// sdk is not ready to go live hence to run the indexer this vault has been hardcoded. Remember to remove it once sdk have required changes published.
+import { HC_EkuboCLVaultV2Strategies as EkuboCLVaultV2Strategies } from "./constants";
 
 export const onEventEkuboVaultV2: OnEvent = async (
   event: Event,

@@ -1,8 +1,9 @@
 import { Resolver, Query, Arg, ObjectType, Field } from "type-graphql";
 import { PrismaClient } from "@prisma/client";
 import { standariseAddress } from "@/utils";
-import { EkuboCLVaultStrategies, EkuboCLVaultV2Strategies } from "@strkfarm/sdk";
-
+import { EkuboCLVaultStrategies} from "@strkfarm/sdk";
+// sdk is not ready to go live hence to run the indexer this vault has been hardcoded. Remember to remove it once sdk have required changes published.
+import { HC_EkuboCLVaultV2Strategies as EkuboCLVaultV2Strategies } from "../../../indexers/utils/constants";
 const prisma = new PrismaClient();
 
 @ObjectType()

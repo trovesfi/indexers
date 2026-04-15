@@ -1,10 +1,13 @@
-import { ContractAddr, EkuboCLVaultStrategies, EkuboCLVaultV2Strategies, UniversalStrategies, VesuRebalanceStrategies } from "@strkfarm/sdk";
+import { ContractAddr, EkuboCLVaultStrategies, UniversalStrategies, VesuRebalanceStrategies } from "@strkfarm/sdk";
 import { standariseAddress } from "../../../src/utils";
 import { AdditionalField, ContractConfig, EventConfig } from "../config";
 import { onEventEkuboVault } from "../ekubo_vault";
 import { onEventEkuboVaultV2 } from "../ekubo_vault_v2";
 import { eventKey } from "../common_transform";
 import { uint256 } from "starknet";
+
+// sdk is not ready to go live hence to run the indexer this vault has been hardcoded. Remember to remove it once sdk have required changes published.
+import { HC_EkuboCLVaultV2Strategies as EkuboCLVaultV2Strategies } from "../constants";
 
 export const EKUBO_VAULT_CONTRACTS: ContractConfig[] = [
     ...EkuboCLVaultStrategies

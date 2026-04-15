@@ -1,5 +1,5 @@
 import { PrismaClient, token_metadata } from "@prisma/client";
-import { EkuboCLVaultStrategies, EkuboCLVaultV2Strategies } from "@strkfarm/sdk";
+import { EkuboCLVaultStrategies } from "@strkfarm/sdk";
 import { UniversalStrategies } from "@strkfarm/sdk";
 import { VesuRebalanceStrategies } from "@strkfarm/sdk";
 import { Global } from "@strkfarm/sdk";
@@ -7,6 +7,9 @@ import { Client } from "pg";
 import { shortString } from "starknet";
 import { num } from "starknet";
 import { hash } from "starknet";
+
+// sdk is not ready to go live hence to run the indexer this vault has been hardcoded. Remember to remove it once sdk have required changes published.
+import { HC_EkuboCLVaultV2Strategies as EkuboCLVaultV2Strategies } from "../indexers/utils/constants";
 
 const overridePragmaBaseAsset = {
     tBTC: {
