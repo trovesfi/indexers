@@ -73,6 +73,7 @@ async function getMinIndexerHeadFromDB() {
       SELECT order_key as min_order_key 
       FROM airfoil.checkpoints 
       WHERE order_key IS NOT NULL
+      AND id like '%common_v2%'
     `;
 
     if (!result.length || result[0].min_order_key === null) {
