@@ -2,7 +2,6 @@ import { ContractAddr, EkuboCLVaultStrategies, UniversalStrategies, VesuRebalanc
 import { standariseAddress } from "../../../src/utils";
 import { AdditionalField, ContractConfig, EventConfig } from "../config";
 import { onEventEkuboVault } from "../ekubo_vault";
-import { onEventEkuboVaultV2 } from "../ekubo_vault_v2";
 import { eventKey } from "../common_transform";
 import { uint256 } from "starknet";
 
@@ -93,6 +92,35 @@ const commonInvestmentFlowAdditionalFields = (type: "deposit" | "withdraw"): Add
     }]
 }
 
+const token0_1_ekubo_v2:AdditionalField[] = [
+  {
+    name: 'token0',
+    source: "custom",
+    sqlType: "text",
+    customLogic: (event) => {
+      const strategyData = EkuboCLVaultV2Strategies.find((strat) => strat.address.eqString(event.address))
+      // if event is not from V2 Ekubo pools, return
+      if (!strategyData) {
+        throw new Error(`Unknown contract: ${standariseAddress(event.address)}`);
+      };
+      return strategyData.depositTokens[0].address.address
+    }
+  },
+  {
+    name: 'token1',
+    source: "custom",
+    sqlType: "text",
+    customLogic: (event) => {
+      const strategyData = EkuboCLVaultV2Strategies.find((strat) => strat.address.eqString(event.address))
+      // if event is not from V2 Ekubo pools, return
+      if (!strategyData) {
+        throw new Error(`Unknown contract: ${standariseAddress(event.address)}`);
+      };
+      return strategyData.depositTokens[1].address.address
+    }
+  }
+];
+
 export const CONFIG_INVESTMENT_FLOWS_ERC4626: EventConfig[] = [
     {
       tableName: "investment_flows",
@@ -142,7 +170,6 @@ export const CONFIG_INVESTMENT_FLOWS_ERC4626: EventConfig[] = [
       tableName: "ekubo_v2_investment_flows",
       includeReceipt: true, // REQUIRED to get all events in tx
       contracts: EKUBO_VAULT_CONTRACTS_V2,
-      onEvent: onEventEkuboVaultV2, // NEW callback for V2
       defaultKeys: [[eventKey("Deposit")]],
       keyFields: [
         { name: "sender", type: "ContractAddress", sqlType: "text" },
@@ -155,7 +182,7 @@ export const CONFIG_INVESTMENT_FLOWS_ERC4626: EventConfig[] = [
       ],
       additionalFields: [
         {
-          name: "contract",
+          name: "vault_address",
           source: "custom",
           sqlType: "text",
           customLogic: (event) => standariseAddress(event.address),
@@ -178,13 +205,13 @@ export const CONFIG_INVESTMENT_FLOWS_ERC4626: EventConfig[] = [
           sqlType: "text",
           customLogic: () => "deposit",
         },
+        ...token0_1_ekubo_v2
       ],
     },
     {
       tableName: "ekubo_v2_investment_flows",
       includeReceipt: true,
       contracts: EKUBO_VAULT_CONTRACTS_V2,
-      onEvent: onEventEkuboVaultV2,
       defaultKeys: [[eventKey("Withdraw")]],
       keyFields: [
         { name: "sender", type: "ContractAddress", sqlType: "text" },
@@ -198,7 +225,7 @@ export const CONFIG_INVESTMENT_FLOWS_ERC4626: EventConfig[] = [
       ],
       additionalFields: [
         {
-          name: "contract",
+          name: "vault_address",
           source: "custom",
           sqlType: "text",
           customLogic: (event) => standariseAddress(event.address),
@@ -215,11 +242,12 @@ export const CONFIG_INVESTMENT_FLOWS_ERC4626: EventConfig[] = [
           sqlType: "text",
           customLogic: () => "withdraw",
         },
+        ...token0_1_ekubo_v2
       ],
     },
     {
       tableName: "position_fees_collected",
-      contracts: [...EKUBO_VAULT_CONTRACTS, ...EKUBO_VAULT_CONTRACTS_V2],
+      contracts: [...EKUBO_VAULT_CONTRACTS_V2],
       defaultKeys: [[eventKey("HandleFees")]],
       keyFields: [],
       dataFields: [

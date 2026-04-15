@@ -59,7 +59,7 @@ export function createIndexer<
         db: database,
         idColumn: "id",
         persistState: true,
-        indexerName: "troves_sync_temp",
+        indexerName: "access_control_&_ekubov2_sync",
       }),
     ],
     finality: "pending",
@@ -72,8 +72,8 @@ export function createIndexer<
       const logger = useLogger();
       const { db } = useDrizzleStorage();
       console.log(`New block: ${block.header.blockNumber}`);
-      if (block.header.blockNumber > 5233517) {
-        throw new Error("Block is greater than 5233517");
+      if (block.header.blockNumber > 8811247) {
+        throw new Error("Block is greater than 8811247");
       }
       await commonTransform(
         block,

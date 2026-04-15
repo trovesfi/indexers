@@ -9,6 +9,9 @@ import {
 import { standariseAddress } from "../../../src/utils";
 import { ContractConfig, EventConfig } from "../config";
 import { eventKey } from "../common_transform";
+// sdk is not ready to go live hence to run the indexer this vault has been hardcoded. Remember to remove it once sdk have required changes published.
+import { HC_EkuboCLVaultV2Strategies as EkuboCLVaultV2Strategies } from "../constants";
+import { EKUBO_VAULT_CONTRACTS_V2 } from "./investment_flows_erc4626";
 
 // Derive global (role-based) AC contracts dynamically from all SDK strategy lists.
 // Any strategy whose security.accessControl.type === ROLE_BASED_ACCESS contributes
@@ -16,6 +19,7 @@ import { eventKey } from "../common_transform";
 // and are skipped. Duplicates are deduplicated so each AC contract appears once.
 const ALL_STRATEGY_LISTS = [
   EkuboCLVaultStrategies,
+  EKUBO_VAULT_CONTRACTS_V2,
   YoloVaultStrategies,
   SenseiStrategies,
   VesuRebalanceStrategies,

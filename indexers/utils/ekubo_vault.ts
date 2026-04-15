@@ -91,26 +91,26 @@ export const onEventEkuboVault: OnEvent = async (
   await db.insert(schema.position_updated).values([record]).execute();
 };
 
-const EKUBO_VAULT_CONFIG: EventConfig[] = [
-  {
-    tableName: "position_updated",
-    eventName: "PositionUpdated",
-    contracts: [
-      {
-        address: standariseAddress(
-          "0x00000005dd3d2f4429af886cd1a3b08289dbcea99a294197e9eb43b0e0325b4b"
-        ),
-        asset: "",
-      },
-    ],
-    defaultKeys: [[eventKey("PositionUpdated")]],
-    keyFields: [{ name: "event_type", type: "felt252", sqlType: "text" }],
-    dataFields: [
-      { name: "locker", type: "ContractAddress", sqlType: "text" },
-      { name: "pool_key", type: "PoolKey", sqlType: "text" },
-      { name: "params", type: "UpdatePositionParameters", sqlType: "text" },
-      { name: "delta", type: "Delta", sqlType: "text" },
-    ],
-    additionalFields: [],
-  },
-];
+// const EKUBO_VAULT_CONFIG: EventConfig[] = [
+//   {
+//     tableName: "position_updated",
+//     eventName: "PositionUpdated",
+//     contracts: [
+//       {
+//         address: standariseAddress(
+//           "0x00000005dd3d2f4429af886cd1a3b08289dbcea99a294197e9eb43b0e0325b4b"
+//         ),
+//         asset: "",
+//       },
+//     ],
+//     defaultKeys: [[eventKey("PositionUpdated")]],
+//     keyFields: [{ name: "event_type", type: "felt252", sqlType: "text" }],
+//     dataFields: [
+//       { name: "locker", type: "ContractAddress", sqlType: "text" },
+//       { name: "pool_key", type: "PoolKey", sqlType: "text" },
+//       { name: "params", type: "UpdatePositionParameters", sqlType: "text" },
+//       { name: "delta", type: "Delta", sqlType: "text" },
+//     ],
+//     additionalFields: [],
+//   },
+// ];
