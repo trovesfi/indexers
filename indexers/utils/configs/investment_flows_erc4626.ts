@@ -247,7 +247,7 @@ export const CONFIG_INVESTMENT_FLOWS_ERC4626: EventConfig[] = [
     },
     {
       tableName: "position_fees_collected",
-      contracts: [...EKUBO_VAULT_CONTRACTS_V2],
+      contracts: [...EKUBO_VAULT_CONTRACTS, ...EKUBO_VAULT_CONTRACTS_V2],
       defaultKeys: [[eventKey("HandleFees")]],
       keyFields: [],
       dataFields: [
