@@ -56,11 +56,33 @@ const VesuRebalanceStrategies = [{
     asset: TOKENS.USDT,
 }]
 
-const EkuboVaults = [{
-    address: '0x1f083b98674bc21effee29ef443a00c7b9a500fd92cf30341a3da12c73f2324',
-    name: "Ekubo xSTRK/STRK",
-    asset: TOKENS.STRK,
-}]
+const EkuboVaults = [
+    {
+        address: '0x1f083b98674bc21effee29ef443a00c7b9a500fd92cf30341a3da12c73f2324',
+        name: "Ekubo xSTRK/STRK",
+        asset: TOKENS.STRK,
+    },
+    {
+        address: '0x2ea99b4971d3c277fa4a9b4beb7d4d7d169e683393a29eef263d5d57b4380a',
+        name: "Ekubo xWBTC/WBTC",
+        asset: TOKENS.WBTC,
+    },
+    {
+        address: '0x785dc3dfc4e80ef2690a99512481e3ed3a5266180adda5a47e856245d68a4af',
+        name: "Ekubo xtBTC/tBTC",
+        asset: TOKENS.tBTC,
+    },
+    {
+        address: '0x3af1c7faa7c464cf2c494e988972ad1939f1103dbfb6e47e9bf0c47e49b14ef',
+        name: "Ekubo xsBTC/solvBTC",
+        asset: TOKENS.solvBTC,
+    },
+    {
+        address: '0x314c4653ab1aa01f5465773cb879f525d7e369a137bc3ae084761aee99a1712',
+        name: "Ekubo xLBTC/LBTC",
+        asset: TOKENS.LBTC,
+    },
+]
 
 const CONTRACTS = {
     "dnmm": {

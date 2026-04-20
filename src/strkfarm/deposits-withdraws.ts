@@ -52,6 +52,57 @@ const VesuRebalanceStrategies = [{
     asset: TOKENS.USDT,
 }]
 
+const EkuboLSTVaults = [
+  {
+    address: "0x01f083b98674bc21effee29ef443a00c7b9a500fd92cf30341a3da12c73f2324",
+    name: "Ekubo xSTRK/STRK",
+    asset: TOKENS.STRK,
+  },
+  {
+    address: "0x02ea99b4971d3c277fa4a9b4beb7d4d7d169e683393a29eef263d5d57b4380a",
+    name: "Ekubo xWBTC/WBTC",
+    asset: TOKENS.WBTC,
+  },
+  {
+    address: "0x0785dc3dfc4e80ef2690a99512481e3ed3a5266180adda5a47e856245d68a4af",
+    name: "Ekubo xtBTC/tBTC",
+    asset: TOKENS.tBTC,
+  },
+  {
+    address: "0x03af1c7faa7c464cf2c494e988972ad1939f1103dbfb6e47e9bf0c47e49b14ef",
+    name: "Ekubo xsBTC/solvBTC",
+    asset: TOKENS.solvBTC,
+  },
+  {
+    address: "0x0314c4653ab1aa01f5465773cb879f525d7e369a137bc3ae084761aee99a1712",
+    name: "Ekubo xLBTC/LBTC",
+    asset: TOKENS.LBTC,
+  },
+];
+
+const YoloVaults = [
+  {
+    address: "0x018ccdff25a642e211f86ace35ba282ebdf342330319ead98cae37258bc9cce1",
+    name: "YOLO BTC (31-DEC-2026)",
+    asset: TOKENS.USDC_NATIVE,
+  },
+  {
+    address: "0x03381380c6cca17c2a20e1167a362d5b939e392311cbcdf2016f9c7c7a23a801",
+    name: "YOLO vUSDC/xWBTC (31-MAY-2026)",
+    asset: TOKENS.USDC,
+  },
+  {
+    address: "0x060c8466549a8e51eed0e8c38243fdb57d173c96cfdd4375b49ad1e338ff893",
+    name: "YOLO vUSDC/xSTRK (31-MAR-2027)",
+    asset: TOKENS.USDC,
+  },
+  {
+    address: "0x062499970196772c18ccf1da09910ece11d85d5df3e8f6d6e41b4d158fcb8e79",
+    name: "YOLO vUSDC/xSTRK (30-JUN-2026)",
+    asset: TOKENS.USDC,
+  },
+];
+
 const EvergreenVaults = [
   {
     address: '0x7e6498cf6a1bfc7e6fc89f1831865e2dacb9756def4ec4b031a9138788a3b5e',
@@ -81,8 +132,12 @@ const EvergreenVaults = [
 ]
 
 function erc4626Processor(_data: any[]) {
-    const type = standariseAddress(_data[0]) == standariseAddress(depositKey) ? 'deposit' : 'withdraw';
-    const data = _data.slice(1);
+    // Some contracts emit `ERC4626Event` as the first key, and the actual event selector
+    // (Deposit/Withdraw) as the second key.
+    const isWrapped = standariseAddress(_data[0]) === standariseAddress(erc4626Event);
+    const actionKey = standariseAddress(isWrapped ? _data[1] : _data[0]);
+    const type = actionKey === standariseAddress(depositKey) ? 'deposit' : 'withdraw';
+    const data = _data.slice(isWrapped ? 2 : 1);
     console.log(data, type)
     if (type == 'deposit') {
         return {
@@ -205,6 +260,12 @@ const CONTRACTS: any = {
         processor: dnmmProcessor
     },
     "erc4626":  {
+        keys: [
+            [depositKey],
+            [withdrawKey],
+            [erc4626Event, depositKey],
+            [erc4626Event, withdrawKey],
+        ],
         contracts: [
             {
                 address: standariseAddress("0x016912b22d5696e95ffde888ede4bd69fbbc60c5f873082857a47c543172694f"),
@@ -213,12 +274,20 @@ const CONTRACTS: any = {
                 address: standariseAddress("0x541681b9ad63dff1b35f79c78d8477f64857de29a27902f7298f7b620838ea"),
                 asset: TOKENS.STRK
             },
+            ...EkuboLSTVaults.map((s) => ({
+              address: standariseAddress(s.address),
+              asset: s.asset,
+            })),
             ...VesuRebalanceStrategies.map((s) => {
                 return {
                     address: standariseAddress(s.address),
                     asset: s.asset
                 }
-            })
+            }),
+            ...YoloVaults.map((s) => ({
+              address: standariseAddress(s.address),
+              asset: s.asset,
+            })),
         ],
         processor: erc4626Processor
     },
