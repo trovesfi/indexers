@@ -150,7 +150,7 @@ export async function commonTransform<T extends Record<string, any>>(
         continue;
       }
     }
-    logger.info("Processing block:", header.blockNumber, config.tableName);
+    logger.info(`Processing block: ${header.blockNumber} ${config.tableName} ${header.blockNumber}_${event?.transactionIndex}_${event?.eventIndexInTransaction}`);
 
     if (!event || !event.data || !event.keys) {
       throw new Error(`${config.tableName}: Expected event with data`);
