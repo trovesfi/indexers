@@ -24,6 +24,11 @@ export const onEventEkuboVault: OnEvent = async (
     return;
   }
 
+  // If shares is 0, positionUpdated event may not be available, so just return
+  if (Number(processedRecord.shares) === 0) {
+    return;
+  }
+
   // Select events before the current event
   // and sort them by eventIndexInTransaction in descending order
   const filteredEvents = allEvents
