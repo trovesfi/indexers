@@ -25,7 +25,7 @@ export const onEventEkuboVault: OnEvent = async (
   }
 
   // If shares is 0, positionUpdated event may not be available, so just return
-  if (processedRecord.shares === "0" || processedRecord.shares === 0 || BigInt(processedRecord.shares) === 0n) {
+  if (Number(processedRecord.shares) === 0) {
     return;
   }
 
