@@ -33,7 +33,7 @@
     "@apollo/server": "4.11.0",
     "@hemantwasthere/monitoring-sdk": "^3.2.9",
     "@prisma/client": "5.18.0",
-    "@strkfarm/sdk": "2.0.0-staging.58",
+    "@strkfarm/sdk": "2.0.0-staging.69",
     "apibara": "2.1.0-beta.40",
     "dotenv": "16.4.5",
     "drizzle-orm": "^0.39.0",
