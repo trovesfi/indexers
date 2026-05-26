@@ -13,6 +13,8 @@ import {
   PricerFromApi,
   IStrategyMetadata,
   detectCapabilities,
+  YoLoVault,
+  NetAPYDetails,
 } from "@strkfarm/sdk";
 import { RpcProvider } from "starknet";
 import { getDB } from "../../indexers/utils/index.js";
@@ -23,7 +25,8 @@ type AnyStrategyInstance =
   | UniversalStrategy<any>
   | UniversalLstMultiplierStrategy
   | VesuRebalance
-  | SenseiVault;
+  | SenseiVault
+  | YoLoVault;
 
 async function retryWithBackoff<T>(
   fn: () => Promise<T>,
@@ -73,6 +76,8 @@ function instantiateStrategy(
         return new VesuRebalance(config, pricer, metadata as any);
       case StrategyType.SENSEI:
         return new SenseiVault(config, pricer, metadata as any);
+      case StrategyType.YOLO_VAULT:
+        return new YoLoVault(config, pricer, metadata as any);
       default:
         console.warn(`[APY] Unknown strategy type: ${type}`);
         return null;
@@ -103,6 +108,32 @@ function sanitizeAPY(value: number | null | undefined): number | null {
   return value;
 }
 
+function isNetAPYDetails(value: unknown): value is NetAPYDetails {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "net" in value &&
+    typeof (value as NetAPYDetails).net === "number"
+  );
+}
+
+function normalizeStrategyNetAPY(
+  raw: number | string | NetAPYDetails,
+  strategyName: string,
+  strategyId: string,
+): number | NetAPYDetails | null {
+  if (typeof raw === "number") {
+    return raw;
+  }
+  if (isNetAPYDetails(raw)) {
+    return raw;
+  }
+  console.warn(
+    `[APY] Strategy ${strategyName} (${strategyId}) returned non-numeric netAPY: ${String(raw)}`,
+  );
+  return null;
+}
+
 async function fetchNetAPY(
   type: StrategyType,
   strategy: AnyStrategyInstance,
@@ -119,7 +150,7 @@ async function fetchNetAPY(
     }
 
     // Call netAPY with appropriate parameters based on strategy type
-    let netYieldResult: number | { net: number; splits?: any[] };
+    let netYieldResult: number | NetAPYDetails;
 
     if (strategy instanceof EkuboCLVault) {
       // EkuboCLVault requires blockIdentifier, sinceBlocks, and timeperiod parameters
@@ -127,8 +158,16 @@ async function fetchNetAPY(
       const blocksDiff = isLST ? 600000 : 150000;
       netYieldResult = await strategy.netAPY("latest", blocksDiff, "7d");
     } else {
-      // All other strategies use parameterless netAPY()
-      netYieldResult = await strategy.netAPY();
+      const raw = await strategy.netAPY();
+      const normalized = normalizeStrategyNetAPY(
+        raw,
+        metadata.name,
+        metadata.id,
+      );
+      if (normalized === null) {
+        return null;
+      }
+      netYieldResult = normalized;
     }
 
     // Extract net yield from result (handle both number and NetAPYDetails)
@@ -148,7 +187,7 @@ async function fetchNetAPY(
       // use the sum of splits as fallback
       if (netYield === 0 && netYieldResult.splits && netYieldResult.splits.length > 0) {
         const totalSplits = netYieldResult.splits.reduce(
-          (sum: number, split: any) => sum + (split.apy || 0),
+          (sum, split) => sum + split.apy,
           0,
         );
         if (totalSplits > 0) {
