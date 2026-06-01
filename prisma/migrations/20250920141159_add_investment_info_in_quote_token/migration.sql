@@ -41,10 +41,26 @@ BEGIN
         _quote_asset = '0x33068f6539f8e6e6b131e6b2b814e6c34a5224bc66947c47dab9dfee93b35fb';
     END IF;
 
+    IF _quote_asset = '0x47751b3532fabca89b0f2e35ca1cb45e5a7b11d5e3d3663dfa1f4406b45fd88' THEN
+        _quote_asset = '0x3fe2b97c1fd336e750087d68b9b867997fd64a2661ff3ca5a7c771641e8e7ac';
+    END IF;
+
+    IF _quote_asset = '0x787150e306e6eae6e3f79dea881770e8bbff2c1b8eb490f969669ee945b3135' THEN
+        _quote_asset = '0x3fe2b97c1fd336e750087d68b9b867997fd64a2661ff3ca5a7c771641e8e7ac';
+    END IF;
+
     -- if v2 usdc, use price of v1 usdc
     -- swaped - use usdc for usdc.e
     IF _asset = '0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8' THEN
         _asset = '0x33068f6539f8e6e6b131e6b2b814e6c34a5224bc66947c47dab9dfee93b35fb';
+    END IF;
+
+    IF _asset = '0x47751b3532fabca89b0f2e35ca1cb45e5a7b11d5e3d3663dfa1f4406b45fd88' THEN
+        _asset = '0x3fe2b97c1fd336e750087d68b9b867997fd64a2661ff3ca5a7c771641e8e7ac';
+    END IF;
+
+    IF _asset = '0x787150e306e6eae6e3f79dea881770e8bbff2c1b8eb490f969669ee945b3135' THEN
+        _asset = '0x3fe2b97c1fd336e750087d68b9b867997fd64a2661ff3ca5a7c771641e8e7ac';
     END IF;
 
     IF _asset = _quote_asset THEN

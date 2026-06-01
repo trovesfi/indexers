@@ -40,6 +40,14 @@ const overridePragmaBaseAsset = {
         baseAsset: 'BTC',
         priceDecimals: 8,
     },
+    strkBTC: {
+        baseAsset: 'BTC',
+        priceDecimals: 8,
+    },
+    xstrkBTC: {
+        baseAsset: 'BTC',
+        priceDecimals: 8,
+    },
     USDT: {
         baseAsset: 'USDT',
         priceDecimals: 6,
