@@ -6,6 +6,7 @@ import {
   SenseiStrategies,
   VesuRebalanceStrategies,
 } from "@strkfarm/sdk";
+import { BoostedxSTRKCarryStrategies } from "strkfarm-sdk-dev";
 import { standariseAddress } from "../../../src/utils";
 import { ContractConfig, EventConfig } from "../config";
 import { eventKey } from "../common_transform";
@@ -25,6 +26,7 @@ const ALL_STRATEGY_LISTS = [
   VesuRebalanceStrategies,
   UniversalStrategies,
   HyperLSTStrategies,
+  BoostedxSTRKCarryStrategies,
 ] as any[][];
 
 const ZERO = standariseAddress("0x0");
@@ -83,11 +85,28 @@ const HYPERLST_STRATEGY_CONTRACTS: ContractConfig[] = [
   })),
 ];
 
+// Boosted Strategies - Extract vault and manager addresses dynamically from SDK
+const BOOSTED_STRATEGY_CONTRACTS: ContractConfig[] = [
+  // Vault addresses
+  ...BoostedxSTRKCarryStrategies.map((strategy) => ({
+    address: standariseAddress(strategy.address.address),
+    asset: "",
+    name: `${strategy.name} Vault`,
+  })),
+  // Manager addresses
+  ...BoostedxSTRKCarryStrategies.map((strategy) => ({
+    address: standariseAddress(strategy.additionalInfo.manager.address),
+    asset: "",
+    name: `${strategy.name} Manager`,
+  })),
+];
+
 // Combine all access control contracts
 const ALL_ACCESS_CONTROL_CONTRACTS: ContractConfig[] = [
   ...GLOBAL_ACCESS_CONTROL_CONTRACTS,
   ...UNIVERSAL_STRATEGY_CONTRACTS,
   ...HYPERLST_STRATEGY_CONTRACTS,
+  ...BOOSTED_STRATEGY_CONTRACTS,
 ];
 
 // Lookup map of known role selector hashes to human-readable names.
