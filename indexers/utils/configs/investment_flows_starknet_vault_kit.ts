@@ -1,4 +1,5 @@
 import { ContractAddr, EkuboCLVaultStrategies, HyperLSTStrategies, UniversalStrategies, VesuRebalanceStrategies } from "@strkfarm/sdk";
+import { BoostedxSTRKCarryStrategies } from "strkfarm-sdk-dev";
 import { standariseAddress } from "../../../src/utils";
 import { AdditionalField, ContractConfig, EventConfig } from "../config";
 import { onEventEkuboVault } from "../ekubo_vault";
@@ -16,6 +17,11 @@ const UNIVERSAL_STRATEGIES: ContractConfig[] = [
       address: standariseAddress(hyperLST.address.address),
       asset: hyperLST.depositTokens[0].address.address,
       name: hyperLST.name,
+    })),
+    ...BoostedxSTRKCarryStrategies.map((boostedStrategy) => ({
+      address: standariseAddress(boostedStrategy.address.address),
+      asset: boostedStrategy.depositTokens[0].address.address,
+      name: boostedStrategy.name,
     })),
 ];
 
