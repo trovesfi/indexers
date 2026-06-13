@@ -34,19 +34,6 @@ BEGIN
         RETURN NULL;
     END IF;
 
-    -- if v2 usdc, use price of v1 usdc
-    -- swaped - use usdc for usdc.e
-    -- ! to make it dynamic later
-    IF _quote_asset = '0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8' THEN
-        _quote_asset = '0x33068f6539f8e6e6b131e6b2b814e6c34a5224bc66947c47dab9dfee93b35fb';
-    END IF;
-
-    -- if v2 usdc, use price of v1 usdc
-    -- swaped - use usdc for usdc.e
-    IF _asset = '0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8' THEN
-        _asset = '0x33068f6539f8e6e6b131e6b2b814e6c34a5224bc66947c47dab9dfee93b35fb';
-    END IF;
-
     IF _asset = _quote_asset THEN
         RETURN amount / 10^token_decimals;
     END IF;
@@ -143,8 +130,6 @@ DECLARE
     token0_quote_amount DECIMAL(65,30);
     token1_quote_amount DECIMAL(65,30);
     total_quote_amount DECIMAL(65,30);
-    token0_address TEXT;
-    token1_address TEXT;
 BEGIN
     -- Get quote_asset from strategy_metadata using the vault_address
     SELECT sm.quote_asset INTO quote_asset_address
@@ -158,18 +143,8 @@ BEGIN
     END IF;
     
     -- Calculate quote amounts for both tokens
-    token0_address = NEW.token0;
-    IF token0_address = '0x28d709c875c0ceac3dce7065bec5328186dc89fe254527084d1689910954b0a' THEN
-        token0_address = '0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d';
-    END IF;
-
-    token1_address = NEW.token1;
-    IF token1_address = '0x28d709c875c0ceac3dce7065bec5328186dc89fe254527084d1689910954b0a' THEN
-        token1_address = '0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d';
-    END IF;
-
-    token0_quote_amount := calculate_quote_amount(token0_address, quote_asset_address, NEW.amount0::DECIMAL, NEW.timestamp);
-    token1_quote_amount := calculate_quote_amount(token1_address, quote_asset_address, NEW.amount1::DECIMAL, NEW.timestamp);
+    token0_quote_amount := calculate_quote_amount(NEW.token0, quote_asset_address, NEW.amount0::DECIMAL, NEW.timestamp);
+    token1_quote_amount := calculate_quote_amount(NEW.token1, quote_asset_address, NEW.amount1::DECIMAL, NEW.timestamp);
     
     -- Calculate total quote amount (sum of both tokens)
     total_quote_amount := token0_quote_amount + token1_quote_amount;
