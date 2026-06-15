@@ -266,6 +266,11 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Create triggers
+DROP TRIGGER IF EXISTS raw_price_events_validate_trigger ON "public"."raw_price_events";
+DROP TRIGGER IF EXISTS raw_price_events_insert_trigger ON "public"."raw_price_events";
+DROP TRIGGER IF EXISTS raw_price_events_update_trigger ON "public"."raw_price_events";
+DROP TRIGGER IF EXISTS raw_price_events_delete_trigger ON "public"."raw_price_events";
+
 CREATE TRIGGER raw_price_events_validate_trigger
     BEFORE INSERT ON "public"."raw_price_events"
     FOR EACH ROW
