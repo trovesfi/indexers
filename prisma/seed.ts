@@ -35,10 +35,11 @@ function getPeggedAsset(token: (typeof defaultTokens)[number]) {
     return tokenAddressBySymbol.get(token.priceProxySymbol.toLowerCase()) ?? null;
 }
 
-// TODO: later on we will remove deprecated from token_metadata as well
 // For now deprecated tokens wont have any prices and that is fine as well
 const tokenInfo: Omit<token_metadata, 'id'>[] = [
-    ...defaultTokens.map((token) => ({
+    ...defaultTokens
+    .filter((token) => token.indexingType !== TokenIndexingType.IGNORE)
+    .map((token) => ({
         address: token.address.address,
         name: token.name,
         symbol: token.symbol,
