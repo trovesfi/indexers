@@ -51,6 +51,52 @@ $$ LANGUAGE plpgsql;
 
 
 
+-- Helper function to upsert prices for a token and its pegged assets
+CREATE OR REPLACE FUNCTION upsert_price_for_asset_and_pegged_assets(
+    token_address TEXT,
+    token_price DOUBLE PRECISION,
+    rounded_timestamp INTEGER,
+    token_block_number INTEGER
+)
+RETURNS VOID AS $$
+BEGIN
+    INSERT INTO "public"."prices" (asset, price, timestamp, block_number, _cursor)
+    SELECT price_assets.asset, token_price, rounded_timestamp, token_block_number, token_block_number
+    FROM (
+        SELECT token_address AS asset
+        UNION
+        SELECT tm.address AS asset
+        FROM "public"."token_metadata" tm
+        WHERE tm.pegged_asset = token_address
+    ) price_assets
+    WHERE token_price IS NOT NULL
+    ON CONFLICT (asset, timestamp)
+    DO UPDATE SET
+        price = token_price,
+        block_number = GREATEST("public"."prices".block_number, token_block_number),
+        _cursor = GREATEST("public"."prices"._cursor, token_block_number);
+END;
+$$ LANGUAGE plpgsql;
+
+-- Helper function to delete prices for a token and its pegged assets
+CREATE OR REPLACE FUNCTION delete_price_for_asset_and_pegged_assets(
+    token_address TEXT,
+    rounded_timestamp INTEGER
+)
+RETURNS VOID AS $$
+BEGIN
+    DELETE FROM "public"."prices"
+    WHERE timestamp = rounded_timestamp
+      AND asset IN (
+        SELECT token_address
+        UNION
+        SELECT tm.address
+        FROM "public"."token_metadata" tm
+        WHERE tm.pegged_asset = token_address
+      );
+END;
+$$ LANGUAGE plpgsql;
+
 -- Function to validate pair_id exists in token_metadata before insert
 CREATE OR REPLACE FUNCTION validate_pair_id_exists()
 RETURNS TRIGGER AS $$
@@ -91,14 +137,13 @@ BEGIN
     -- Calculate median price for this time window
     SELECT get_median_price(NEW.pair_id, NEW.timestamp) INTO median_price;
     
-    -- Upsert into prices table using token address as asset
-    INSERT INTO "public"."prices" (asset, price, timestamp, block_number, _cursor)
-    VALUES (token_address, median_price, rounded_timestamp, NEW.block_number, NEW.block_number)
-    ON CONFLICT (asset, timestamp)
-    DO UPDATE SET
-        price = median_price,
-        block_number = GREATEST("public"."prices".block_number, NEW.block_number),
-        _cursor = GREATEST("public"."prices"._cursor, NEW.block_number);
+    -- Upsert into prices table for the token and any tokens pegged to it
+    PERFORM upsert_price_for_asset_and_pegged_assets(
+        token_address,
+        median_price,
+        rounded_timestamp,
+        NEW.block_number
+    );
     
     RETURN NEW;
 END;
@@ -132,40 +177,44 @@ BEGIN
     old_rounded_timestamp := round_to_15min(OLD.timestamp);
     new_rounded_timestamp := round_to_15min(NEW.timestamp);
     
-    -- If timestamp changed, we need to update both old and new time periods
-    IF old_rounded_timestamp != new_rounded_timestamp THEN
+    -- If the token or timestamp changed, update both old and new price windows
+    IF old_rounded_timestamp != new_rounded_timestamp OR old_token_address != new_token_address THEN
         -- Calculate median price for old time period (without the updated record)
         SELECT get_median_price(OLD.pair_id, OLD.timestamp) INTO old_median_price;
         
-        -- Update old time period
-        UPDATE "public"."prices"
-        SET 
-            price = old_median_price,
-            block_number = GREATEST(block_number, OLD.block_number),
-            _cursor = GREATEST(_cursor, OLD.block_number)
-        WHERE asset = old_token_address AND timestamp = old_rounded_timestamp;
+        IF old_median_price IS NULL THEN
+            PERFORM delete_price_for_asset_and_pegged_assets(
+                old_token_address,
+                old_rounded_timestamp
+            );
+        ELSE
+            PERFORM upsert_price_for_asset_and_pegged_assets(
+                old_token_address,
+                old_median_price,
+                old_rounded_timestamp,
+                OLD.block_number
+            );
+        END IF;
         
         -- Calculate median price for new time period (with the updated record)
         SELECT get_median_price(NEW.pair_id, NEW.timestamp) INTO new_median_price;
         
-        -- Update new time period
-        INSERT INTO "public"."prices" (asset, price, timestamp, block_number, _cursor)
-        VALUES (new_token_address, new_median_price, new_rounded_timestamp, NEW.block_number, NEW.block_number)
-        ON CONFLICT (asset, timestamp)
-        DO UPDATE SET
-            price = new_median_price,
-            block_number = GREATEST("public"."prices".block_number, NEW.block_number),
-            _cursor = GREATEST("public"."prices"._cursor, NEW.block_number);
+        PERFORM upsert_price_for_asset_and_pegged_assets(
+            new_token_address,
+            new_median_price,
+            new_rounded_timestamp,
+            NEW.block_number
+        );
     ELSE
-        -- Same time period, recalculate median price
+        -- Same token and time period, recalculate median price
         SELECT get_median_price(NEW.pair_id, NEW.timestamp) INTO new_median_price;
 
-        UPDATE "public"."prices"
-        SET 
-            price = new_median_price,
-            block_number = GREATEST(block_number, NEW.block_number),
-            _cursor = GREATEST(_cursor, NEW.block_number)
-        WHERE asset = new_token_address AND timestamp = new_rounded_timestamp;
+        PERFORM upsert_price_for_asset_and_pegged_assets(
+            new_token_address,
+            new_median_price,
+            new_rounded_timestamp,
+            NEW.block_number
+        );
     END IF;
     
     RETURN NEW;
@@ -195,26 +244,33 @@ BEGIN
     -- Calculate median price for this time window (after deletion)
     SELECT get_median_price(OLD.pair_id, OLD.timestamp) INTO median_price;
 
-    -- if median_price is NULL, delete the price record
+    -- if median_price is NULL, delete the price records
     IF median_price IS NULL THEN
-        DELETE FROM "public"."prices"
-        WHERE asset = token_address AND timestamp = rounded_timestamp;
+        PERFORM delete_price_for_asset_and_pegged_assets(
+            token_address,
+            rounded_timestamp
+        );
         RETURN OLD;
     END IF;
     
     -- Update the prices table with new median price
-    UPDATE "public"."prices"
-    SET 
-        price = median_price,
-        block_number = GREATEST(block_number, OLD.block_number),
-        _cursor = GREATEST(_cursor, OLD.block_number)
-    WHERE asset = token_address AND timestamp = rounded_timestamp;
+    PERFORM upsert_price_for_asset_and_pegged_assets(
+        token_address,
+        median_price,
+        rounded_timestamp,
+        OLD.block_number
+    );
     
     RETURN OLD;
 END;
 $$ LANGUAGE plpgsql;
 
 -- Create triggers
+DROP TRIGGER IF EXISTS raw_price_events_validate_trigger ON "public"."raw_price_events";
+DROP TRIGGER IF EXISTS raw_price_events_insert_trigger ON "public"."raw_price_events";
+DROP TRIGGER IF EXISTS raw_price_events_update_trigger ON "public"."raw_price_events";
+DROP TRIGGER IF EXISTS raw_price_events_delete_trigger ON "public"."raw_price_events";
+
 CREATE TRIGGER raw_price_events_validate_trigger
     BEFORE INSERT ON "public"."raw_price_events"
     FOR EACH ROW

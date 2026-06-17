@@ -278,16 +278,20 @@ model prices {
 }
 
 model token_metadata {
-  id       String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  address  String
-  name     String
-  symbol   String
-  decimals Int
+  id             String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  address        String
+  name           String
+  symbol         String
+  decimals       Int
+  pegged_asset   String?
 
-  pragma_pair_id  String
-  pragma_decimals Int
+  pragma_pair_id      String?           @unique
+  pragma_decimals     Int
+  pegged_asset_token  token_metadata?   @relation("pegged_asset_token_metadata", fields: [pegged_asset], references: [address], onDelete: SetNull, onUpdate: Cascade)
+  pegged_assets       token_metadata[]  @relation("pegged_asset_token_metadata")
 
   @@unique([address], name: "token_metadata_id")
+  @@index([pegged_asset])
   @@schema("public")
 }
 

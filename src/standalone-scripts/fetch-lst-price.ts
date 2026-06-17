@@ -4,7 +4,13 @@ dotenv.config();
 import { RpcProvider, num } from "starknet";
 import * as schema from "../../prisma/drizzle/schema.js";
 import { eq } from "drizzle-orm";
-import { Global, EkuboPricer, getMainnetConfig, PriceInfo } from "@strkfarm/sdk";
+import {
+  Global,
+  EkuboPricer,
+  getMainnetConfig,
+  PriceInfo,
+  TokenIndexingType,
+} from "@strkfarm/sdk";
 import { getDB } from "../../indexers/utils/index.js";
 
 interface TokenInfo {
@@ -20,22 +26,11 @@ interface PriceRecord {
   block_number: number;
 }
 
-// LST token symbols to filter from SDK's default tokens
-const LST_TOKEN_SYMBOLS = [
-  "xsBTC",
-  "solvBTC",
-  "xLBTC",
-  "LBTC",
-  "xtBTC",
-  "tBTC",
-  "xWBTC",
-];
-
-// Get LST tokens from SDK's Global.getDefaultTokens()
+// Get LST tokens from SDK's Global.getDefaultTokens().
 function getLSTTokens(): TokenInfo[] {
   const allTokens = Global.getDefaultTokens();
   return allTokens
-    .filter((token) => LST_TOKEN_SYMBOLS.includes(token.symbol))
+    .filter((token) => token.indexingType === TokenIndexingType.LST_SCRIPT)
     .map((token) => ({
       symbol: token.symbol,
       address: token.address.address, // Convert ContractAddr to string
@@ -44,6 +39,7 @@ function getLSTTokens(): TokenInfo[] {
 }
 
 const LST_TOKENS = getLSTTokens();
+const LST_TOKEN_SYMBOLS = LST_TOKENS.map((token) => token.symbol);
 
 const BATCH_SIZE = 1000;
 const BLOCKS_PER_INTERVAL = 130; // Process every ~130 blocks (5-10 minutes)
@@ -107,7 +103,10 @@ async function readProgress(
     }
     return result[0].last_processed_block;
   } catch (error) {
-    console.warn("Failed to read progress from database, starting fresh:", error);
+    console.warn(
+      "Failed to read progress from database, starting fresh:",
+      error,
+    );
     return null;
   }
 }
@@ -223,9 +222,15 @@ async function processBatch(
     priceRecords.push(...validPrices);
 
     // Log progress every interval
-    const processedCount = Math.floor((blockNumber - startBlock) / BLOCKS_PER_INTERVAL) + 1;
-    const totalIntervals = Math.ceil((endBlock - startBlock + 1) / BLOCKS_PER_INTERVAL);
-    if (blockNumber % (BLOCKS_PER_INTERVAL * 5) === 0 || blockNumber >= endBlock) {
+    const processedCount =
+      Math.floor((blockNumber - startBlock) / BLOCKS_PER_INTERVAL) + 1;
+    const totalIntervals = Math.ceil(
+      (endBlock - startBlock + 1) / BLOCKS_PER_INTERVAL,
+    );
+    if (
+      blockNumber % (BLOCKS_PER_INTERVAL * 5) === 0 ||
+      blockNumber >= endBlock
+    ) {
       console.log(
         `  Processed ${processedCount}/${totalIntervals} intervals (block ${blockNumber}) | Found: ${totalFound} | Skipped: ${totalSkipped}`,
       );
@@ -267,6 +272,7 @@ async function main() {
   }
 
   const startingBlockLst = parseInt(startingBlockEnv, 10);
+  // TODO: rather than undefined we can keep a number here for better prospects
   const numBatches = numBatchesEnv ? parseInt(numBatchesEnv, 10) : undefined;
 
   // Initialize SDK config and pricer

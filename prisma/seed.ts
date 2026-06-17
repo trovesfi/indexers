@@ -1,70 +1,50 @@
 import { PrismaClient, token_metadata } from "@prisma/client";
 import { EkuboCLVaultStrategies } from "@strkfarm/sdk";
-import { UniversalStrategies } from "@strkfarm/sdk";
 import { VesuRebalanceStrategies } from "@strkfarm/sdk";
-import { Global } from "@strkfarm/sdk";
-import { Client } from "pg";
-import { shortString } from "starknet";
-import { num } from "starknet";
-import { hash } from "starknet";
+import { Global, TokenIndexingType } from "@strkfarm/sdk";
 
 // sdk is not ready to go live hence to run the indexer this vault has been hardcoded. Remember to remove it once sdk have required changes published.
-import { HC_EkuboCLVaultV2Strategies as EkuboCLVaultV2Strategies } from "../indexers/utils/constants";
+import {
+    HC_EkuboCLVaultV2Strategies as EkuboCLVaultV2Strategies,
+    PRAGMA_PAIRS,
+} from "../indexers/utils/constants";
 
-const overridePragmaBaseAsset = {
-    tBTC: {
-        baseAsset: 'BTC',
-        priceDecimals: 8,
-    },
-    LBTC: {
-        baseAsset: 'BTC',
-        priceDecimals: 8,
-    },
-    xLBTC: {
-        baseAsset: 'BTC',
-        priceDecimals: 8,
-    },
-    xtBTC: {
-        baseAsset: 'BTC',
-        priceDecimals: 8,
-    },
-    xWBTC: {
-        baseAsset: 'BTC',
-        priceDecimals: 8,
-    },
-    xsBTC: {
-        baseAsset: 'BTC',
-        priceDecimals: 8,
-    },
-    solvBTC: {
-        baseAsset: 'BTC',
-        priceDecimals: 8,
-    },
-    USDT: {
-        baseAsset: 'USDT',
-        priceDecimals: 6,
-    },
-    USDC: {
-        baseAsset: 'USDC',
-        priceDecimals: 6,
-    },
-}
+const pragmaPairIdByTokenSymbol = new Map(
+    PRAGMA_PAIRS.map((pair) => [pair.tokenSymbol.toLowerCase(), pair.pairId])
+);
+
+const defaultTokens = Global.getDefaultTokens();
+const tokenAddressBySymbol = new Map(
+    defaultTokens.map((token) => [token.symbol.toLowerCase(), token.address.address])
+);
 
 function getPragmaPairId(tokenSymbol: string) {
-    const _symbol = overridePragmaBaseAsset[tokenSymbol as keyof typeof overridePragmaBaseAsset]?.baseAsset || tokenSymbol;
-    return shortString.encodeShortString(`${_symbol.toUpperCase()}/USD`)
+    const pairId = pragmaPairIdByTokenSymbol.get(tokenSymbol.toLowerCase());
+    return pairId ?? null;
 }
 
 function getPragmaDecimals(tokenSymbol: string) {
-    return overridePragmaBaseAsset[tokenSymbol as keyof typeof overridePragmaBaseAsset]?.priceDecimals || 8;
+    if (['USDC', 'USDT'].includes(tokenSymbol.toUpperCase())) return 6;
+    return 8;
 }
 
+function getPeggedAsset(token: (typeof defaultTokens)[number]) {
+    if (token.indexingType !== TokenIndexingType.PEGGED || !token.priceProxySymbol) {
+        return null;
+    }
+    return tokenAddressBySymbol.get(token.priceProxySymbol.toLowerCase()) ?? null;
+}
+
+// For now deprecated tokens wont have any prices and that is fine as well
 const tokenInfo: Omit<token_metadata, 'id'>[] = [
-    ...Global.getDefaultTokens().map((token) => ({
+    ...defaultTokens
+    .filter((token) => token.indexingType !== TokenIndexingType.IGNORE)
+    .map((token) => ({
         address: token.address.address,
         name: token.name,
         symbol: token.symbol,
         decimals: token.decimals,
+        pegged_asset: getPeggedAsset(token),
         pragma_pair_id: getPragmaPairId(token.symbol),
         pragma_decimals: getPragmaDecimals(token.symbol),
     }))
@@ -77,11 +57,6 @@ async function seedStrategyMetadata() {
   await prisma.strategy_metadata.deleteMany();
   await prisma.strategy_metadata.createMany({
     data: [
-        ...UniversalStrategies.map((strategy) => ({
-            strategy_address: strategy.address.address,
-            strategy_name: strategy.name,
-            quote_asset: strategy.depositTokens[0].address.address,
-        })),
         ...EkuboCLVaultStrategies
         .map((strategy) => ({
             strategy_address: strategy.address.address,

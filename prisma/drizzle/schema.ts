@@ -1,5 +1,5 @@
-import { sql } from 'drizzle-orm'
-import { bigint, boolean, decimal, doublePrecision, integer, pgTable, text, uniqueIndex } from 'drizzle-orm/pg-core'
+import { relations, sql } from 'drizzle-orm'
+import { bigint, boolean, decimal, doublePrecision, foreignKey, integer, pgTable, text, uniqueIndex } from 'drizzle-orm/pg-core'
 
 export const investment_flows = pgTable('investment_flows', {
 	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
@@ -214,9 +214,17 @@ export const token_metadata = pgTable('token_metadata', {
 	name: text('name').notNull(),
 	symbol: text('symbol').notNull(),
 	decimals: integer('decimals').notNull(),
-	pragma_pair_id: text('pragma_pair_id').notNull(),
+	pegged_asset: text('pegged_asset'),
+	pragma_pair_id: text('pragma_pair_id').unique(),
 	pragma_decimals: integer('pragma_decimals').notNull()
 }, (token_metadata) => ({
+	'token_metadata_pegged_asset_token_fkey': foreignKey({
+		name: 'token_metadata_pegged_asset_token_fkey',
+		columns: [token_metadata.pegged_asset],
+		foreignColumns: [token_metadata.address]
+	})
+		.onDelete('set null')
+		.onUpdate('cascade'),
 	'token_metadata_id': uniqueIndex('token_metadata_id')
 		.on(token_metadata.address)
 }));
@@ -302,4 +310,15 @@ export const contract_roles = pgTable('contract_roles', {
 }, (contract_roles) => ({
 	'contract_roles_unique': uniqueIndex('contract_roles_unique')
 		.on(contract_roles.contract_address, contract_roles.role_id, contract_roles.account)
+}));
+
+export const token_metadataRelations = relations(token_metadata, ({ one, many }) => ({
+	pegged_asset_token: one(token_metadata, {
+		relationName: 'pegged_asset_token_metadata',
+		fields: [token_metadata.pegged_asset],
+		references: [token_metadata.address]
+	}),
+	pegged_assets: many(token_metadata, {
+		relationName: 'pegged_asset_token_metadata'
+	})
 }));

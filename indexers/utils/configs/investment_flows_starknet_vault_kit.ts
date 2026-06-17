@@ -1,5 +1,4 @@
-import { ContractAddr, EkuboCLVaultStrategies, HyperLSTStrategies, UniversalStrategies, VesuRebalanceStrategies } from "@strkfarm/sdk";
-import { BoostedxSTRKCarryStrategies } from "strkfarm-sdk-dev";
+import { ContractAddr, EkuboCLVaultStrategies, HyperLSTStrategies, UniversalStrategies, VesuRebalanceStrategies, BoostedxSTRKCarryStrategies } from "@strkfarm/sdk";
 import { standariseAddress } from "../../../src/utils";
 import { AdditionalField, ContractConfig, EventConfig } from "../config";
 import { onEventEkuboVault } from "../ekubo_vault";

@@ -26,6 +26,61 @@ export const TOKENS = {
   ),
 };
 
+export interface PragmaPair {
+  pairId: `0x${string}`;
+  name: string;
+  tokenSymbol: string;
+}
+
+export const PRAGMA_PAIRS: PragmaPair[] = [
+  {
+    pairId: "0x4554482f555344",
+    name: "ETH/USD",
+    tokenSymbol: "ETH",
+  },
+  {
+    pairId: "0x555344432f555344",
+    name: "USDC/USD",
+    tokenSymbol: "USDC",
+  },
+  {
+    pairId: "0x555344542f555344",
+    name: "USDT/USD",
+    tokenSymbol: "USDT",
+  },
+  {
+    pairId: "0x574254432f555344",
+    name: "WBTC/USD",
+    tokenSymbol: "WBTC",
+  },
+  {
+    pairId: "0x5354524b2f555344",
+    name: "STRK/USD",
+    tokenSymbol: "STRK",
+  },
+  // {
+  //   pairId: "0x585354524b2f555344",
+  //   name: "XSTRK/USD",
+  //   tokenSymbol: "xSTRK",
+  // },
+  // {
+  //   pairId: "0x4d5245374254432f555344",
+  //   name: "MRE7BTC/USD",
+  //   tokenSymbol: "mRe7BTC",
+  // },
+  // {
+  //   pairId: "0x4d5245375949454c442f555344",
+  //   name: "MRE7YIELD/USD",
+  //   tokenSymbol: "mRe7YIELD",
+  // },
+  // {
+  //   pairId: "0x4c4254432f555344",
+  //   name: "LBTC/USD",
+  //   tokenSymbol: "LBTC",
+  // },
+];
+
+
 export const isTLS = process.env.IS_TLS! === "true";
 
 export const HC_EkuboCLVaultV2Strategies = [
