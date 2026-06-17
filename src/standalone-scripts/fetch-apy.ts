@@ -15,6 +15,7 @@ import {
   detectCapabilities,
   YoLoVault,
   NetAPYDetails,
+  BoostedxSTRKCarryStrategy,
 } from "@strkfarm/sdk";
 import { RpcProvider } from "starknet";
 import { getDB } from "../../indexers/utils/index.js";
@@ -26,7 +27,10 @@ type AnyStrategyInstance =
   | UniversalLstMultiplierStrategy
   | VesuRebalance
   | SenseiVault
-  | YoLoVault;
+  | YoLoVault
+  | BoostedxSTRKCarryStrategy<any>;
+
+const BPS_SCALE = 10000;
 
 async function retryWithBackoff<T>(
   fn: () => Promise<T>,
@@ -78,6 +82,8 @@ function instantiateStrategy(
         return new SenseiVault(config, pricer, metadata as any);
       case StrategyType.YOLO_VAULT:
         return new YoLoVault(config, pricer, metadata as any);
+      case StrategyType.BOOSTEDXSTRKCARRY:
+        return new BoostedxSTRKCarryStrategy(config, pricer, metadata as any);
       default:
         console.warn(`[APY] Unknown strategy type: ${type}`);
         return null;
@@ -214,19 +220,14 @@ async function fetchNetAPY(
       netYield = 0;
     }
 
-    // Apply 10% performance fee for Universal strategies
-    let baseApy: number;
-    if (
-      strategy instanceof UniversalStrategy ||
-      strategy instanceof UniversalLstMultiplierStrategy
-    ) {
-      const feeFactor = 0.1;
-      baseApy = netYield * (1 - feeFactor);
+    const performanceFeeBps = metadata.feeBps?.performanceFeeBps ?? 0;
+    const offsetFactor = BPS_SCALE - performanceFeeBps;
+    const baseApy = netYield * (offsetFactor / BPS_SCALE);
+
+    if (performanceFeeBps > 0) {
       console.log(
-        `[APY] Strategy ${metadata.name} (${metadata.id}): Applied 10% fee. Net yield: ${netYield}, Base APY: ${baseApy}`,
+        `[APY] Strategy ${metadata.name} (${metadata.id}): Applied ${performanceFeeBps} bps performance fee. Net yield: ${netYield}, Base APY: ${baseApy}`,
       );
-    } else {
-      baseApy = netYield;
     }
 
     // Sanitize the APY value to ensure it's finite
