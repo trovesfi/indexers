@@ -63,21 +63,21 @@ export const PRAGMA_PAIRS: PragmaPair[] = [
   //   name: "XSTRK/USD",
   //   tokenSymbol: "xSTRK",
   // },
-  {
-    pairId: "0x4d5245374254432f555344",
-    name: "MRE7BTC/USD",
-    tokenSymbol: "mRe7BTC",
-  },
-  {
-    pairId: "0x4d5245375949454c442f555344",
-    name: "MRE7YIELD/USD",
-    tokenSymbol: "mRe7YIELD",
-  },
-  {
-    pairId: "0x4c4254432f555344",
-    name: "LBTC/USD",
-    tokenSymbol: "LBTC",
-  },
+  // {
+  //   pairId: "0x4d5245374254432f555344",
+  //   name: "MRE7BTC/USD",
+  //   tokenSymbol: "mRe7BTC",
+  // },
+  // {
+  //   pairId: "0x4d5245375949454c442f555344",
+  //   name: "MRE7YIELD/USD",
+  //   tokenSymbol: "mRe7YIELD",
+  // },
+  // {
+  //   pairId: "0x4c4254432f555344",
+  //   name: "LBTC/USD",
+  //   tokenSymbol: "LBTC",
+  // },
 ];
 
 

@@ -5,8 +5,8 @@ import {
   YoloVaultStrategies,
   SenseiStrategies,
   VesuRebalanceStrategies,
+  BoostedxSTRKCarryStrategies
 } from "@strkfarm/sdk";
-import { BoostedxSTRKCarryStrategies } from "strkfarm-sdk-dev";
 import { standariseAddress } from "../../../src/utils";
 import { ContractConfig, EventConfig } from "../config";
 import { eventKey } from "../common_transform";
