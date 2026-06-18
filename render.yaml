@@ -36,7 +36,7 @@ services:
   repo: https://github.com/trovesfi/indexers
   branch: hemant/indexer
   plan: starter
-  schedule: "0 */2 * * *"
+  schedule: "0 */1 * * *"
   envVars:
   - fromGroup: troves-indexers
   region: oregon
