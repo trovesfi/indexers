@@ -312,6 +312,20 @@ export const contract_roles = pgTable('contract_roles', {
 		.on(contract_roles.contract_address, contract_roles.role_id, contract_roles.account)
 }));
 
+export const manage_roots = pgTable('manage_roots', {
+	id: text('id').notNull().primaryKey().default(sql`gen_random_uuid()`),
+	manager_address: text('manager_address').notNull(),
+	strategist_address: text('strategist_address').notNull(),
+	merkle_root: text('merkle_root').notNull(),
+	last_modified_block: integer('last_modified_block').notNull(),
+	last_modified_timestamp: integer('last_modified_timestamp').notNull(),
+	tx_hash: text('tx_hash').notNull(),
+	cursor: bigint('_cursor', { mode: 'bigint' })
+}, (manage_roots) => ({
+	'manage_roots_unique': uniqueIndex('manage_roots_unique')
+		.on(manage_roots.manager_address, manage_roots.strategist_address)
+}));
+
 export const token_metadataRelations = relations(token_metadata, ({ one, many }) => ({
 	pegged_asset_token: one(token_metadata, {
 		relationName: 'pegged_asset_token_metadata',

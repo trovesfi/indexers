@@ -395,3 +395,21 @@ model contract_roles {
   @@index([role_admin_id])
   @@schema("public")
 }
+
+// State table tracking manager → strategist Merkle roots for SVK Manager contracts
+model manage_roots {
+  id                   String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  manager_address      String
+  strategist_address   String
+  merkle_root          String
+  last_modified_block  Int
+  last_modified_timestamp Int
+  tx_hash              String
+
+  cursor BigInt? @map("_cursor")
+
+  @@unique([manager_address, strategist_address], name: "manage_roots_unique")
+  @@index([manager_address])
+  @@index([strategist_address])
+  @@schema("public")
+}

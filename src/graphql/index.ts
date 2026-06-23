@@ -13,6 +13,7 @@ import {
   FindManySvk_alt_redemptionsResolver,
   FindManyStrategy_apyResolver,
   FindManyContract_rolesResolver,
+  FindManyManage_rootsResolver,
 } from "@generated/type-graphql";
 import { buildSchema, Resolver, Query, Arg } from 'type-graphql';
 import { startStandaloneServer } from "@apollo/server/standalone";
@@ -59,6 +60,7 @@ async function main() {
       FindManySvk_alt_redemptionsResolver,
       FindManyStrategy_apyResolver,
       FindManyContract_rolesResolver,
+      FindManyManage_rootsResolver,
     ],
     validate: false,
   });
