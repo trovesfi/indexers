@@ -5,7 +5,7 @@ import type {
   ExtractTablesWithRelations,
   TablesRelationalConfig,
 } from "drizzle-orm";
-import { StarknetStream } from "@apibara/starknet";
+import { StarknetStream, StorageDiffFilter } from "@apibara/starknet";
 import { drizzleStorage, useDrizzleStorage } from "@apibara/plugin-drizzle";
 import type { PgDatabase, PgQueryResultHKT } from "drizzle-orm/pg-core";
 import type { ApibaraRuntimeConfig } from "apibara/types";
@@ -14,6 +14,7 @@ import { useLogger } from "@apibara/indexer/plugins";
 import { getDB } from "./utils";
 import { commonTransform, eventKey } from "./utils/common_transform";
 import { CONFIG } from "./utils/config";
+import { MANAGER_CONTRACT_ADDRESSES } from "./utils/configs/active_permissions";
 
 export default function (runtimeConfig: ApibaraRuntimeConfig) {
   return createIndexer({
@@ -35,6 +36,9 @@ export function createIndexer<
   config: ApibaraRuntimeConfig;
 }) {
   const events: any = [];
+  const managerStorageDiffs = MANAGER_CONTRACT_ADDRESSES.map((addr) => ({
+    contractAddress: addr,
+  }));
   
   for (const config of CONFIG) {
     const eventConfig = config;
@@ -66,6 +70,7 @@ export function createIndexer<
     filter: {
       header: "on_data_or_on_new_block",
       events,
+      storageDiffs: managerStorageDiffs as StorageDiffFilter[],
     },
     // @ts-ignore
     async transform({ block, finality, endCursor, context }) {

@@ -101,6 +101,19 @@ const BOOSTED_STRATEGY_CONTRACTS: ContractConfig[] = [
   })),
 ];
 
+// Flattened list of all SVK Manager contract addresses (used for storageDiff filters)
+export const MANAGER_CONTRACT_ADDRESSES: string[] = [
+  ...UniversalStrategies.map((strategy) =>
+    standariseAddress(strategy.additionalInfo.manager.address),
+  ),
+  ...HyperLSTStrategies.map((strategy) =>
+    standariseAddress(strategy.additionalInfo.manager.address),
+  ),
+  ...BoostedxSTRKCarryStrategies.map((strategy) =>
+    standariseAddress(strategy.additionalInfo.manager.address),
+  ),
+];
+
 // Combine all access control contracts
 const ALL_ACCESS_CONTROL_CONTRACTS: ContractConfig[] = [
   ...GLOBAL_ACCESS_CONTROL_CONTRACTS,

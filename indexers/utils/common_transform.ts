@@ -1,5 +1,5 @@
 import { Block, BlockHeader, FieldElement } from "@apibara/starknet";
-import { hash, uint256 } from "starknet";
+import { hash, uint256, RpcProvider } from "starknet";
 import { PgDatabase } from "drizzle-orm/pg-core";
 import type { ConsolaInstance } from "@apibara/indexer/plugins";
 import { Event } from "@apibara/starknet";
@@ -9,6 +9,12 @@ import { AdditionalField, EventConfig, EventField } from "./config.ts";
 import { CONFIG } from "./config.ts";
 import { standariseAddress } from "./index.ts";
 import { shortString } from "starknet";
+import { processManageRootStorageDiffs } from "./manage_root_storage";
+
+// Initialize RPC provider for fetching transactions
+const rpcProvider = new RpcProvider({ 
+  nodeUrl: process.env.RPC_URL || "https://starknet-mainnet.public.blastapi.io"
+});
 
 function getConfigArr(blockNumber: number) {
   return CONFIG;
@@ -122,6 +128,16 @@ export async function commonTransform<T extends Record<string, any>>(
 
   const CONFIG_ARR = getConfigArr(Number(header.blockNumber));
 
+  if(block.storageDiffs.length > 0) {
+  await processManageRootStorageDiffs(
+    block,
+    database,
+    logger,
+    timestamp,
+    BigInt(header.blockNumber),
+    rpcProvider
+  );
+}
   // Collect all records first before any database operations
   const recordsToInsert: Array<{ record: T; config: any; tableName: string }> =
     [];
